@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InheritanceUnitTests.cs" />
     <Compile Include="NucleotideSequenceUnitTests.cs" />
     <Compile Include="FastaSequenceUnitTests.cs" />
     <Compile Include="RecurrenceUnitTests.cs" />
