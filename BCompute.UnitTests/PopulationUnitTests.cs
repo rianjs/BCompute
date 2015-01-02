@@ -4,12 +4,12 @@ using NUnit.Framework;
 namespace BCompute.UnitTests
 {
     [TestFixture]
-    public class InheritanceUnitTests
+    public class PopulationUnitTests
     {
         [Test, TestCaseSource("ParentalSetProbability_TestCases")]
         public double ParentalSetProbability(uint homoDominantPopulation, uint heteroPopulation, uint homoRecessivePopulation, Genotype genotype)
         {
-            return new PhenotypePopulation(homoDominantPopulation, heteroPopulation, homoRecessivePopulation).GetParentalSetProbability(genotype);
+            return new Population(homoDominantPopulation, heteroPopulation, homoRecessivePopulation).GetParentalSetProbability(genotype);
         }
 
         public IEnumerable<ITestCaseData> ParentalSetProbability_TestCases()
@@ -25,13 +25,13 @@ namespace BCompute.UnitTests
                 .SetName("HomoRecessive: 2x2x2 test cases all return the same number");
         }
 
-        [Test, TestCaseSource("ChildAlleleManifestationProbability_TestCases")]
+        [Test, TestCaseSource("ChildAlleleProbability_TestCases")]
         public double ChildAllelManifestationProbabilityTests(uint homoDominantPopulation, uint heteroPopulation, uint homoRecessivePopulation, Genotype genotype)
         {
-            return new PhenotypePopulation(homoDominantPopulation, heteroPopulation, homoRecessivePopulation).GetChildAlleleProbability(genotype);
+            return new Population(homoDominantPopulation, heteroPopulation, homoRecessivePopulation).GetChildAlleleProbability(genotype);
         }
 
-        public IEnumerable<ITestCaseData> ChildAlleleManifestationProbability_TestCases()
+        public IEnumerable<ITestCaseData> ChildAlleleProbability_TestCases()
         {
             const uint small = 2;
             yield return new TestCaseData(small, small, small).Returns(0.78333);
