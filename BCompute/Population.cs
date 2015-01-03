@@ -29,22 +29,24 @@ namespace BCompute
 
         public ImmutableDictionary<string, double> ParentalProbabilities
         {
-            //Compute Parent A = ratio of each Genotype relative to the population
-
-            //Parent B:
-            //  CurrentPopulation = TotalPopulation - 1
-            //  Parent B probability = count(that group - 1) / CurrentPopulation
+            //p(Parent A) = ratio of each Genotype relative to the population
+            //p(Parent B) = ratio of each Genotype left in the population pool
+            //  If Parent B is the same genotype as Parent A:
+            //      (Parent A genotype count / TotalPopulation) * ((Parent A genotype count - 1) / (TotalPopulation - 1))
+            //  If Parent B is of a different genotype:
+            //      ((Parent A genotype count / TotalPopulation) * (Parent B genotype count) / (TotalPopulation - 1)) * 2
+            //      We by 2 in the latter case, because order is significant
             get
             {
                 var parentBPopulation = TotalPopulation - 1;
                 return new Dictionary<string, double>
                 {
-                    {"DDDD", ((double)HomoDominantCount / TotalPopulation) * (HomoDominantCount - 1) / parentBPopulation},
-                    {"DDDd", ((double) HomoDominantCount / TotalPopulation) * HeteroCount / parentBPopulation},
+                    {"DDDD", ((double) HomoDominantCount / TotalPopulation) * (HomoDominantCount - 1) / parentBPopulation},
+                    {"DDDd", ((double) HomoDominantCount / TotalPopulation) * HeteroCount / parentBPopulation * 2},
                     {"DdDd", ((double) HeteroCount / TotalPopulation) * (HeteroCount - 1) / parentBPopulation},
-                    {"Dddd", ((double) HeteroCount / TotalPopulation) * HomoRecessiveCount / parentBPopulation},
+                    {"Dddd", ((double) HeteroCount / TotalPopulation) * HomoRecessiveCount / parentBPopulation * 2},
                     {"dddd", ((double) HomoRecessiveCount / TotalPopulation) * (HomoRecessiveCount - 1) / parentBPopulation},
-                    {"DDdd", ((double) HomoDominantCount / TotalPopulation) * HeteroCount / parentBPopulation},
+                    {"DDdd", ((double) HomoDominantCount / TotalPopulation) * HeteroCount / parentBPopulation * 2},
                 }.ToImmutableDictionary();
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 namespace BCompute.UnitTests
@@ -7,22 +8,21 @@ namespace BCompute.UnitTests
     public class PopulationUnitTests
     {
         [Test, TestCaseSource("ParentalSetProbability_TestCases")]
-        public double ParentalSetProbability(uint homoDominantPopulation, uint heteroPopulation, uint homoRecessivePopulation, Genotype genotype)
+        public void ParentalSetProbability(uint homoDominantPopulation, uint heteroPopulation, uint homoRecessivePopulation)
         {
-            return new Population(homoDominantPopulation, heteroPopulation, homoRecessivePopulation).GetParentalSetProbability(genotype);
+            var pop = new Population(homoDominantPopulation, heteroPopulation, homoRecessivePopulation);
+            var parentalProbabilitySum = pop.ParentalProbabilities.Values.Sum();
+            Assert.AreEqual(1.00, parentalProbabilitySum);
         }
 
         public IEnumerable<ITestCaseData> ParentalSetProbability_TestCases()
         {
-            const double smallUniformPopulationParentalProbability = (2.0d / 6.0d) * (1.0d / 5.0d);
+            //const double smallUniformPopulationParentalProbability = (2.0d / 6.0d) * (1.0d / 5.0d);
             const uint small = 2;
+            const uint lessSmall = 3;
 
-            yield return new TestCaseData(small, small, small, Genotype.HomozygousDominant).Returns(smallUniformPopulationParentalProbability)
-                .SetName("HomoDominant: 2x2x2 test cases all return the same number");
-            yield return new TestCaseData(small, small, small, Genotype.Heterozygous).Returns(smallUniformPopulationParentalProbability)
-                .SetName("Hetero: 2x2x2 test cases all return the same number");
-            yield return new TestCaseData(small, small, small, Genotype.HomozygousRecessive).Returns(smallUniformPopulationParentalProbability)
-                .SetName("HomoRecessive: 2x2x2 test cases all return the same number");
+            yield return new TestCaseData(small, small, small).SetName("Equal numbers of each genotype returns 1.00");
+            yield return new TestCaseData(small, lessSmall, small).SetName("Unequal numbers of each genotype returns 1.00");
         }
 
         [Test, TestCaseSource("ChildAlleleProbability_TestCases")]
