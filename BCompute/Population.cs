@@ -6,19 +6,19 @@ namespace BCompute
 {
     public class Population
     {
-        public uint HomoDominantCount { get; private set; }
-        public uint HeteroCount { get; private set; }
-        public uint HomoRecessiveCount { get; private set; }
-        public Population(uint homoDominantCount, uint heteroCount, uint homoRecessiveCount)
+        public uint HomozygousCount { get; private set; }
+        public uint HeterozygousCount { get; private set; }
+        public uint RecessiveCount { get; private set; }
+        public Population(uint homozygousCount, uint heterozygousCount, uint recessiveCount)
         {
-            HomoDominantCount = homoDominantCount;
-            HeteroCount = heteroCount;
-            HomoRecessiveCount = homoRecessiveCount;
+            HomozygousCount = homozygousCount;
+            HeterozygousCount = heterozygousCount;
+            RecessiveCount = recessiveCount;
         }
 
         public uint TotalPopulation
         {
-            get { return HomoDominantCount + HeteroCount + HomoRecessiveCount; }
+            get { return HomozygousCount + HeterozygousCount + RecessiveCount; }
         }
 
         public double GetChildAlleleProbability(Genotype genotype)
@@ -41,12 +41,12 @@ namespace BCompute
                 var parentBPopulation = TotalPopulation - 1;
                 return new Dictionary<string, double>
                 {
-                    {"DDDD", ((double) HomoDominantCount / TotalPopulation) * (HomoDominantCount - 1) / parentBPopulation},
-                    {"DDDd", ((double) HomoDominantCount / TotalPopulation) * HeteroCount / parentBPopulation * 2},
-                    {"DdDd", ((double) HeteroCount / TotalPopulation) * (HeteroCount - 1) / parentBPopulation},
-                    {"Dddd", ((double) HeteroCount / TotalPopulation) * HomoRecessiveCount / parentBPopulation * 2},
-                    {"dddd", ((double) HomoRecessiveCount / TotalPopulation) * (HomoRecessiveCount - 1) / parentBPopulation},
-                    {"DDdd", ((double) HomoDominantCount / TotalPopulation) * HeteroCount / parentBPopulation * 2},
+                    {"DDDD", ((double) HomozygousCount / TotalPopulation) * (HomozygousCount - 1) / parentBPopulation},
+                    {"DDDd", ((double) HomozygousCount / TotalPopulation) * ((double) HeterozygousCount / parentBPopulation) * 2},
+                    {"DdDd", ((double) HeterozygousCount / TotalPopulation) * (HeterozygousCount - 1) / parentBPopulation},
+                    {"Dddd", ((double) HeterozygousCount / TotalPopulation) * RecessiveCount / parentBPopulation * 2},
+                    {"dddd", ((double) RecessiveCount / TotalPopulation) * (RecessiveCount - 1) / parentBPopulation},
+                    {"DDdd", ((double) HomozygousCount / TotalPopulation) * ((double)RecessiveCount / parentBPopulation) * 2},
                 }.ToImmutableDictionary();
             }
         }

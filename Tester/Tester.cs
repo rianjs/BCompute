@@ -16,6 +16,7 @@ namespace Tester
             //p(dd) = 1.0d - p(D*) ALTERNATIVELY compute p(dd) on its own
             //var pop = new Population(2, 2, 2);
             var pop = new Population(27, 21, 30);
+            //var pop = new Population(16, 20, 23);
             var pDominant = pop.GetChildAlleleProbability(Genotype.HomozygousDominant) + pop.GetChildAlleleProbability(Genotype.Heterozygous);
             var pRecessiveA = 1.0d - pDominant;
             var pRecessiveB = pop.GetChildAlleleProbability(Genotype.HomozygousRecessive);

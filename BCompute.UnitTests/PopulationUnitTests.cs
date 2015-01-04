@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -8,33 +9,46 @@ namespace BCompute.UnitTests
     public class PopulationUnitTests
     {
         [Test, TestCaseSource("ParentalSetProbability_TestCases")]
-        public void ParentalSetProbability(uint homoDominantPopulation, uint heteroPopulation, uint homoRecessivePopulation)
+        public double ParentalSetProbability(uint homoDominantPopulation, uint heteroPopulation, uint homoRecessivePopulation)
         {
             var pop = new Population(homoDominantPopulation, heteroPopulation, homoRecessivePopulation);
             var parentalProbabilitySum = pop.ParentalProbabilities.Values.Sum();
-            Assert.AreEqual(1.00, parentalProbabilitySum);
+            return parentalProbabilitySum;
         }
 
         public IEnumerable<ITestCaseData> ParentalSetProbability_TestCases()
         {
-            //const double smallUniformPopulationParentalProbability = (2.0d / 6.0d) * (1.0d / 5.0d);
-            const uint small = 2;
-            const uint lessSmall = 3;
+            const uint zero = 0;
+            const uint one = 1;
+            const uint two = 2;
+            const uint three = 3;
+            const uint four = 4;
+            const uint five = 5;
 
-            yield return new TestCaseData(small, small, small).SetName("Equal numbers of each genotype returns 1.00");
-            yield return new TestCaseData(small, lessSmall, small).SetName("Unequal numbers of each genotype returns 1.00");
+            yield return new TestCaseData(two, two, two).Returns(1.0d).SetName("Equal numbers of each genotype returns 1.0");
+            yield return new TestCaseData(five, four, three).Returns(1.0d).SetName("Unequal numbers of each genotype returns 1.0");
+            yield return new TestCaseData(two, three, two).Returns(1.0d).SetName("Unequal numbers of each genotype returns 1.0");
+            yield return new TestCaseData(zero, one, two).Returns(1.0d).SetName("Zero subtype returns 1.0");
+            yield return new TestCaseData(zero, zero, zero).Returns(Double.NaN).SetName("Divide by zero returns NaN");
         }
 
         [Test, TestCaseSource("ChildAlleleProbability_TestCases")]
-        public double ChildAllelManifestationProbabilityTests(uint homoDominantPopulation, uint heteroPopulation, uint homoRecessivePopulation, Genotype genotype)
+        public double ChildAllelManifestationProbabilityTests(uint homoDominantPopulation, uint heteroPopulation, uint homoRecessivePopulation, IEnumerable<Genotype> genotypes)
         {
-            return new Population(homoDominantPopulation, heteroPopulation, homoRecessivePopulation).GetChildAlleleProbability(genotype);
+            var sum = genotypes.Sum(genotype => new Population(homoDominantPopulation, heteroPopulation, homoRecessivePopulation).GetChildAlleleProbability(genotype));
+            //Only for unit testing...
+            return Math.Round(sum, 5);
         }
 
         public IEnumerable<ITestCaseData> ChildAlleleProbability_TestCases()
         {
-            const uint small = 2;
-            yield return new TestCaseData(small, small, small).Returns(0.78333);
+            const uint two = 2;
+            yield return new TestCaseData(two, two, two, new List<Genotype> { Genotype.HomozygousDominant, Genotype.Heterozygous })
+                .Returns(0.78333).SetName("Small test case: percentage of offspring that will express a dominant allele (homo + hetero)");
+            yield return new TestCaseData((uint)27, (uint)21, (uint)30, new List<Genotype> { Genotype.HomozygousDominant, Genotype.Heterozygous })
+                .Returns(0.73277).SetName("Large test case: percentage of offspring that will express a dominant allele (homo + hetero)");
+            yield return new TestCaseData((uint)16, (uint)20, (uint)23, new List<Genotype> { Genotype.HomozygousDominant, Genotype.Heterozygous })
+                .Returns(0.68995).SetName("Large test case: percentage of offspring that will express a dominant allele (homo + hetero)");
         }
     }
 }

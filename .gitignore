@@ -1,0 +1,8 @@
+.DS_Store
+.DS_Store?
+bin/
+obj/
+.nuget/
+*.DotSettings.*
+*.suo
+packages/
