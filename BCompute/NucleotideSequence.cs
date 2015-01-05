@@ -182,5 +182,35 @@ namespace BCompute
 
             return String.Equals(Sequence, typedComparison.Sequence, StringComparison.OrdinalIgnoreCase);
         }
+
+        private Dictionary<char, char> _nucleotideComplements;
+        public IDictionary<char, char> NucleotideComplements
+        {
+            //Defined at http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html#tab2
+            get
+            {
+                if (_nucleotideComplements == null || _nucleotideComplements.Count < Enum.GetNames(typeof(Nucleotide)).Length)
+                {
+                    _nucleotideComplements = new Dictionary<char, char>
+                    {
+                        {(char) Nucleotide.Adenine, (char) Nucleotide.Thymine},         //A <=> T
+                        {(char) Nucleotide.Thymine, (char) Nucleotide.Adenine},
+                        {(char) Nucleotide.NotAdenine, (char) Nucleotide.NotThymine},   //B <=> V
+                        {(char) Nucleotide.NotThymine, (char) Nucleotide.NotAdenine},
+                        {(char) Nucleotide.Cytosine, (char) Nucleotide.Guanine},        //C <=> G
+                        {(char) Nucleotide.Guanine, (char) Nucleotide.Cytosine},
+                        {(char) Nucleotide.NotGuanine, (char) Nucleotide.NotCytosine},  //D <=> H
+                        {(char) Nucleotide.NotCytosine, (char) Nucleotide.NotGuanine},
+                        {(char) Nucleotide.Keto, (char) Nucleotide.Amino},              //K <=> M
+                        {(char) Nucleotide.Amino, (char) Nucleotide.Keto},
+                        {(char) Nucleotide.Strong, (char) Nucleotide.Strong},           //S <=> S
+                        {(char) Nucleotide.Weak, (char) Nucleotide.Weak},               //W <=> W
+                        {(char) Nucleotide.Unknown, (char) Nucleotide.Unknown},         //N <=> N
+                        {(char) Nucleotide.Gap, (char) Nucleotide.Gap},                 //- <=> -
+                    };
+                }
+                return _nucleotideComplements;
+            }
+        }
     }
 }
