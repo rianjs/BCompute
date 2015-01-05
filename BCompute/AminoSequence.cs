@@ -6,23 +6,19 @@ namespace BCompute
 {
     public class AminoSequence : ISequence
     {
-        public const char StopTranslation = '*';
-        public const char SkipNucleotides = '-';
         public string Sequence { get; private set; }
-        public RnaSequence CodingRna { get; private set; }
         private Dictionary<char, long> _codeCounts;
+        public ISet<string> Tags { get; private set; }
         public IDictionary<char, long> CodeCounts { get { return _codeCounts; } }
 
         internal AminoSequence(RnaSequence codingRna, string normalizedAminos, Dictionary<char, long> acidCounts)
         {
-            CodingRna = codingRna;
             Sequence = normalizedAminos;
             _codeCounts = acidCounts;
         }
 
         internal AminoSequence(RnaSequence rna)
         {
-            CodingRna = rna;
             Sequence = ConvertRnaSequenceToAminoAcidSequence(rna.Sequence);
         }
 
@@ -93,5 +89,9 @@ namespace BCompute
         {
             get { throw new NotImplementedException(); }
         }
+
+        public int GapCount { get; private set; }
+        public int AnyBaseCount { get; private set; }
+
     }
 }
