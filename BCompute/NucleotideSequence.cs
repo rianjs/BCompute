@@ -118,7 +118,7 @@ namespace BCompute
             return nucleotideSequences;
         }
 
-        internal static NucleotideSequence GenerateNucleotideSequence(string nucleotides)
+        public static NucleotideSequence GenerateNucleotideSequence(string nucleotides)
         {
             foreach (var nucleotide in nucleotides)
             {

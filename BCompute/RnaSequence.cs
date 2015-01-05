@@ -12,7 +12,7 @@ namespace BCompute
             get { return Maps.RnaComplements; }
         }
 
-        public override sealed ImmutableHashSet<char> AllowedCodes
+        public override sealed ISet<char> AllowedCodes
         {
             get { return GetAllowedNucleotides; }
         }
@@ -34,12 +34,6 @@ namespace BCompute
         public ulong UracilCount
         {
             get { return CodeCounts['U']; }
-        }
-
-        public AminoSequence GetAminoSequence()
-        {
-            var aminoSequence = AminoSequence.ConvertRnaToAminoSequence(this);
-            return aminoSequence;
         }
     }
 }

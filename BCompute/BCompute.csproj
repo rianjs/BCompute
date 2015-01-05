@@ -63,7 +63,6 @@
   <ItemGroup>
     <Compile Include="AminoSequence.cs" />
     <Compile Include="Genotype.cs" />
-    <Compile Include="IAminoSequence.cs" />
     <Compile Include="INucleotideSequence.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="ISequence.cs" />
@@ -74,7 +73,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recurrence.cs" />
     <Compile Include="RnaSequence.cs" />
-    <Compile Include="SequenceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

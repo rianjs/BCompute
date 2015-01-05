@@ -12,7 +12,7 @@ namespace BCompute
             get { return Maps.DnaComplements; }
         }
 
-        public override sealed ImmutableHashSet<char> AllowedCodes
+        public override sealed ISet<char> AllowedCodes
         {
             get { return GetAllowedNucleotides; }
         }

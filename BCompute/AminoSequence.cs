@@ -70,11 +70,6 @@ namespace BCompute
             return new AminoSequence(rnaSequence);
         }
 
-        public static AminoSequence GetAminoAcidSequenceFromRawAminos(string rawAminoSequence)
-        {
-            //Sanity check this for allowed characters
-        }
-
         private static ImmutableHashSet<char> _allowedSequenceCharacters;
         public static ImmutableHashSet<char> AllowedSequenceCharacters
         {
@@ -91,7 +86,7 @@ namespace BCompute
 
         private static string ConvertNucleotidesToAminos(string nucleotides)
         {
-            
+            return String.Empty;
         }
 
         public ISet<char> AllowedCodes
