@@ -6,6 +6,7 @@ namespace BCompute
     internal sealed class Maps
     {
         public const char StopTranslation = '*';
+        public const char SkipNucleotides = '-';
         private static ImmutableDictionary<char, char> _dnaComplements;
         public static ImmutableDictionary<char, char> DnaComplements
         {
@@ -47,7 +48,6 @@ namespace BCompute
         }
 
         private static ImmutableDictionary<string, char> _codonToAminoAcid;
-
         public static ImmutableDictionary<string, char> CodonToAmino
         {
             get

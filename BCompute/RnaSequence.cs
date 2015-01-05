@@ -35,5 +35,11 @@ namespace BCompute
         {
             get { return NucleotideCounts['U']; }
         }
+
+        public AminoSequence GetAminoSequence()
+        {
+            var aminoSequence = AminoSequence.ConvertRnaToAminoSequence(this);
+            return aminoSequence;
+        }
     }
 }
