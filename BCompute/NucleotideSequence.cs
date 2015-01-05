@@ -7,8 +7,8 @@ namespace BCompute
 {
     public abstract class NucleotideSequence : INucleotideSequence
     {
-        public string BasePairs { get; protected set; }
-        public abstract ImmutableHashSet<char> AllowedNucleotides { get; }
+        public string Sequence { get; protected set; }
+        public abstract ISet<char> AllowedCodes { get; }
         protected abstract ImmutableDictionary<char, char> BasePairComplements { get; }
 
         internal NucleotideSequence(string rawBasePairs)
@@ -24,30 +24,30 @@ namespace BCompute
                 throw new ArgumentException("Empty nucleotide sequence!");
             }
 
-            _nucleotideCounts = new Dictionary<char, ulong>(AllowedNucleotides.Count);
-            foreach (var basePair in AllowedNucleotides)
+            _codeCounts = new Dictionary<char, ulong>(AllowedCodes.Count);
+            foreach (var basePair in AllowedCodes)
             {
-                _nucleotideCounts.Add(basePair, 0);
+                _codeCounts.Add(basePair, 0);
             }
 
             foreach (var basePair in incomingBasePairs)
             {
                 var upper = Char.ToUpperInvariant(basePair);
-                if (!AllowedNucleotides.Contains(basePair))
+                if (!AllowedCodes.Contains(basePair))
                 {
                     throw new ArgumentException(basePair + " is not a recognized nucleotide");
                 }
-                _nucleotideCounts[upper]++;
+                _codeCounts[upper]++;
             }
-            BasePairs = incomingBasePairs;
+            Sequence = incomingBasePairs;
         }
 
-        private Dictionary<char, ulong> _nucleotideCounts;
-        public IDictionary<char, ulong> NucleotideCounts
+        private Dictionary<char, ulong> _codeCounts;
+        public IDictionary<char, ulong> CodeCounts
         {
             get
             {
-                return _nucleotideCounts;
+                return _codeCounts;
             }
         }
 
@@ -86,10 +86,10 @@ namespace BCompute
 
         protected void GenerateComplement()
         {
-            var complement = new char[BasePairs.Length];
-            for (var i = 0; i < BasePairs.Length; i++)
+            var complement = new char[Sequence.Length];
+            for (var i = 0; i < Sequence.Length; i++)
             {
-                complement[i] = BasePairComplements[BasePairs[i]];
+                complement[i] = BasePairComplements[Sequence[i]];
             }
 
             _complement = new string(complement);
@@ -102,12 +102,12 @@ namespace BCompute
                 throw new ArgumentException(String.Format("Sequence types do not match. ({0} vs {1})", a.GetType(), b.GetType()));
             }
 
-            if (a.BasePairs.Length != b.BasePairs.Length)
+            if (a.Sequence.Length != b.Sequence.Length)
             {
                 throw new ArgumentException("Strands are of unequal length!");
             }
 
-            return a.BasePairs.Where((t, i) => t != b.BasePairs[i]).Count();
+            return a.Sequence.Where((t, i) => t != b.Sequence[i]).Count();
         }
 
         public static IEnumerable<NucleotideSequence> GenerateNucleotideSequences(IEnumerable<string> rawSequences)
@@ -118,7 +118,7 @@ namespace BCompute
             return nucleotideSequences;
         }
 
-        public static NucleotideSequence GenerateNucleotideSequence(string nucleotides)
+        internal static NucleotideSequence GenerateNucleotideSequence(string nucleotides)
         {
             foreach (var nucleotide in nucleotides)
             {
@@ -137,24 +137,24 @@ namespace BCompute
         {
             get
             {
-                var gcCount = NucleotideCounts['G'] + NucleotideCounts['C'];
-                return (double) gcCount / BasePairs.Length;
+                var gcCount = CodeCounts['G'] + CodeCounts['C'];
+                return (double) gcCount / Sequence.Length;
             }
         }
 
         public ulong GuanineCount
         {
-            get { return NucleotideCounts['G']; }
+            get { return CodeCounts['G']; }
         }
 
         public ulong CytosineCount
         {
-            get { return NucleotideCounts['C']; }
+            get { return CodeCounts['C']; }
         }
 
         public ulong AdenineCount
         {
-            get { return NucleotideCounts['A']; }
+            get { return CodeCounts['A']; }
         }
 
         /// <summary>
@@ -169,18 +169,18 @@ namespace BCompute
                 return false;
             }
 
-            var typedComparison = (INucleotideSequence) obj;
+            var typedComparison = (ISequence) obj;
             if (GetType() != typedComparison.GetType())
             {
                 return false;
             }
 
-            if (BasePairs.Length != typedComparison.BasePairs.Length)
+            if (Sequence.Length != typedComparison.Sequence.Length)
             {
                 return false;
             }
 
-            return String.Equals(BasePairs, typedComparison.BasePairs, StringComparison.OrdinalIgnoreCase);
+            return String.Equals(Sequence, typedComparison.Sequence, StringComparison.OrdinalIgnoreCase);
         }
     }
 }
