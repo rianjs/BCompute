@@ -19,14 +19,33 @@ namespace BCompute
 
         public static RnaSequence ConvertToRna(DnaSequence dnaSequence)
         {
-            var convertedNucleotides = dnaSequence.Sequence.Replace("T", "U");
-            return new RnaSequence(convertedNucleotides);
+            var newSequence = new char[dnaSequence.Sequence.Length];
+
+            for(var i = 0; i < dnaSequence.Sequence.Length; i++)
+            {
+                char newLetter;
+                switch (dnaSequence.Sequence[i])
+                {
+                    case 't':
+                        newLetter = 'u';
+                        break;
+                    case 'T':
+                        newLetter = 'U';
+                        break;
+                    default:
+                        newLetter = dnaSequence.Sequence[i];
+                        break;
+                }
+                newSequence[i] = newLetter;
+            }
+            return new RnaSequence(new string(newSequence));
         }
 
         public static ImmutableHashSet<char> GetAllowedNucleotides
         {
             get
             {
+                //ToDo: Fix this
                 return new HashSet<char> { 'A', 'T', 'G', 'C' }.ToImmutableHashSet();
             }
         }

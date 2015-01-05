@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AminoSequence.cs" />
-    <Compile Include="Nucleotide.cs" />
+    <Compile Include="AllowableCodes.cs" />
     <Compile Include="Genotype.cs" />
     <Compile Include="INucleotideSequence.cs" />
     <Compile Include="Population.cs" />
