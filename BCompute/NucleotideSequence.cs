@@ -8,7 +8,6 @@ namespace BCompute
     public abstract class NucleotideSequence : INucleotideSequence
     {
         public string Sequence { get; protected set; }
-        public abstract ISet<char> AllowedCodes { get; }
         protected abstract ImmutableDictionary<char, char> BasePairComplements { get; }
 
         internal NucleotideSequence(string rawBasePairs)
@@ -212,5 +211,10 @@ namespace BCompute
                 return _nucleotideComplements;
             }
         }
+
+        public int GapCount { get; private set; }
+        public int AnyBaseCount { get; private set; }
+        public abstract ISet<char> AllowedCodes { get; }
+        public ISet<string> Tags { get; private set; }
     }
 }
