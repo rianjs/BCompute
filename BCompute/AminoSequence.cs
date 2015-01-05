@@ -10,10 +10,10 @@ namespace BCompute
         public const char SkipNucleotides = '-';
         public string Sequence { get; private set; }
         public RnaSequence CodingRna { get; private set; }
-        private Dictionary<char, ulong> _codeCounts;
-        public IDictionary<char, ulong> CodeCounts { get { return _codeCounts; } }
+        private Dictionary<char, long> _codeCounts;
+        public IDictionary<char, long> CodeCounts { get { return _codeCounts; } }
 
-        internal AminoSequence(RnaSequence codingRna, string normalizedAminos, Dictionary<char, ulong> acidCounts)
+        internal AminoSequence(RnaSequence codingRna, string normalizedAminos, Dictionary<char, long> acidCounts)
         {
             CodingRna = codingRna;
             Sequence = normalizedAminos;
@@ -29,7 +29,7 @@ namespace BCompute
         private string ConvertRnaSequenceToAminoAcidSequence(string nucleotides)
         {
             var list = new List<char>(nucleotides.Length / 2);
-            _codeCounts = new Dictionary<char, ulong>(Maps.CodonToAmino.Count + 2);
+            _codeCounts = new Dictionary<char, long>(Maps.CodonToAmino.Count + 2);
 
             var index = 0;
             while (index < nucleotides.Length)

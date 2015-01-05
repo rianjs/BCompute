@@ -31,7 +31,7 @@ namespace BCompute
             }
         }
 
-        public ulong UracilCount
+        public long UracilCount
         {
             get { return CodeCounts['U']; }
         }

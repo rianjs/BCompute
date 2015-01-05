@@ -6,7 +6,7 @@ namespace BCompute
     {
         string Sequence { get; }
         ISet<char> AllowedCodes { get; }
-        IDictionary<char, ulong> CodeCounts { get; }
+        IDictionary<char, long> CodeCounts { get; }
 
         /// <summary>
         /// Equality semantics are VALUE-oriented, checking whether the types and nucleotide acid chains are the same.
