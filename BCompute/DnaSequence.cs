@@ -12,14 +12,14 @@ namespace BCompute
             get { return Maps.DnaComplements; }
         }
 
-        public override sealed ImmutableHashSet<char> AllowedNucleotides
+        public override sealed ImmutableHashSet<char> AllowedCodes
         {
             get { return GetAllowedNucleotides; }
         }
 
         public static RnaSequence ConvertToRna(DnaSequence dnaSequence)
         {
-            var convertedNucleotides = dnaSequence.BasePairs.Replace("T", "U");
+            var convertedNucleotides = dnaSequence.Sequence.Replace("T", "U");
             return new RnaSequence(convertedNucleotides);
         }
 
@@ -33,7 +33,7 @@ namespace BCompute
 
         public ulong ThymineCount
         {
-            get { return NucleotideCounts['T']; }
+            get { return CodeCounts['T']; }
         }
     }
 }

@@ -12,14 +12,14 @@ namespace BCompute
             get { return Maps.RnaComplements; }
         }
 
-        public override sealed ImmutableHashSet<char> AllowedNucleotides
+        public override sealed ImmutableHashSet<char> AllowedCodes
         {
             get { return GetAllowedNucleotides; }
         }
 
         public static DnaSequence ConvertToDna(RnaSequence rnaSequence)
         {
-            var convertedNucleotides = rnaSequence.BasePairs.Replace("U", "T");
+            var convertedNucleotides = rnaSequence.Sequence.Replace("U", "T");
             return new DnaSequence(convertedNucleotides);
         }
 
@@ -33,7 +33,7 @@ namespace BCompute
 
         public ulong UracilCount
         {
-            get { return NucleotideCounts['U']; }
+            get { return CodeCounts['U']; }
         }
 
         public AminoSequence GetAminoSequence()

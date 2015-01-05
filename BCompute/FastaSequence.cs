@@ -7,13 +7,13 @@ namespace BCompute
     public class FastaSequence
     {
         public readonly string Label;
-        public readonly NucleotideSequence Sequence;
+        public readonly NucleotideSequence NucleotideSequence;
         public IEnumerable<string> Metadata { get; private set; }
 
-        public FastaSequence(string label, NucleotideSequence sequence, IEnumerable<string> metadata)
+        public FastaSequence(string label, NucleotideSequence nucleotideSequence, IEnumerable<string> metadata)
         {
             Label = label;
-            Sequence = sequence;
+            NucleotideSequence = nucleotideSequence;
         }
 
         /// <summary>
@@ -95,12 +95,12 @@ namespace BCompute
                 }
 
                 var typedSequence = (FastaSequence) fastaSequence;
-                if (Sequence.GetType() != typedSequence.Sequence.GetType())
+                if (NucleotideSequence.GetType() != typedSequence.NucleotideSequence.GetType())
                 {
                     return false;
                 }
 
-                if (!Sequence.Equals(typedSequence.Sequence))
+                if (!NucleotideSequence.Equals(typedSequence.NucleotideSequence))
                 {
                     return false;
                 }
