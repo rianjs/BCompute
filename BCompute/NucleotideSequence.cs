@@ -24,7 +24,7 @@ namespace BCompute
                 throw new ArgumentException("Empty nucleotide sequence!");
             }
 
-            _codeCounts = new Dictionary<char, ulong>(AllowedCodes.Count);
+            _codeCounts = new Dictionary<char, long>(AllowedCodes.Count);
             foreach (var basePair in AllowedCodes)
             {
                 _codeCounts.Add(basePair, 0);
@@ -42,8 +42,8 @@ namespace BCompute
             Sequence = incomingBasePairs;
         }
 
-        private Dictionary<char, ulong> _codeCounts;
-        public IDictionary<char, ulong> CodeCounts
+        private Dictionary<char, long> _codeCounts;
+        public IDictionary<char, long> CodeCounts
         {
             get
             {
@@ -142,17 +142,17 @@ namespace BCompute
             }
         }
 
-        public ulong GuanineCount
+        public long GuanineCount
         {
             get { return CodeCounts['G']; }
         }
 
-        public ulong CytosineCount
+        public long CytosineCount
         {
             get { return CodeCounts['C']; }
         }
 
-        public ulong AdenineCount
+        public long AdenineCount
         {
             get { return CodeCounts['A']; }
         }

@@ -6,17 +6,17 @@ namespace BCompute
 {
     public class Population
     {
-        public uint HomozygousCount { get; private set; }
-        public uint HeterozygousCount { get; private set; }
-        public uint RecessiveCount { get; private set; }
-        public Population(uint homozygousCount, uint heterozygousCount, uint recessiveCount)
+        public int HomozygousCount { get; private set; }
+        public int HeterozygousCount { get; private set; }
+        public int RecessiveCount { get; private set; }
+        public Population(int homozygousCount, int heterozygousCount, int recessiveCount)
         {
             HomozygousCount = homozygousCount;
             HeterozygousCount = heterozygousCount;
             RecessiveCount = recessiveCount;
         }
 
-        public uint TotalPopulation
+        public int TotalPopulation
         {
             get { return HomozygousCount + HeterozygousCount + RecessiveCount; }
         }

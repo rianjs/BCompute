@@ -31,7 +31,7 @@ namespace BCompute
             }
         }
 
-        public ulong ThymineCount
+        public long ThymineCount
         {
             get { return CodeCounts['T']; }
         }
