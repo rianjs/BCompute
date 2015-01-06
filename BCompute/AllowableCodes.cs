@@ -36,16 +36,16 @@
     public enum StrictRna
     {
         Adenine = 'A',
-        Cytosine = 'C',
-        Thymine = 'T',
         Uracil = 'U',
+        Cytosine = 'C',
+        Guanine = 'G',
     }
 
     public enum StrictDna
     {
         Adenine = 'A',
-        Cytosine = 'C',
         Thymine = 'T',
+        Cytosine = 'C',
         Guanine = 'G',
     }
 

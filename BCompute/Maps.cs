@@ -16,10 +16,10 @@ namespace BCompute
                 {
                     var dnaComplements = new Dictionary<char, char>
                     {
-                        {'A', 'T'},
-                        {'G', 'C'},
-                        {'T', 'A'},
-                        {'C', 'G'}
+                        {(char)StrictDna.Adenine, (char)StrictDna.Thymine},
+                        {(char)StrictDna.Guanine, (char)StrictDna.Cytosine},
+                        {(char)StrictDna.Thymine, (char)StrictDna.Adenine},
+                        {(char)StrictDna.Cytosine, (char)StrictDna.Guanine}
                     };
                     _dnaComplements = dnaComplements.ToImmutableDictionary();
                 }
@@ -36,10 +36,10 @@ namespace BCompute
                 {
                     var rnaComplements = new Dictionary<char, char>
                     {
-                        {'A', 'U'},
-                        {'G', 'C'},
-                        {'U', 'A'},
-                        {'C', 'G'}
+                        {(char)StrictRna.Adenine, (char)StrictRna.Uracil},
+                        {(char)StrictRna.Guanine, (char)StrictRna.Cytosine},
+                        {(char)StrictRna.Uracil, (char)StrictRna.Adenine},
+                        {(char)StrictRna.Cytosine, (char)StrictRna.Guanine}
                     };
                     _rnaComplements = rnaComplements.ToImmutableDictionary();
                 }
