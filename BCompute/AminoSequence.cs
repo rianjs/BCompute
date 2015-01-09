@@ -90,7 +90,7 @@ namespace BCompute
         private string ConvertRnaSequenceToAminoAcidSequence(string nucleotides)
         {
             var list = new List<char>(nucleotides.Length / 2);
-            _codeCounts = new Dictionary<char, long>(Maps.CodonToAmino.Count + 2);
+            _codeCounts = new Dictionary<char, long>(Maps.TripletToProtein.Count + 2);
 
             var index = 0;
             while (index < nucleotides.Length)
@@ -112,7 +112,7 @@ namespace BCompute
                         break;
                     default:
                         var maybeCodon = String.Format("{0}{1}{2}", normalizedBase, nucleotides[++index], nucleotides[++index]).ToUpperInvariant();
-                        if (!Maps.CodonToAmino.ContainsKey(maybeCodon))
+                        if (!Maps.TripletToProtein.ContainsKey(maybeCodon))
                         {
                             throw new ArgumentException(String.Format("{0} is not a valid codon", maybeCodon));
                         }
