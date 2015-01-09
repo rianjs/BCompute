@@ -61,7 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AminoSequence.cs" />
     <Compile Include="AllowableCodes.cs" />
     <Compile Include="Data\GeneticCodes\AlternativeFlatwormMitochondrial.cs" />
     <Compile Include="Data\GeneticCodes\AlternativeYeastNuclear.cs" />
@@ -86,9 +85,7 @@
     <Compile Include="Interfaces\IAlphabet.cs" />
     <Compile Include="Interfaces\INucleotideSequence.cs" />
     <Compile Include="Interfaces\ISequence.cs" />
-    <Compile Include="INucleotideSequence.cs" />
     <Compile Include="Population.cs" />
-    <Compile Include="ISequence.cs" />
     <Compile Include="NucleotideSequence.cs" />
     <Compile Include="DnaSequence.cs" />
     <Compile Include="FastaSequence.cs" />
