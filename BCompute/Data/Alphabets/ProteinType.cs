@@ -1,15 +1,9 @@
 ﻿namespace BCompute.Data.Alphabets
 {
-    public enum ProteinAlphabet
-    {
-        StandardProtein,
-        ExtendedProtein,
-    }
-
     /// <summary>
-    /// Protein names and symbols adapted from http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
+    /// ProteinType names and symbols adapted from http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
     /// </summary>
-    public enum Protein
+    public enum ProteinType
     {
         Alanine = 'A',
         AspartateOrAsparagine = 'B',
@@ -20,10 +14,12 @@
         Glycine = 'G',
         Histidine = 'H',
         Isoleucine = 'I',
+        LeucineOrIsoleucine = 'J',
         Lysine = 'K',
         Leucine = 'L',
         Methionine = 'M',
         Asparagine = 'N',
+        Pyrrolysine = 'O',
         Proline = 'P',
         Glutamine = 'Q',
         Arginine = 'R',
