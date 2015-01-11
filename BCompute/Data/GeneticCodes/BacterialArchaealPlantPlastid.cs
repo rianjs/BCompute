@@ -7,7 +7,7 @@ namespace BCompute.Data.GeneticCodes
     {
         public const int NcbiTranslationTable = (int)GeneticCode.BacterialArchaealPlantPlastid;
 
-        public static IDictionary<string, Protein> TranscriptionTable
+        public static IDictionary<string, ProteinType> TranscriptionTable
         {
             get { return StandardGeneticCode.TranscriptionTable; }
         } 
