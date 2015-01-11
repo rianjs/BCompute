@@ -63,7 +63,8 @@
   <ItemGroup>
     <Compile Include="AllowableCodes.cs" />
     <Compile Include="Data\Alphabets\AlphabetType.cs" />
-    <Compile Include="Data\Alphabets\ProteinAlphabet.cs" />
+    <Compile Include="Data\Alphabets\ProteinAlphabetType.cs" />
+    <Compile Include="Data\Alphabets\ProteinType.cs" />
     <Compile Include="Data\Alphabets\StandardProtein.cs" />
     <Compile Include="Data\GeneticCodes\AlternativeFlatwormMitochondrial.cs" />
     <Compile Include="Data\GeneticCodes\AlternativeYeastNuclear.cs" />
@@ -87,7 +88,7 @@
     <Compile Include="Genotype.cs" />
     <Compile Include="Interfaces\INucleotideAlphabet.cs" />
     <Compile Include="Interfaces\INucleotideSequence.cs" />
-    <Compile Include="Interfaces\IProteinAlphabet.cs" />
+    <Compile Include="Interfaces\IProteinSequence.cs" />
     <Compile Include="Interfaces\ISequence.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="NucleotideSequence.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="FastaSequence.cs" />
     <Compile Include="Maps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProteinSequence.cs" />
     <Compile Include="Recurrence.cs" />
     <Compile Include="RnaSequence.cs" />
   </ItemGroup>
