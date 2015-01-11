@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using BCompute.Data.GeneticCodes;
+using BCompute.Data.Alphabets;
+using BCompute.Data.GeneticCode;
 
 namespace BCompute.Interfaces
 {
@@ -28,7 +29,7 @@ namespace BCompute.Interfaces
         /// <summary>
         /// Mapping of codon triplets to proteins. (Works for DNA, too.)
         /// </summary>
-        IDictionary<Nucleotide, Nucleotide> TranslationTable { get; }
+        IDictionary<string, AminoAcid> TranslationTable { get; }
 
         /// <summary>
         /// Contains the set of symbols used to calculate the GC content of a nucleotide sequence

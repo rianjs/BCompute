@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using BCompute.Data.Alphabets;
-using BCompute.Data.GeneticCodes;
+using BCompute.Data.GeneticCode;
 
 namespace BCompute.Interfaces
 {
@@ -9,7 +9,7 @@ namespace BCompute.Interfaces
         /// <summary>
         /// Provides the set of allowed symbols
         /// </summary>
-        ISet<ProteinType> AllowedSymbols { get; }
+        ISet<AminoAcid> AllowedSymbols { get; }
 
         /// <summary>
         /// The NCBI genetic code triplet mappings, which governs which transcription table is used for transcribing and back transcribing RNA and DNA
@@ -19,7 +19,7 @@ namespace BCompute.Interfaces
         /// <summary>
         /// Mapping of proteins to all possible triplets as specified by the GeneticCode
         /// </summary>
-        IDictionary<ProteinType, IEnumerable<string>> ReverseTranscriptionTable { get; }
+        IDictionary<AminoAcid, IEnumerable<string>> ReverseTranscriptionTable { get; }
 
         /// <summary>
         /// Returns a protein sequence from the specified 

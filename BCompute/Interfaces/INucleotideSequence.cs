@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BCompute.Data.GeneticCodes;
+using BCompute.Data.GeneticCode;
 
 namespace BCompute
 {

@@ -1,89 +1,89 @@
 ﻿using System.Collections.Generic;
 using BCompute.Data.Alphabets;
 
-namespace BCompute.Data.GeneticCodes
+namespace BCompute.Data.GeneticCode
 {
     public static class CandidateDivisionSr1AndGracilibacteria
     {
         public const int NcbiTranslationTable = (int)GeneticCode.CandidateDivisionSr1AndGracilibacteria;
 
-        private static Dictionary<string, ProteinType> _transcriptionTable;
-        public static IDictionary<string, ProteinType> TranscriptionTable
+        private static Dictionary<string, AminoAcid> _translationTable;
+        public static IDictionary<string, AminoAcid> RnaTranslationTable
         {
             get
             {
-                if (_transcriptionTable == null)
+                if (_translationTable == null)
                 {
-                    var codons = new Dictionary<string, ProteinType>
+                    var codons = new Dictionary<string, AminoAcid>
                     {
-                        {"UUU", ProteinType.Phenylalanine},
-                        {"CUU", ProteinType.Leucine},
-                        {"AUU", ProteinType.Isoleucine},
-                        {"GUU", ProteinType.Valine},
-                        {"UUC", ProteinType.Phenylalanine},
-                        {"CUC", ProteinType.Leucine},
-                        {"AUC", ProteinType.Isoleucine},
-                        {"GUC", ProteinType.Valine},
-                        {"UUA", ProteinType.Leucine},
-                        {"CUA", ProteinType.Leucine},
-                        {"AUA", ProteinType.Isoleucine},
-                        {"GUA", ProteinType.Valine},
-                        {"UUG", ProteinType.Leucine},
-                        {"CUG", ProteinType.Leucine},
-                        {"AUG", ProteinType.Methionine},
-                        {"GUG", ProteinType.Valine},
-                        {"UCU", ProteinType.Serine},
-                        {"CCU", ProteinType.Proline},
-                        {"ACU", ProteinType.Threonine},
-                        {"GCU", ProteinType.Alanine},
-                        {"UCC", ProteinType.Serine},
-                        {"CCC", ProteinType.Proline},
-                        {"ACC", ProteinType.Threonine},
-                        {"GCC", ProteinType.Alanine},
-                        {"UCA", ProteinType.Serine},
-                        {"CCA", ProteinType.Proline},
-                        {"ACA", ProteinType.Threonine},
-                        {"GCA", ProteinType.Alanine},
-                        {"UCG", ProteinType.Serine},
-                        {"CCG", ProteinType.Proline},
-                        {"ACG", ProteinType.Threonine},
-                        {"GCG", ProteinType.Alanine},
-                        {"UAU", ProteinType.Tyrosine},
-                        {"CAU", ProteinType.Histidine},
-                        {"AAU", ProteinType.Asparagine},
-                        {"GAU", ProteinType.Aspartate},
-                        {"UAC", ProteinType.Tyrosine},
-                        {"CAC", ProteinType.Histidine},
-                        {"AAC", ProteinType.Asparagine},
-                        {"GAC", ProteinType.Aspartate},
-                        {"UAA", ProteinType.Stop},
-                        {"CAA", ProteinType.Glutamine},
-                        {"AAA", ProteinType.Lysine},
-                        {"GAA", ProteinType.Glutamate},
-                        {"UAG", ProteinType.Stop},
-                        {"CAG", ProteinType.Glutamine},
-                        {"AAG", ProteinType.Lysine},
-                        {"GAG", ProteinType.Glutamate},
-                        {"UGU", ProteinType.Cysteine},
-                        {"CGU", ProteinType.Arginine},
-                        {"AGU", ProteinType.Serine},
-                        {"GGU", ProteinType.Glycine},
-                        {"UGC", ProteinType.Cysteine},
-                        {"CGC", ProteinType.Arginine},
-                        {"AGC", ProteinType.Serine},
-                        {"GGC", ProteinType.Glycine},
-                        {"UGA", ProteinType.Glycine},
-                        {"CGA", ProteinType.Arginine},
-                        {"AGA", ProteinType.Arginine},
-                        {"GGA", ProteinType.Glycine},
-                        {"UGG", ProteinType.Tryptophan},
-                        {"CGG", ProteinType.Arginine},
-                        {"AGG", ProteinType.Arginine},
-                        {"GGG", ProteinType.Glycine},
+                        {"UUU", AminoAcid.Phenylalanine},
+                        {"CUU", AminoAcid.Leucine},
+                        {"AUU", AminoAcid.Isoleucine},
+                        {"GUU", AminoAcid.Valine},
+                        {"UUC", AminoAcid.Phenylalanine},
+                        {"CUC", AminoAcid.Leucine},
+                        {"AUC", AminoAcid.Isoleucine},
+                        {"GUC", AminoAcid.Valine},
+                        {"UUA", AminoAcid.Leucine},
+                        {"CUA", AminoAcid.Leucine},
+                        {"AUA", AminoAcid.Isoleucine},
+                        {"GUA", AminoAcid.Valine},
+                        {"UUG", AminoAcid.Leucine},
+                        {"CUG", AminoAcid.Leucine},
+                        {"AUG", AminoAcid.Methionine},
+                        {"GUG", AminoAcid.Valine},
+                        {"UCU", AminoAcid.Serine},
+                        {"CCU", AminoAcid.Proline},
+                        {"ACU", AminoAcid.Threonine},
+                        {"GCU", AminoAcid.Alanine},
+                        {"UCC", AminoAcid.Serine},
+                        {"CCC", AminoAcid.Proline},
+                        {"ACC", AminoAcid.Threonine},
+                        {"GCC", AminoAcid.Alanine},
+                        {"UCA", AminoAcid.Serine},
+                        {"CCA", AminoAcid.Proline},
+                        {"ACA", AminoAcid.Threonine},
+                        {"GCA", AminoAcid.Alanine},
+                        {"UCG", AminoAcid.Serine},
+                        {"CCG", AminoAcid.Proline},
+                        {"ACG", AminoAcid.Threonine},
+                        {"GCG", AminoAcid.Alanine},
+                        {"UAU", AminoAcid.Tyrosine},
+                        {"CAU", AminoAcid.Histidine},
+                        {"AAU", AminoAcid.Asparagine},
+                        {"GAU", AminoAcid.Aspartate},
+                        {"UAC", AminoAcid.Tyrosine},
+                        {"CAC", AminoAcid.Histidine},
+                        {"AAC", AminoAcid.Asparagine},
+                        {"GAC", AminoAcid.Aspartate},
+                        {"UAA", AminoAcid.Stop},
+                        {"CAA", AminoAcid.Glutamine},
+                        {"AAA", AminoAcid.Lysine},
+                        {"GAA", AminoAcid.Glutamate},
+                        {"UAG", AminoAcid.Stop},
+                        {"CAG", AminoAcid.Glutamine},
+                        {"AAG", AminoAcid.Lysine},
+                        {"GAG", AminoAcid.Glutamate},
+                        {"UGU", AminoAcid.Cysteine},
+                        {"CGU", AminoAcid.Arginine},
+                        {"AGU", AminoAcid.Serine},
+                        {"GGU", AminoAcid.Glycine},
+                        {"UGC", AminoAcid.Cysteine},
+                        {"CGC", AminoAcid.Arginine},
+                        {"AGC", AminoAcid.Serine},
+                        {"GGC", AminoAcid.Glycine},
+                        {"UGA", AminoAcid.Glycine},
+                        {"CGA", AminoAcid.Arginine},
+                        {"AGA", AminoAcid.Arginine},
+                        {"GGA", AminoAcid.Glycine},
+                        {"UGG", AminoAcid.Tryptophan},
+                        {"CGG", AminoAcid.Arginine},
+                        {"AGG", AminoAcid.Arginine},
+                        {"GGG", AminoAcid.Glycine},
                     };
-                    _transcriptionTable = codons;
+                    _translationTable = codons;
                 }
-                return _transcriptionTable;
+                return _translationTable;
             }
         }
 
