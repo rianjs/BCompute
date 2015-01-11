@@ -6,7 +6,7 @@ namespace BCompute.Interfaces
     interface INucleotideAlphabet
     {
         /// <summary>
-        /// Provides the set of allowed symbols
+        /// The set of symbols that are allowed in the sequence's alphabet
         /// </summary>
         ISet<Nucleotide> AllowedSymbols { get; }
 
