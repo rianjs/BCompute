@@ -83,6 +83,7 @@
     <Compile Include="Data\GeneticCodes\YeastMitochondrialCode.cs" />
     <Compile Include="Genotype.cs" />
     <Compile Include="Interfaces\IAlphabet.cs" />
+    <Compile Include="Interfaces\INucleotideAlphabet.cs" />
     <Compile Include="Interfaces\INucleotideSequence.cs" />
     <Compile Include="Interfaces\ISequence.cs" />
     <Compile Include="Population.cs" />
