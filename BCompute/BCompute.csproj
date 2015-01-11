@@ -62,6 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AllowableCodes.cs" />
+    <Compile Include="Data\Alphabets\AlphabetType.cs" />
+    <Compile Include="Data\Alphabets\ProteinAlphabet.cs" />
+    <Compile Include="Data\Alphabets\StandardProtein.cs" />
     <Compile Include="Data\GeneticCodes\AlternativeFlatwormMitochondrial.cs" />
     <Compile Include="Data\GeneticCodes\AlternativeYeastNuclear.cs" />
     <Compile Include="Data\GeneticCodes\AscidianMitochondrial.cs" />
@@ -82,9 +85,9 @@
     <Compile Include="Data\GeneticCodes\VertebrateMitochondrialCode.cs" />
     <Compile Include="Data\GeneticCodes\YeastMitochondrialCode.cs" />
     <Compile Include="Genotype.cs" />
-    <Compile Include="Interfaces\IAlphabet.cs" />
     <Compile Include="Interfaces\INucleotideAlphabet.cs" />
     <Compile Include="Interfaces\INucleotideSequence.cs" />
+    <Compile Include="Interfaces\IProteinAlphabet.cs" />
     <Compile Include="Interfaces\ISequence.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="NucleotideSequence.cs" />
@@ -98,9 +101,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\Alphabets\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
