@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="AllowableCodes.cs" />
     <Compile Include="Data\Alphabets\AlphabetType.cs" />
+    <Compile Include="Data\Alphabets\NucleotideAlphabet.cs" />
+    <Compile Include="Data\Alphabets\NucleotideAlphabetDataProvider.cs" />
     <Compile Include="Data\Alphabets\ProteinAlphabetType.cs" />
     <Compile Include="Data\Alphabets\ProteinType.cs" />
     <Compile Include="Data\Alphabets\StandardProtein.cs" />
