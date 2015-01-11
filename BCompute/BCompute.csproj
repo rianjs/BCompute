@@ -67,7 +67,6 @@
     <Compile Include="Data\Alphabets\NucleotideAlphabetDataProvider.cs" />
     <Compile Include="Data\Alphabets\ProteinAlphabetType.cs" />
     <Compile Include="Data\Alphabets\AminoAcid.cs" />
-    <Compile Include="Data\Alphabets\StandardProtein.cs" />
     <Compile Include="Data\GeneticCodes\AlternativeFlatwormMitochondrial.cs" />
     <Compile Include="Data\GeneticCodes\AlternativeYeastNuclear.cs" />
     <Compile Include="Data\GeneticCodes\AscidianMitochondrial.cs" />
