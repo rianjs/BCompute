@@ -1,19 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
+using BCompute.Data.Alphabets;
+using BCompute.Data.GeneticCode;
 
 namespace BCompute
 {
     public abstract class NucleotideSequence : INucleotideSequence
     {
         public string Sequence { get; protected set; }
-        protected abstract ImmutableDictionary<char, char> BasePairComplements { get; }
+        private readonly NucleotideAlphabet _internalAlphabet;
 
-        internal NucleotideSequence(string rawBasePairs)
+        public abstract string AllowedSymbols { get; }
+        public abstract GeneticCode GeneticCode { get; }
+
+        public virtual IDictionary<string, AminoAcid> TranslationTable
         {
-            rawBasePairs = rawBasePairs.Trim();
-            InitializeBasePairs(rawBasePairs);
+            get { return _internalAlphabet.TranslationTable; }
+        }
+
+        public virtual IDictionary<Nucleotide, Nucleotide> ComplementTable
+        {
+            get { return _internalAlphabet.ComplementTable; }
+        }
+
+        public virtual IDictionary<Nucleotide, Nucleotide> TranscriptionTable
+        {
+            get { return _internalAlphabet.TranscriptionTable; }
+        }
+
+        public virtual INucleotideSequence Transcribe()
+        {
+            //if this is a DNA sequence, we should return an RMA sequence
+
+            //if this is an RNA sequence, we should return a DNA sequence
+        }
+
+        public abstract long NucleotideCount(Nucleotide nucleotide);
+        public abstract string RawSequence { get; }
+
+        public virtual double GcContent
+        {
+            get { return Math.Round(GcPercentage, 5); }
+        }
+
+        public virtual ISet<Nucleotide> GcContentSymbols
+        {
+            get { return _internalAlphabet.GcContentSymbols; }
+        }
+
+        internal NucleotideSequence(string rawSequence, AlphabetType alphabet, GeneticCode geneticCode)
+        {
+            switch (alphabet)
+            {
+                case AlphabetType.StandardProtein:
+                    throw new ArgumentException(String.Format(NucleotideAlphabetDataProvider.InvalidNucleotideAlphabet, alphabet));
+                case AlphabetType.ExtendedProtein:
+                    throw new ArgumentException(String.Format(NucleotideAlphabetDataProvider.InvalidNucleotideAlphabet, alphabet));
+                default:
+                    _internalAlphabet = new NucleotideAlphabet(alphabet, geneticCode);
+                    break;
+            }
+
+            rawSequence = rawSequence.Trim();
+            InitializeBasePairs(rawSequence);
         }
 
         protected void InitializeBasePairs(string incomingBasePairs)
@@ -56,6 +106,19 @@ namespace BCompute
         }
 
         private string _complement;
+        INucleotideSequence INucleotideSequence.Complement
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        INucleotideSequence INucleotideSequence.ReverseComplement
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public abstract long CalculateHammingDistance(INucleotideSequence nucleotideSequence);
+        public abstract bool Equals(INucleotideSequence nucleotideSequence);
+
         public string Complement
         {
             get
@@ -216,5 +279,21 @@ namespace BCompute
         public int AnyBaseCount { get; private set; }
         public abstract ISet<char> AllowedCodes { get; }
         public ISet<string> Tags { get; private set; }
+
+        internal static INucleotideSequence SafeConstructor(INucleotideSequence safeSequence, AlphabetType alphabet, GeneticCode geneticCode)
+        {
+            //ToDo: implement some kind of safe factory method that skips all the sequence validation steps
+            var type = safeSequence.GetType();
+
+            if (type == typeof (DnaSequence))
+            {
+                DnaSequence.SafeConstructor()
+            }
+
+            switch (type)
+            {
+                case AlphabetType.AmbiguousDna:
+            }
+        }
     }
 }

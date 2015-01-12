@@ -1,21 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using BCompute.Data.Alphabets;
+using BCompute.Data.GeneticCode;
 
 namespace BCompute
 {
     public class DnaSequence : NucleotideSequence
     {
-        public DnaSequence(string rawBasePairs) : base(rawBasePairs) { }
-
-        protected override sealed ImmutableDictionary<char, char> BasePairComplements
-        {
-            get { return Maps.DnaComplements; }
-        }
-
-        public override sealed ISet<char> AllowedCodes
-        {
-            get { return GetAllowedNucleotides; }
-        }
+        public DnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode) : base(rawBasePairs, alphabet, geneticCode) { }
 
         public static RnaSequence ConvertToRna(DnaSequence dnaSequence)
         {

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using BCompute.Data.Alphabets;
 using BCompute.Data.GeneticCode;
 
 namespace BCompute
 {
-    internal interface INucleotideSequence
+    public interface INucleotideSequence
     {
         /// <summary>
         /// The set of symbols that are allowed in the sequence's alphabet
@@ -18,7 +19,7 @@ namespace BCompute
         /// <summary>
         /// Mapping of codon triplets to proteins. (Works for DNA, too.)
         /// </summary>
-        IDictionary<Nucleotide, Nucleotide> TranslationTable { get; }
+        IDictionary<string, AminoAcid> TranslationTable { get; }
 
         /// <summary>
         /// Mapping of nucleotide complements
@@ -56,7 +57,7 @@ namespace BCompute
         /// <summary>
         /// Returns a set of the alphabet symbols that were used to compute the GC content
         /// </summary>
-        ISet<Nucleotide> GcContentNucleotides { get; } 
+        ISet<Nucleotide> GcContentSymbols { get; } 
 
         /// <summary>
         /// Provides the complementary DnaSequence or RnaSequence object
