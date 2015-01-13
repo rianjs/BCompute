@@ -6,9 +6,9 @@ BCompute is a strongly-typed, sanity-checked, performant library for parsing com
 In general, you'll see that the library grows in the same direction as the Rosalind.info problem set, which reflects the generalization work I do as I solve each problem. Unit test coverage for non-trivial library methods should be fairly close to 100%.
 
 ####Guiding principles
-# Favor correctness over performance
-# Favor clarity over brevity
-# Favor platformization over library purity
+1. Favor correctness over performance
+2. Favor clarity over brevity
+3. Favor platformization over library purity
 
 ####Motivation
 BCompute is a fun learning exercise to explore biological computing.
