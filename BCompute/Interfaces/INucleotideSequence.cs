@@ -9,7 +9,7 @@ namespace BCompute
         /// <summary>
         /// The set of symbols that are allowed in the sequence's alphabet
         /// </summary>
-        string AllowedSymbols { get; }
+        ISet<Nucleotide> AllowedSymbols { get; }
 
         /// <summary>
         /// The NCBI genetic code triplet mappings, which governs which transcription table is used for transcribing and back transcribing RNA and DNA
@@ -52,7 +52,7 @@ namespace BCompute
         /// <summary>
         /// Returns the GC content of the sequence to 6 decimal places
         /// </summary>
-        double GcContent { get; }
+        double GcContentPercentage { get; }
 
         /// <summary>
         /// Returns a set of the alphabet symbols that were used to compute the GC content
@@ -62,12 +62,12 @@ namespace BCompute
         /// <summary>
         /// Provides the complementary DnaSequence or RnaSequence object
         /// </summary>
-        INucleotideSequence Complement { get; }
+        NucleotideSequence Complement { get; }
         
         /// <summary>
         /// Provides the reversed complementary DnaSequence or RnaSequence object
         /// </summary>
-        INucleotideSequence ReverseComplement { get; }
+        NucleotideSequence ReverseComplement { get; }
 
         /// <summary>
         /// Returns the Hamming Distance between this nucleotide sequence, and another nucleotide sequence of the same type

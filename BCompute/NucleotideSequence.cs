@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using BCompute.Data.Alphabets;
 using BCompute.Data.GeneticCode;
 
@@ -8,62 +9,183 @@ namespace BCompute
 {
     public abstract class NucleotideSequence : INucleotideSequence
     {
-        public string Sequence { get; protected set; }
-        private readonly NucleotideAlphabet _internalAlphabet;
+        private const double _defaultDoubleValue = -1.00d;
+        private const int _defaultIntValue = -1;
 
-        public abstract string AllowedSymbols { get; }
-        public abstract GeneticCode GeneticCode { get; }
+        public NucleotideAlphabet NucleotideAlphabet { get; protected set; }
+        public AlphabetType ActiveAlphabet { get; protected set; }
+        public GeneticCode GeneticCode { get; protected set; }
+
+        protected NucleotideSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode)
+        {
+            NucleotideAlphabet = new NucleotideAlphabet(alphabet, geneticCode);
+            ActiveAlphabet = alphabet;
+            GeneticCode = geneticCode;
+            Sequence = sequence;        //ToDo: Make sure this has been sanity checked by the subclasses first?
+        }
+
+        protected NucleotideSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts)
+        {
+            NucleotideAlphabet = new NucleotideAlphabet(alphabet, geneticCode);
+            ActiveAlphabet = alphabet;
+            GeneticCode = geneticCode;
+            Sequence = sequence;
+        }
+
+        private HashSet<Nucleotide> _allowedSymbols;
+        public virtual ISet<Nucleotide> AllowedSymbols
+        {
+            get
+            {
+                if (_allowedSymbols == null)
+                {
+                    _allowedSymbols = new HashSet<Nucleotide>(NucleotideAlphabet.AllowedSymbols);
+                }
+                return _allowedSymbols;
+            }
+        }
 
         public virtual IDictionary<string, AminoAcid> TranslationTable
         {
-            get { return _internalAlphabet.TranslationTable; }
-        }
-
-        public virtual IDictionary<Nucleotide, Nucleotide> ComplementTable
-        {
-            get { return _internalAlphabet.ComplementTable; }
-        }
-
-        public virtual IDictionary<Nucleotide, Nucleotide> TranscriptionTable
-        {
-            get { return _internalAlphabet.TranscriptionTable; }
+            get { return NucleotideAlphabet.TranslationTable; }
         }
 
         public virtual INucleotideSequence Transcribe()
         {
+            throw new NotImplementedException();
             //if this is a DNA sequence, we should return an RMA sequence
 
             //if this is an RNA sequence, we should return a DNA sequence
         }
 
-        public abstract long NucleotideCount(Nucleotide nucleotide);
-        public abstract string RawSequence { get; }
-
-        public virtual double GcContent
+        public Dictionary<Nucleotide, long> SymbolCounts { get; protected set; }
+        public virtual long NucleotideCount(Nucleotide nucleotide)
         {
-            get { return Math.Round(GcPercentage, Constants.RoundingPrecision); }
+            if (!_allowedSymbols.Contains(nucleotide))
+            {
+                throw new ArgumentException(String.Format("{0} is not a valid nucleotide for a sequence with a {1} ActiveAlphabet", nucleotide, ActiveAlphabet));
+            }
+            return SymbolCounts[nucleotide];
+        }    
+
+        public string Sequence { get; protected set; }
+
+        private double _gcPercentage = _defaultDoubleValue;
+        public virtual double GcContentPercentage
+        {
+            get
+            {
+                if (_gcPercentage == _defaultDoubleValue)
+                {
+                    _gcPercentage = Math.Round(((double)GcCount / Sequence.Length), Constants.RoundingPrecision);
+                }
+                return _gcPercentage;
+            }
         }
 
         public virtual ISet<Nucleotide> GcContentSymbols
         {
-            get { return _internalAlphabet.GcContentSymbols; }
+            get { return NucleotideAlphabet.GcContentSymbols; }
         }
 
-        internal NucleotideSequence(string rawSequence, AlphabetType alphabet, GeneticCode geneticCode)
+        protected long _hammingDistance = _defaultIntValue;
+        public virtual long CalculateHammingDistance(NucleotideSequence comparisonSequence)
         {
-            switch (alphabet)
+            if (_hammingDistance == _defaultIntValue)
             {
-                case AlphabetType.StandardProtein:
-                    throw new ArgumentException(String.Format(NucleotideAlphabetDataProvider.InvalidNucleotideAlphabet, alphabet));
-                case AlphabetType.ExtendedProtein:
-                    throw new ArgumentException(String.Format(NucleotideAlphabetDataProvider.InvalidNucleotideAlphabet, alphabet));
-                default:
-                    _internalAlphabet = new NucleotideAlphabet(alphabet, geneticCode);
-                    break;
+                _hammingDistance = CalculateHammingDistance(this, comparisonSequence);
+            }
+            return _hammingDistance;
+        }
+
+        public static long CalculateHammingDistance(NucleotideSequence a, NucleotideSequence b)
+        {
+            if (a.GetType() != b.GetType())
+            {
+                throw new ArgumentException(String.Format("Sequence types do not match. ({0} vs {1})", a.GetType(), b.GetType()));
             }
 
-            rawSequence = rawSequence.Trim();
-            InitializeBasePairs(rawSequence);
+            if (a.Sequence.Length != b.Sequence.Length)
+            {
+                throw new ArgumentException("Sequences are of unequal length!");
+            }
+
+            return a.Sequence.Where((t, i) => t != b.Sequence[i]).Count();
+        }
+
+        protected string _rawComplement = String.Empty;
+        NucleotideSequence INucleotideSequence.Complement
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_rawComplement))
+                {
+                    _rawComplement = GetComplementString();
+                }
+
+                if (GetType() == typeof (DnaSequence))
+                {
+                    return DnaSequence.FastDnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, SymbolCounts);
+                }
+                else
+                {
+                    return RnaSequence.FastRnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, SymbolCounts);
+                }
+            }
+        }
+
+        private string GetComplementString()
+        {
+            var newSequence = new StringBuilder(Sequence.Length);
+            foreach (var nucleotide in Sequence)
+            {
+                var typedNucleotide = (Nucleotide)Char.ToUpperInvariant(nucleotide);
+                var complement = ComplementTable[typedNucleotide];
+
+                if (Char.IsLower(nucleotide))
+                {
+                    newSequence.Append(Char.ToLowerInvariant((char)complement));
+                }
+                else
+                {
+                    newSequence.Append((char)ComplementTable[typedNucleotide]);
+                }
+            }
+            return newSequence.ToString();
+        }
+
+        NucleotideSequence INucleotideSequence.ReverseComplement
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_rawComplement))
+                {
+                    _rawComplement = GetComplementString();
+                }
+
+                var complementArray = _rawComplement.ToCharArray();
+                Array.Reverse(complementArray);
+                var reversed = new string(complementArray);
+
+                if (GetType() == typeof(DnaSequence))
+                {
+                    return DnaSequence.FastDnaSequence(reversed, ActiveAlphabet, GeneticCode, SymbolCounts);
+                }
+                else
+                {
+                    return RnaSequence.FastRnaSequence(reversed, ActiveAlphabet, GeneticCode, SymbolCounts);
+                }
+            }
+        }
+
+        public virtual IDictionary<Nucleotide, Nucleotide> ComplementTable
+        {
+            get { return NucleotideAlphabet.ComplementTable; }
+        }
+
+        public virtual IDictionary<Nucleotide, Nucleotide> TranscriptionTable
+        {
+            get { return NucleotideAlphabet.TranscriptionTable; }
         }
 
         protected void InitializeBasePairs(string incomingBasePairs)
@@ -73,10 +195,10 @@ namespace BCompute
                 throw new ArgumentException("Empty nucleotide sequence!");
             }
 
-            _codeCounts = new Dictionary<char, long>(AllowedCodes.Count);
+            SymbolCounts = new Dictionary<char, long>(AllowedCodes.Count);
             foreach (var basePair in AllowedCodes)
             {
-                _codeCounts.Add(basePair, 0);
+                SymbolCounts.Add(basePair, 0);
             }
 
             foreach (var basePair in incomingBasePairs)
@@ -86,37 +208,13 @@ namespace BCompute
                 {
                     throw new ArgumentException(basePair + " is not a recognized nucleotide");
                 }
-                _codeCounts[upper]++;
+                SymbolCounts[upper]++;
             }
             Sequence = incomingBasePairs;
         }
 
-        private Dictionary<Nucleotide, long> _codeCounts;
-        public IDictionary<Nucleotide, long> CodeCounts
-        {
-            get
-            {
-                return _codeCounts;
-            }
-        }
 
-        public long CalculateHammingDistance(NucleotideSequence nucleotideSequence)
-        {
-            return ComputeHammingDistance(this, nucleotideSequence);
-        }
-
-        private string _complement;
-        INucleotideSequence INucleotideSequence.Complement
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        INucleotideSequence INucleotideSequence.ReverseComplement
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public abstract long CalculateHammingDistance(INucleotideSequence nucleotideSequence);
+        
         public abstract bool Equals(INucleotideSequence nucleotideSequence);
 
         public string Complement
@@ -157,20 +255,6 @@ namespace BCompute
             _complement = new string(complement);
         }
 
-        public static int ComputeHammingDistance(NucleotideSequence a, NucleotideSequence b)
-        {
-            if (a.GetType() != b.GetType())
-            {
-                throw new ArgumentException(String.Format("Sequence types do not match. ({0} vs {1})", a.GetType(), b.GetType()));
-            }
-
-            if (a.Sequence.Length != b.Sequence.Length)
-            {
-                throw new ArgumentException("Strands are of unequal length!");
-            }
-
-            return a.Sequence.Where((t, i) => t != b.Sequence[i]).Count();
-        }
 
         public static IEnumerable<NucleotideSequence> GenerateNucleotideSequences(IEnumerable<string> rawSequences)
         {
@@ -211,18 +295,7 @@ namespace BCompute
             }
         }
 
-        private double _gcPercentage;
-        public double GcPercentage
-        {
-            get
-            {
-                if (_gcPercentage == 0.0d)
-                {
-                    _gcPercentage = Math.Round(((double)GcCount / Sequence.Length), Constants.RoundingPrecision);
-                }
-                return _gcPercentage;
-            }
-        }
+        
 
         public long GuanineCount
         {
@@ -297,7 +370,6 @@ namespace BCompute
 
         public int GapCount { get; private set; }
         public int AnyBaseCount { get; private set; }
-        public abstract ISet<char> AllowedCodes { get; }
         public ISet<string> Tags { get; private set; }
 
         internal static INucleotideSequence SafeConstructor(INucleotideSequence safeSequence, AlphabetType alphabet, GeneticCode geneticCode)
@@ -315,5 +387,6 @@ namespace BCompute
                 case AlphabetType.AmbiguousDna:
             }
         }
+        
     }
 }

@@ -4,7 +4,7 @@ using BCompute.Interfaces;
 
 namespace BCompute.Data.Alphabets
 {
-    internal class NucleotideAlphabet : INucleotideAlphabet
+    public class NucleotideAlphabet : INucleotideAlphabet
     {
         public GeneticCode.GeneticCode GeneticCode { get; private set; }
         public ISet<Nucleotide> AllowedSymbols { get; private set; }

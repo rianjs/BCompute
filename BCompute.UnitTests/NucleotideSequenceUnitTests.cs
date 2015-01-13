@@ -85,7 +85,7 @@ namespace BCompute.UnitTests
         [Test, TestCaseSource("ComputeHammingDistance_TestCases")]
         public long ComputeHammingDistanceTest(NucleotideSequence a, NucleotideSequence b)
         {
-            return NucleotideSequence.ComputeHammingDistance(a, b);
+            return NucleotideSequence.CalculateHammingDistance(a, b);
         }
 
         public IEnumerable<ITestCaseData> ComputeHammingDistance_TestCases()
