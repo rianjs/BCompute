@@ -41,7 +41,7 @@ namespace BCompute
 
         public virtual double GcContent
         {
-            get { return Math.Round(GcPercentage, 5); }
+            get { return Math.Round(GcPercentage, Constants.RoundingPrecision); }
         }
 
         public virtual ISet<Nucleotide> GcContentSymbols
@@ -91,8 +91,8 @@ namespace BCompute
             Sequence = incomingBasePairs;
         }
 
-        private Dictionary<char, long> _codeCounts;
-        public IDictionary<char, long> CodeCounts
+        private Dictionary<Nucleotide, long> _codeCounts;
+        public IDictionary<Nucleotide, long> CodeCounts
         {
             get
             {
@@ -195,12 +195,32 @@ namespace BCompute
             throw new ArgumentException("Ambiguous nucleotide sequence. It didn't have thymine or uracil");
         }
 
+        private long _gcCount;
+        public long GcCount
+        {
+            get
+            {
+                if (_gcCount == 0)
+                {
+                    foreach (var element in GcContentSymbols)
+                    {
+                        _gcCount += CodeCounts[element];
+                    }
+                }
+                return _gcCount;
+            }
+        }
+
+        private double _gcPercentage;
         public double GcPercentage
         {
             get
             {
-                var gcCount = CodeCounts['G'] + CodeCounts['C'];
-                return (double) gcCount / Sequence.Length;
+                if (_gcPercentage == 0.0d)
+                {
+                    _gcPercentage = Math.Round(((double)GcCount / Sequence.Length), Constants.RoundingPrecision);
+                }
+                return _gcPercentage;
             }
         }
 
