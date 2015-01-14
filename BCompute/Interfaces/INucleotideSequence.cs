@@ -88,7 +88,7 @@ namespace BCompute
         long CalculateHammingDistance(NucleotideSequence nucleotideSequence);
 
         /// <summary>
-        /// Returns true if this nucleotide sequence value is the same as a comparison nucleotide sequence value.
+        /// Returns true if this contents of the nucleotide sequence is the same as a comparison nucleotide sequence value. Alphabets, and genetic codes are NOT ignored
         /// </summary>
         /// <param name="nucleotideSequence"></param>
         /// <returns></returns>

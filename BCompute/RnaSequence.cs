@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BCompute.Data.Alphabets;
 using BCompute.Data.GeneticCode;
 
@@ -6,7 +7,19 @@ namespace BCompute
 {
     public class RnaSequence : NucleotideSequence
     {
-        public RnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard) : base(rawBasePairs, alphabet, geneticCode) { }
+        public RnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard)
+            : base(rawBasePairs, alphabet, geneticCode)
+        {
+            switch (alphabet)
+            {
+                case AlphabetType.AmbiguousRna:
+                    break;
+                case AlphabetType.StrictRna:
+                    break;
+                default:
+                    throw new ArgumentException(String.Format(InvalidAlphabetForSequenceType, alphabet, GetType()));
+            }
+        }
 
         internal static RnaSequence FastRnaSequence(string safeSequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts)
         {

@@ -139,7 +139,7 @@ namespace BCompute.Data.Alphabets
         /// <summary>
         /// Complement table for the strict DNA alphabet
         /// </summary>
-        public static Dictionary<Nucleotide, Nucleotide> UnambiguousDnaComplements
+        public static Dictionary<Nucleotide, Nucleotide> StrictDnaComplements
         {
             get
             {
@@ -193,7 +193,7 @@ namespace BCompute.Data.Alphabets
         /// <summary>
         /// Complement table for the strict RNA alphabet
         /// </summary>
-        public static Dictionary<Nucleotide, Nucleotide> UnambiguousRnaComplements
+        public static Dictionary<Nucleotide, Nucleotide> StrictRnaComplements
         {
             get
             {
@@ -221,13 +221,13 @@ namespace BCompute.Data.Alphabets
             switch (alphabet)
             {
                 case AlphabetType.StrictDna:
-                    return UnambiguousDnaComplements;
+                    return StrictDnaComplements;
                 case AlphabetType.AmbiguousDna:
                     return AmbiguousDnaComplements;
                 case AlphabetType.StrictRna:
-                    return AmbiguousDnaComplements;
+                    return StrictRnaComplements;
                 case AlphabetType.AmbiguousRna:
-                    return UnambiguousDnaComplements;
+                    return AmbiguousRnaComplements;
                 default:
                     throw new ArgumentException(String.Format(InvalidNucleotideAlphabet, alphabet));
             }

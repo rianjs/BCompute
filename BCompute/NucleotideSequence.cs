@@ -9,6 +9,8 @@ namespace BCompute
 {
     public abstract class NucleotideSequence : INucleotideSequence
     {
+        public const string InvalidNucleotideForAlphabetType = "{0} is not a valid nucleotide for a sequence with a {1} ActiveAlphabet";
+        public const string InvalidAlphabetForSequenceType = "{0} is an invalid alphabet for a {1}";
         private const double _defaultDoubleValue = -1.00d;
         private const int _defaultIntValue = -1;
 
@@ -18,7 +20,7 @@ namespace BCompute
         public string Sequence { get; protected set; }
 
         //Test: Constructor: disallowed alphabets throw exception
-        //Test: Constructor: VerifyAndInitializeSequence method:
+        //Test: Constructor: VerifyAndInitializeSequence method
         //Test: Empty sequence string throws exception; disallowed nucleotides (per alphabet) throws exception;
         //Test: Valid Sequence A casing matches what I gave it as input
         protected NucleotideSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode)
@@ -103,7 +105,7 @@ namespace BCompute
         {
             if (!_allowedSymbols.Contains(nucleotide))
             {
-                throw new ArgumentException(String.Format("{0} is not a valid nucleotide for a sequence with a {1} ActiveAlphabet", nucleotide, ActiveAlphabet));
+                throw new ArgumentException(String.Format(InvalidNucleotideForAlphabetType, nucleotide, ActiveAlphabet));
             }
 
             return !SymbolCounts.ContainsKey(nucleotide) ? 0 : SymbolCounts[nucleotide];
@@ -151,14 +153,19 @@ namespace BCompute
 
         public static long CalculateHammingDistance(NucleotideSequence a, NucleotideSequence b)
         {
-            if (a.GetType() != b.GetType())
-            {
-                throw new ArgumentException(String.Format("Sequence types do not match. ({0} vs {1})", a.GetType(), b.GetType()));
-            }
-
             if (a.Sequence.Length != b.Sequence.Length)
             {
                 throw new ArgumentException("Sequences are of unequal length!");
+            }
+
+            if (a.ActiveAlphabet != b.ActiveAlphabet)
+            {
+                throw new ArgumentException("Sequences are not using the same nucleotide alphabet!");
+            }
+
+            if (a.GetType() != b.GetType())
+            {
+                throw new ArgumentException(String.Format("Sequence types do not match. ({0} vs {1})", a.GetType(), b.GetType()));
             }
 
             return a.Sequence.Where((t, i) => t != b.Sequence[i]).Count();
@@ -167,7 +174,7 @@ namespace BCompute
         //Test: Adapt existing complement tests
         //Test: Create tests for symbol counts
         protected string _rawComplement = String.Empty;
-        NucleotideSequence INucleotideSequence.Complement
+        public NucleotideSequence Complement
         {
             get
             {
@@ -176,11 +183,27 @@ namespace BCompute
                     _rawComplement = GetComplementString();
                 }
 
+                //Transform the symbol counts table T count becomes A count, etc.
+                var _newSymbolCounts = new Dictionary<Nucleotide, long>(SymbolCounts.Count);
+                foreach (var symbol in SymbolCounts)
+                {
+                    if (_newSymbolCounts.ContainsKey(symbol.Key))
+                    {
+                        continue;
+                    }
+                    var nucleotide = symbol.Key;
+                    var countToBeSwapped = SymbolCounts[nucleotide];
+                    var complement = ComplementTable[nucleotide];
+                    var newCount = SymbolCounts[complement];
+                    _newSymbolCounts.Add(nucleotide, newCount);
+                    _newSymbolCounts.Add(complement, countToBeSwapped);
+                }
+
                 if (GetType() == typeof (DnaSequence))
                 {
-                    return DnaSequence.FastDnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, SymbolCounts);
+                    return DnaSequence.FastDnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, _newSymbolCounts);
                 }
-                return RnaSequence.FastRnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, SymbolCounts);
+                return RnaSequence.FastRnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, _newSymbolCounts);
             }
         }
 
@@ -198,14 +221,14 @@ namespace BCompute
                 }
                 else
                 {
-                    newSequence.Append((char)ComplementTable[typedNucleotide]);
+                    newSequence.Append((char)complement);
                 }
             }
             return newSequence.ToString();
         }
 
         //Test: Adapt existing reverse complement tests
-        NucleotideSequence INucleotideSequence.ReverseComplement
+        public NucleotideSequence ReverseComplement
         {
             get
             {
@@ -241,15 +264,14 @@ namespace BCompute
 
         //Test: Tests: identical sequences of different length, sequences of same type but different length, sequences of same length, but different nucleotide
         //Test: counts, identical sequences of different types, identical sequences but swap some letters around, same but then specify case significance
-        public virtual bool Equals(NucleotideSequence sequence, bool matchCase)
+        public virtual bool Equals(NucleotideSequence sequence, bool matchCase = false)
         {
-            //In order from fastest to slowest
             if (Sequence.Length != sequence.Sequence.Length)
             {
                 return false;
             }
 
-            if (SymbolCounts.Count != sequence.SymbolCounts.Count)
+            if (GetType() != sequence.GetType())
             {
                 return false;
             }
@@ -264,11 +286,6 @@ namespace BCompute
                 {
                     return false;
                 }
-            }
-
-            if (GetType() != sequence.GetType())
-            {
-                return false;
             }
 
             return String.Equals(Sequence, sequence.Sequence, matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);

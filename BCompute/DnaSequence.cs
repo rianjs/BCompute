@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BCompute.Data.Alphabets;
 using BCompute.Data.GeneticCode;
 
@@ -6,7 +7,19 @@ namespace BCompute
 {
     public class DnaSequence : NucleotideSequence
     {
-        public DnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard) : base(rawBasePairs, alphabet, geneticCode) { }
+        public DnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard)
+            : base(rawBasePairs, alphabet, geneticCode)
+        {
+            switch (alphabet)
+            {
+                case AlphabetType.AmbiguousDna:
+                    break;
+                case AlphabetType.StrictDna:
+                    break;
+                default:
+                    throw new ArgumentException(String.Format(InvalidAlphabetForSequenceType, alphabet, GetType()));
+            }
+        }
 
         internal static DnaSequence FastDnaSequence(string safeSequence, AlphabetType alphabet, GeneticCode geneticCode,
             Dictionary<Nucleotide, long> symbolCounts)
