@@ -17,11 +17,10 @@ namespace BCompute
         public GeneticCode GeneticCode { get; protected set; }
         public string Sequence { get; protected set; }
 
-        //ToDo: 5 tests
-        //ToDo: Constructor: disallowed alphabets throw exception
-        //ToDo: Constructor: VerifyAndInitializeSequence method:
-        //ToDo: Empty sequence string throws exception; disallowed nucleotides (per alphabet) throws exception;
-        //ToDo: Valid Sequence A casing matches what I gave it as input
+        //Test: Constructor: disallowed alphabets throw exception
+        //Test: Constructor: VerifyAndInitializeSequence method:
+        //Test: Empty sequence string throws exception; disallowed nucleotides (per alphabet) throws exception;
+        //Test: Valid Sequence A casing matches what I gave it as input
         protected NucleotideSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode)
         {
             NucleotideAlphabet = new NucleotideAlphabet(alphabet, geneticCode);
@@ -98,7 +97,7 @@ namespace BCompute
             throw new NotImplementedException();
         }
 
-        //ToDo: 3 tests: nucleotide not part of the allowed symbols, nucleotide allowed, but not present, normal case
+        //Test: 3 tests: nucleotide not part of the allowed symbols, nucleotide allowed, but not present, normal case
         public Dictionary<Nucleotide, long> SymbolCounts { get; protected set; }
         public virtual long NucleotideCount(Nucleotide nucleotide)
         {
@@ -125,7 +124,7 @@ namespace BCompute
             }
         }
 
-        //ToDo: Adapt existing GC content tests
+        //Test: Adapt existing GC content tests
         private double _gcPercentage = _defaultDoubleValue;
         public virtual double GcContentPercentage
         {
@@ -144,7 +143,7 @@ namespace BCompute
             get { return NucleotideAlphabet.GcContentSymbols; }
         }
 
-        //ToDo: Adapt existing HammingDistance tests
+        //Test: Adapt existing HammingDistance tests
         public virtual long CalculateHammingDistance(NucleotideSequence comparisonSequence)
         {
             return CalculateHammingDistance(this, comparisonSequence);
@@ -165,8 +164,8 @@ namespace BCompute
             return a.Sequence.Where((t, i) => t != b.Sequence[i]).Count();
         }
 
-        //ToDo: Adapt existing complement tests
-        //ToDo: Create tests for symbol counts
+        //Test: Adapt existing complement tests
+        //Test: Create tests for symbol counts
         protected string _rawComplement = String.Empty;
         NucleotideSequence INucleotideSequence.Complement
         {
@@ -205,7 +204,7 @@ namespace BCompute
             return newSequence.ToString();
         }
 
-        //ToDo: Adapt existing reverse complement tests
+        //Test: Adapt existing reverse complement tests
         NucleotideSequence INucleotideSequence.ReverseComplement
         {
             get
@@ -240,8 +239,8 @@ namespace BCompute
             get { return NucleotideAlphabet.TranscriptionTable; }
         }
 
-        //ToDo: Tests: identical sequences of different length, sequences of same type but different length, sequences of same length, but different nucleotide
-        //ToDo: counts, identical sequences of different types, identical sequences but swap some letters around, same but then specify case significance
+        //Test: Tests: identical sequences of different length, sequences of same type but different length, sequences of same length, but different nucleotide
+        //Test: counts, identical sequences of different types, identical sequences but swap some letters around, same but then specify case significance
         public virtual bool Equals(NucleotideSequence sequence, bool matchCase)
         {
             //In order from fastest to slowest

@@ -90,11 +90,11 @@ namespace BCompute.Data.Alphabets
         {
             switch (alphabet)
             {
-                case AlphabetType.UnambiguousDna:
+                case AlphabetType.StrictDna:
                     return UnambiguousDna;
                 case AlphabetType.AmbiguousDna:
                     return AmbiguousDna;
-                case AlphabetType.UnambiguousRna:
+                case AlphabetType.StrictRna:
                     return UnambiguousRna;
                 case AlphabetType.AmbiguousRna:
                     return AmbiguousRna;
@@ -220,11 +220,11 @@ namespace BCompute.Data.Alphabets
         {
             switch (alphabet)
             {
-                case AlphabetType.UnambiguousDna:
+                case AlphabetType.StrictDna:
                     return UnambiguousDnaComplements;
                 case AlphabetType.AmbiguousDna:
                     return AmbiguousDnaComplements;
-                case AlphabetType.UnambiguousRna:
+                case AlphabetType.StrictRna:
                     return AmbiguousDnaComplements;
                 case AlphabetType.AmbiguousRna:
                     return UnambiguousDnaComplements;
@@ -321,11 +321,11 @@ namespace BCompute.Data.Alphabets
             {
                 case AlphabetType.AmbiguousDna:
                     return AmbiguousDnaTranscriptionTable;
-                case AlphabetType.UnambiguousDna:
+                case AlphabetType.StrictDna:
                     return UnambiguousDnaTranscriptionTable;
                 case AlphabetType.AmbiguousRna:
                     return AmbiguousRnaTranslationTable;
-                case AlphabetType.UnambiguousRna:
+                case AlphabetType.StrictRna:
                     return UnambiguousRnaTranslationTable;
                 default:
                     throw new ArgumentException(String.Format(InvalidNucleotideAlphabet, nucleotideAlphabet));
@@ -405,11 +405,11 @@ namespace BCompute.Data.Alphabets
             {
                 case AlphabetType.AmbiguousRna:
                     return rnaTranslationTable;
-                case AlphabetType.UnambiguousRna:
+                case AlphabetType.StrictRna:
                     return rnaTranslationTable;
                 case AlphabetType.AmbiguousDna:
                     return ConvertRnaTranslationTableToDnaTranslationTable(rnaTranslationTable);
-                case AlphabetType.UnambiguousDna:
+                case AlphabetType.StrictDna:
                     return ConvertRnaTranslationTableToDnaTranslationTable(rnaTranslationTable);
                 default:
                     throw new ArgumentException(String.Format(InvalidNucleotideAlphabet, nucleotideAlphabet));
@@ -472,9 +472,9 @@ namespace BCompute.Data.Alphabets
                     return AmbiguousAlphabetGcSymbols;
                 case AlphabetType.AmbiguousRna:
                     return AmbiguousAlphabetGcSymbols;
-                case AlphabetType.UnambiguousDna:
+                case AlphabetType.StrictDna:
                     return UnambiguousAlphabetGcSymbols;
-                case AlphabetType.UnambiguousRna:
+                case AlphabetType.StrictRna:
                     return UnambiguousAlphabetGcSymbols;
                 default:
                     throw new ArgumentException(String.Format(InvalidNucleotideAlphabet, alphabetType));

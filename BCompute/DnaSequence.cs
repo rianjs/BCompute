@@ -6,7 +6,7 @@ namespace BCompute
 {
     public class DnaSequence : NucleotideSequence
     {
-        public DnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode) : base(rawBasePairs, alphabet, geneticCode) { }
+        public DnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard) : base(rawBasePairs, alphabet, geneticCode) { }
 
         internal static DnaSequence FastDnaSequence(string safeSequence, AlphabetType alphabet, GeneticCode geneticCode,
             Dictionary<Nucleotide, long> symbolCounts)
