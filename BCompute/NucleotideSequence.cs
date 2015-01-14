@@ -84,14 +84,7 @@ namespace BCompute
             get { return NucleotideAlphabet.TranslationTable; }
         }
 
-        //ToDo: Implement this
-        public virtual NucleotideSequence Transcribe()
-        {
-            throw new NotImplementedException();
-            //if this is a DNA sequence, we should return an RNA sequence
-
-            //if this is an RNA sequence, we should return a DNA sequence
-        }
+        public abstract NucleotideSequence Transcribe();
 
         //ToDo: implement this
         public ProteinSequence Translate()

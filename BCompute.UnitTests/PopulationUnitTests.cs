@@ -26,7 +26,7 @@ namespace BCompute.UnitTests
         }
 
         [Test, TestCaseSource("ChildAlleleProbability_TestCases")]
-        public double ChildAllelManifestationProbabilityTests(int homoDominantPopulation, int heteroPopulation, int homoRecessivePopulation, IEnumerable<Genotype> genotypes)
+        public double ChildAlleleManifestationProbabilityTests(int homoDominantPopulation, int heteroPopulation, int homoRecessivePopulation, IEnumerable<Genotype> genotypes)
         {
             var sum = genotypes.Sum(genotype => new Population(homoDominantPopulation, heteroPopulation, homoRecessivePopulation).GetChildAlleleProbability(genotype));
             //Only for unit testing...

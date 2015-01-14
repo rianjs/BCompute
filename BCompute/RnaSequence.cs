@@ -35,13 +35,24 @@ namespace BCompute
             //Fill in the new dictionary(complement, complementCount)
 
             var newSymbolCounts = new Dictionary<Nucleotide, long>(symbolCounts.Count);
-            foreach (var symbol in symbolCounts)
-            {
-                var complement = NucleotideAlphabet.ComplementTable[symbol.Key];
-                var complementCount = symbolCounts[complement];
-                newSymbolCounts.Add(complement, complementCount);
-            }
-            SymbolCounts = newSymbolCounts;
+            //foreach (var symbol in symbolCounts)
+            //{
+            //    var complement = NucleotideAlphabet.ComplementTable[symbol.Key];
+            //    var complementCount = symbolCounts[complement];
+            //    newSymbolCounts.Add(complement, complementCount);
+            //}
+            //SymbolCounts = newSymbolCounts;
+        }
+
+        public override NucleotideSequence Transcribe()
+        {
+            var alphabet = ActiveAlphabet == AlphabetType.StrictDna ? AlphabetType.StrictRna : AlphabetType.AmbiguousRna;
+            var newSymbolCounts = SymbolCounts;
+            var count = SymbolCounts[Nucleotide.Uracil];
+            newSymbolCounts.Remove(Nucleotide.Uracil);
+            newSymbolCounts.Add(Nucleotide.Thymine, count);
+            var newSequence = Sequence.Replace((char)Nucleotide.Uracil, (char)Nucleotide.Thymine);
+            return DnaSequence.FastDnaSequence(newSequence, alphabet, GeneticCode, newSymbolCounts);
         }
     }
 }

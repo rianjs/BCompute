@@ -173,14 +173,44 @@ namespace BCompute.UnitTests
 
         public IEnumerable<ITestCaseData> ComplementAndReverseComplement_TestCases()
         {
-            var strictDnaComplement = new DnaSequence(_strictDnaComplement, AlphabetType.StrictDna);
-            var strictDnaReverseComplement = new DnaSequence(_strictDnaReverseComplement, AlphabetType.StrictDna);
-            yield return new TestCaseData(_strictDnaSequence, strictDnaComplement, strictDnaReverseComplement).SetName("DNA sequence complement and reverse complement");
+            //var strictDnaComplement = new DnaSequence(_strictDnaComplement, AlphabetType.StrictDna);
+            //var strictDnaReverseComplement = new DnaSequence(_strictDnaReverseComplement, AlphabetType.StrictDna);
+            //yield return new TestCaseData(_strictDnaSequence, strictDnaComplement, strictDnaReverseComplement).SetName("DNA sequence complement and reverse complement");
 
             var rna = new RnaSequence(_strictRna, AlphabetType.StrictRna);
             var rnaComplement = new RnaSequence(_strictRnaComplement, AlphabetType.StrictRna);
             var rnaReverseComplement = new RnaSequence(_strictRnaReverseComplement, AlphabetType.StrictRna);
             yield return new TestCaseData(rna, rnaComplement, rnaReverseComplement).SetName("RNA sequence complement and reverse complement");
         }
+
+        //[Test, TestCaseSource("Transcribe_TestCaseSource")]
+        //public void Transcribe_TestCases(NucleotideSequence incoming, NucleotideSequence expected)
+        //{
+        //    var newSequence = incoming.Transcribe();
+        //    //Assert.AreEqual(expected, newSequence);
+        //}
+
+        //public IEnumerable<ITestCaseData> Transcribe_TestCaseSource()
+        //{
+        //    yield return new TestCaseData(_strictDnaSequence, _strictRnaSequence).SetName("Strict DNA is converted to Strict RNA");
+        //    //yield return new TestCaseData(_ambiguousDnaSequence, _ambiguousRnaSequence).SetName("Ambiguous DNA is converted to Ambiguous RNA");
+        //    //yield return new TestCaseData(_strictRnaSequence, _strictDnaSequence).SetName("Strict RNA is converted to Strict DNA");
+        //    //yield return new TestCaseData(_ambiguousRnaSequence, _ambiguousDnaSequence).SetName("Ambiguous RNA is converted to Ambiguous DNA");
+
+
+
+        //    //Strict DNA to Ambiguous RNA fails
+        //    //Ambiguous DNA to Strict RNA fails
+
+        //    //Strict RNA to Strict DNA
+        //    //Strict RNA to Ambiguous DNA fails
+        //    //Ambiguous RNA to Ambiguous DNA
+        //    //Ambiguous RNA to Strict DNA fails
+
+        //    //Strict RNA with Strict RNA fails
+        //    //Ambiguous RNA with Ambiguous RNA fails
+        //    //Strict RNA with Ambiguous RNA fails
+        //    //Ambiguous RNA with Strict RNA fails
+        //}
     }
 }

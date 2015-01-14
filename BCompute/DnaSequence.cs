@@ -44,5 +44,16 @@ namespace BCompute
             }
             SymbolCounts = newSymbolCounts;
         }
+
+        public override NucleotideSequence Transcribe()
+        {
+            var alphabet = ActiveAlphabet == AlphabetType.StrictDna ? AlphabetType.StrictRna : AlphabetType.AmbiguousRna;
+            var newSymbolCounts = SymbolCounts;
+            var count = SymbolCounts[Nucleotide.Thymine];
+            newSymbolCounts.Remove(Nucleotide.Thymine);
+            newSymbolCounts.Add(Nucleotide.Uracil, count);
+            var newSequence = Sequence.Replace((char) Nucleotide.Thymine, (char) Nucleotide.Uracil);
+            return RnaSequence.FastRnaSequence(newSequence, alphabet, GeneticCode, newSymbolCounts);
+        }
     }
 }
