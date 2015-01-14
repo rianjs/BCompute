@@ -25,13 +25,13 @@ namespace BCompute.Data.Alphabets
         }
 
         private static HashSet<Nucleotide> _unambiguousDna;
-        public static ISet<Nucleotide> UnambiguousDna
+        public static ISet<Nucleotide> StrictDna
         {
             get
             {
                 if (_unambiguousDna == null)
                 {
-                    _unambiguousDna = new HashSet<Nucleotide>((Nucleotide[])Enum.GetValues(typeof(Nucleotide)));
+                    _unambiguousDna = new HashSet<Nucleotide>((Nucleotide[])Enum.GetValues(typeof(StrictDna)));
                 }
                 return _unambiguousDna;
             }
@@ -53,13 +53,13 @@ namespace BCompute.Data.Alphabets
         }
 
         private static HashSet<Nucleotide> _unambiguousRna;
-        public static ISet<Nucleotide> UnambiguousRna
+        public static ISet<Nucleotide> StrictRna
         {
             get
             {
                 if (_unambiguousRna == null)
                 {
-                    _unambiguousRna = new HashSet<Nucleotide>((Nucleotide[])Enum.GetValues(typeof(Nucleotide)));
+                    _unambiguousRna = new HashSet<Nucleotide>((Nucleotide[])Enum.GetValues(typeof(StrictRna)));
                 }
                 return _unambiguousRna;
             }
@@ -91,11 +91,11 @@ namespace BCompute.Data.Alphabets
             switch (alphabet)
             {
                 case AlphabetType.StrictDna:
-                    return UnambiguousDna;
+                    return StrictDna;
                 case AlphabetType.AmbiguousDna:
                     return AmbiguousDna;
                 case AlphabetType.StrictRna:
-                    return UnambiguousRna;
+                    return StrictRna;
                 case AlphabetType.AmbiguousRna:
                     return AmbiguousRna;
                 default:
