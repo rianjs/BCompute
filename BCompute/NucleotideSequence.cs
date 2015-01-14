@@ -15,13 +15,46 @@ namespace BCompute
         public NucleotideAlphabet NucleotideAlphabet { get; protected set; }
         public AlphabetType ActiveAlphabet { get; protected set; }
         public GeneticCode GeneticCode { get; protected set; }
+        public string Sequence { get; protected set; }
 
+        //ToDo: 5 tests
+        //ToDo: Constructor: disallowed alphabets throw exception
+        //ToDo: Constructor: VerifyAndInitializeSequence method:
+        //ToDo: Empty sequence string throws exception; disallowed nucleotides (per alphabet) throws exception;
+        //ToDo: Valid Sequence A casing matches what I gave it as input
         protected NucleotideSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode)
         {
             NucleotideAlphabet = new NucleotideAlphabet(alphabet, geneticCode);
             ActiveAlphabet = alphabet;
             GeneticCode = geneticCode;
-            Sequence = sequence;        //ToDo: Make sure this has been sanity checked by the subclasses first?
+            VerifyAndInitializeNucleotides(sequence);
+            Sequence = sequence;
+        }
+
+        protected void VerifyAndInitializeNucleotides(string rawNucleotides)
+        {
+            if (String.IsNullOrWhiteSpace(rawNucleotides))
+            {
+                throw new ArgumentException("Empty nucleotide sequence!");
+            }
+
+            SymbolCounts = new Dictionary<Nucleotide, long>(AllowedSymbols.Count);
+            foreach (var basePair in AllowedSymbols)
+            {
+                SymbolCounts.Add(basePair, 0);
+            }
+
+            foreach (var nucleotide in rawNucleotides)
+            {
+                var typedNucleotide = (Nucleotide)Char.ToUpperInvariant(nucleotide);
+
+                if (!AllowedSymbols.Contains(typedNucleotide))
+                {
+                    throw new ArgumentException(nucleotide + " is not a recognized nucleotide");
+                }
+
+                SymbolCounts[typedNucleotide]++;
+            }
         }
 
         protected NucleotideSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts)
@@ -50,14 +83,22 @@ namespace BCompute
             get { return NucleotideAlphabet.TranslationTable; }
         }
 
-        public virtual INucleotideSequence Transcribe()
+        //ToDo: Implement this
+        public virtual NucleotideSequence Transcribe()
         {
             throw new NotImplementedException();
-            //if this is a DNA sequence, we should return an RMA sequence
+            //if this is a DNA sequence, we should return an RNA sequence
 
             //if this is an RNA sequence, we should return a DNA sequence
         }
 
+        //ToDo: implement this
+        public ProteinSequence Translate()
+        {
+            throw new NotImplementedException();
+        }
+
+        //ToDo: 3 tests: nucleotide not part of the allowed symbols, nucleotide allowed, but not present, normal case
         public Dictionary<Nucleotide, long> SymbolCounts { get; protected set; }
         public virtual long NucleotideCount(Nucleotide nucleotide)
         {
@@ -65,11 +106,26 @@ namespace BCompute
             {
                 throw new ArgumentException(String.Format("{0} is not a valid nucleotide for a sequence with a {1} ActiveAlphabet", nucleotide, ActiveAlphabet));
             }
-            return SymbolCounts[nucleotide];
+
+            return !SymbolCounts.ContainsKey(nucleotide) ? 0 : SymbolCounts[nucleotide];
         }    
 
-        public string Sequence { get; protected set; }
+        private long _gcCount = _defaultIntValue;
+        public long GcCount
+        {
+            get
+            {
+                if (_gcCount == _defaultIntValue)
+                {
+                    foreach (var element in GcContentSymbols.Where(element => SymbolCounts.ContainsKey(element))) {
+                        _gcCount += SymbolCounts[element];
+                    }
+                }
+                return _gcCount;
+            }
+        }
 
+        //ToDo: Adapt existing GC content tests
         private double _gcPercentage = _defaultDoubleValue;
         public virtual double GcContentPercentage
         {
@@ -88,14 +144,10 @@ namespace BCompute
             get { return NucleotideAlphabet.GcContentSymbols; }
         }
 
-        protected long _hammingDistance = _defaultIntValue;
+        //ToDo: Adapt existing HammingDistance tests
         public virtual long CalculateHammingDistance(NucleotideSequence comparisonSequence)
         {
-            if (_hammingDistance == _defaultIntValue)
-            {
-                _hammingDistance = CalculateHammingDistance(this, comparisonSequence);
-            }
-            return _hammingDistance;
+            return CalculateHammingDistance(this, comparisonSequence);
         }
 
         public static long CalculateHammingDistance(NucleotideSequence a, NucleotideSequence b)
@@ -113,6 +165,8 @@ namespace BCompute
             return a.Sequence.Where((t, i) => t != b.Sequence[i]).Count();
         }
 
+        //ToDo: Adapt existing complement tests
+        //ToDo: Create tests for symbol counts
         protected string _rawComplement = String.Empty;
         NucleotideSequence INucleotideSequence.Complement
         {
@@ -127,10 +181,7 @@ namespace BCompute
                 {
                     return DnaSequence.FastDnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, SymbolCounts);
                 }
-                else
-                {
-                    return RnaSequence.FastRnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, SymbolCounts);
-                }
+                return RnaSequence.FastRnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, SymbolCounts);
             }
         }
 
@@ -154,6 +205,7 @@ namespace BCompute
             return newSequence.ToString();
         }
 
+        //ToDo: Adapt existing reverse complement tests
         NucleotideSequence INucleotideSequence.ReverseComplement
         {
             get
@@ -188,205 +240,41 @@ namespace BCompute
             get { return NucleotideAlphabet.TranscriptionTable; }
         }
 
-        protected void InitializeBasePairs(string incomingBasePairs)
+        //ToDo: Tests: identical sequences of different length, sequences of same type but different length, sequences of same length, but different nucleotide
+        //ToDo: counts, identical sequences of different types, identical sequences but swap some letters around, same but then specify case significance
+        public virtual bool Equals(NucleotideSequence sequence, bool matchCase)
         {
-            if (String.IsNullOrWhiteSpace(incomingBasePairs))
-            {
-                throw new ArgumentException("Empty nucleotide sequence!");
-            }
-
-            SymbolCounts = new Dictionary<char, long>(AllowedCodes.Count);
-            foreach (var basePair in AllowedCodes)
-            {
-                SymbolCounts.Add(basePair, 0);
-            }
-
-            foreach (var basePair in incomingBasePairs)
-            {
-                var upper = Char.ToUpperInvariant(basePair);
-                if (!AllowedCodes.Contains(basePair))
-                {
-                    throw new ArgumentException(basePair + " is not a recognized nucleotide");
-                }
-                SymbolCounts[upper]++;
-            }
-            Sequence = incomingBasePairs;
-        }
-
-
-        
-        public abstract bool Equals(INucleotideSequence nucleotideSequence);
-
-        public string Complement
-        {
-            get
-            {
-                if (String.IsNullOrWhiteSpace(_complement))
-                {
-                    GenerateComplement();
-                }
-
-                return _complement;
-            }
-        }
-
-        private string _reverseComplement;
-        public string ReverseComplement
-        {
-            get
-            {
-                if (String.IsNullOrWhiteSpace(_reverseComplement))
-                {
-                    var complement = Complement;
-                    _reverseComplement = new string(complement.Reverse().ToArray());
-                }
-                return _reverseComplement;
-            }
-        }
-
-        protected void GenerateComplement()
-        {
-            var complement = new char[Sequence.Length];
-            for (var i = 0; i < Sequence.Length; i++)
-            {
-                complement[i] = BasePairComplements[Sequence[i]];
-            }
-
-            _complement = new string(complement);
-        }
-
-
-        public static IEnumerable<NucleotideSequence> GenerateNucleotideSequences(IEnumerable<string> rawSequences)
-        {
-            var internalRawSequences = rawSequences as IList<string> ?? rawSequences.ToList();
-            var nucleotideSequences = new List<NucleotideSequence>(internalRawSequences.Count);
-            nucleotideSequences.AddRange(internalRawSequences.Select(GenerateNucleotideSequence));
-            return nucleotideSequences;
-        }
-
-        public static NucleotideSequence GenerateNucleotideSequence(string nucleotides)
-        {
-            foreach (var nucleotide in nucleotides)
-            {
-                switch (Char.ToUpperInvariant(nucleotide))
-                {
-                    case 'T':
-                        return new DnaSequence(nucleotides);
-                    case 'U':
-                        return new RnaSequence(nucleotides);
-                }
-            }
-            throw new ArgumentException("Ambiguous nucleotide sequence. It didn't have thymine or uracil");
-        }
-
-        private long _gcCount;
-        public long GcCount
-        {
-            get
-            {
-                if (_gcCount == 0)
-                {
-                    foreach (var element in GcContentSymbols)
-                    {
-                        _gcCount += CodeCounts[element];
-                    }
-                }
-                return _gcCount;
-            }
-        }
-
-        
-
-        public long GuanineCount
-        {
-            get { return CodeCounts['G']; }
-        }
-
-        public long CytosineCount
-        {
-            get { return CodeCounts['C']; }
-        }
-
-        public long AdenineCount
-        {
-            get { return CodeCounts['A']; }
-        }
-
-        /// <summary>
-        /// Equality semantics are VALUE-oriented, checking whether the types and nucleotide acid chains are the same.
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
+            //In order from fastest to slowest
+            if (Sequence.Length != sequence.Sequence.Length)
             {
                 return false;
             }
 
-            var typedComparison = (ISequence) obj;
-            if (GetType() != typedComparison.GetType())
+            if (SymbolCounts.Count != sequence.SymbolCounts.Count)
             {
                 return false;
             }
 
-            if (Sequence.Length != typedComparison.Sequence.Length)
+            foreach (var nucleotidePair in SymbolCounts)
             {
-                return false;
-            }
+                var nucleotide = nucleotidePair.Key;
+                var thisValue = SymbolCounts[nucleotide];
 
-            return String.Equals(Sequence, typedComparison.Sequence, StringComparison.OrdinalIgnoreCase);
-        }
-
-        private Dictionary<char, char> _nucleotideComplements;
-        public IDictionary<char, char> NucleotideComplements
-        {
-            //Defined at http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html#tab2
-            get
-            {
-                if (_nucleotideComplements == null || _nucleotideComplements.Count < Enum.GetNames(typeof(Nucleotide)).Length)
+                var thatValue = sequence.SymbolCounts[nucleotide];
+                if (thisValue != thatValue)
                 {
-                    _nucleotideComplements = new Dictionary<char, char>
-                    {
-                        {(char) Nucleotide.Adenine, (char) Nucleotide.Thymine},         //A <=> T
-                        {(char) Nucleotide.Thymine, (char) Nucleotide.Adenine},
-                        {(char) Nucleotide.NotAdenine, (char) Nucleotide.NotThymine},   //B <=> V
-                        {(char) Nucleotide.NotThymine, (char) Nucleotide.NotAdenine},
-                        {(char) Nucleotide.Cytosine, (char) Nucleotide.Guanine},        //C <=> G
-                        {(char) Nucleotide.Guanine, (char) Nucleotide.Cytosine},
-                        {(char) Nucleotide.NotGuanine, (char) Nucleotide.NotCytosine},  //D <=> H
-                        {(char) Nucleotide.NotCytosine, (char) Nucleotide.NotGuanine},
-                        {(char) Nucleotide.Keto, (char) Nucleotide.Amino},              //K <=> M
-                        {(char) Nucleotide.Amino, (char) Nucleotide.Keto},
-                        {(char) Nucleotide.Strong, (char) Nucleotide.Strong},           //S <=> S
-                        {(char) Nucleotide.Weak, (char) Nucleotide.Weak},               //W <=> W
-                        {(char) Nucleotide.Unknown, (char) Nucleotide.Unknown},         //N <=> N
-                        {(char) Nucleotide.Gap, (char) Nucleotide.Gap},                 //- <=> -
-                    };
+                    return false;
                 }
-                return _nucleotideComplements;
             }
+
+            if (GetType() != sequence.GetType())
+            {
+                return false;
+            }
+
+            return String.Equals(Sequence, sequence.Sequence, matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
         }
 
-        public int GapCount { get; private set; }
-        public int AnyBaseCount { get; private set; }
         public ISet<string> Tags { get; private set; }
-
-        internal static INucleotideSequence SafeConstructor(INucleotideSequence safeSequence, AlphabetType alphabet, GeneticCode geneticCode)
-        {
-            //ToDo: implement some kind of safe factory method that skips all the sequence validation steps
-            var type = safeSequence.GetType();
-
-            if (type == typeof (DnaSequence))
-            {
-                DnaSequence.SafeConstructor()
-            }
-
-            switch (type)
-            {
-                case AlphabetType.AmbiguousDna:
-            }
-        }
-        
     }
 }

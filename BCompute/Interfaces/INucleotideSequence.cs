@@ -17,9 +17,20 @@ namespace BCompute
         GeneticCode GeneticCode { get; }
 
         /// <summary>
+        /// The alphabet type governing the sequence's behavior
+        /// </summary>
+        AlphabetType ActiveAlphabet { get; }
+
+        /// <summary>
         /// Mapping of codon triplets to proteins. (Works for DNA, too.)
         /// </summary>
         IDictionary<string, AminoAcid> TranslationTable { get; }
+
+        /// <summary>
+        /// Translates from a DnaSequence or RnaSequence to protein sequence based on the GeneticCode
+        /// </summary>
+        /// <returns></returns>
+        ProteinSequence Translate();
 
         /// <summary>
         /// Mapping of nucleotide complements
@@ -35,7 +46,7 @@ namespace BCompute
         /// Transcribes or back transcribes from a DnaSequence to an RnaSequence, and vice versa
         /// </summary>
         /// <returns></returns>
-        INucleotideSequence Transcribe();
+        NucleotideSequence Transcribe();
 
         /// <summary>
         /// Returns the number of times the specified nucleotide appears in the sequence data
@@ -47,7 +58,7 @@ namespace BCompute
         /// <summary>
         /// Returns DNA or RNA base pair string
         /// </summary>
-        string RawSequence { get; }
+        string Sequence { get; }
 
         /// <summary>
         /// Returns the GC content of the sequence to 6 decimal places
@@ -74,13 +85,13 @@ namespace BCompute
         /// </summary>
         /// <param name="nucleotideSequence"></param>
         /// <returns></returns>
-        long CalculateHammingDistance(INucleotideSequence nucleotideSequence);
+        long CalculateHammingDistance(NucleotideSequence nucleotideSequence);
 
         /// <summary>
         /// Returns true if this nucleotide sequence value is the same as a comparison nucleotide sequence value.
         /// </summary>
         /// <param name="nucleotideSequence"></param>
         /// <returns></returns>
-        bool Equals(INucleotideSequence nucleotideSequence);
+        bool Equals(NucleotideSequence nucleotideSequence, bool matchCase);
     }
 }
