@@ -64,6 +64,7 @@ namespace BCompute
             ActiveAlphabet = alphabet;
             GeneticCode = geneticCode;
             Sequence = sequence;
+            SymbolCounts = symbolCounts;
         }
 
         private HashSet<Nucleotide> _allowedSymbols;

@@ -34,7 +34,7 @@ namespace BCompute
             //Get the count of its complement
             //Fill in the new dictionary(complement, complementCount)
 
-            var newSymbolCounts = new Dictionary<Nucleotide, long>(symbolCounts.Count);
+            //var newSymbolCounts = new Dictionary<Nucleotide, long>(symbolCounts.Count);
             //foreach (var symbol in symbolCounts)
             //{
             //    var complement = NucleotideAlphabet.ComplementTable[symbol.Key];

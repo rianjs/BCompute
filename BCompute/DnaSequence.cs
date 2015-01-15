@@ -35,14 +35,14 @@ namespace BCompute
             //Get the count of its complement
             //Fill in the new dictionary(complement, complementCount)
 
-            var newSymbolCounts = new Dictionary<Nucleotide, long>(symbolCounts.Count);
-            foreach (var symbol in symbolCounts)
-            {
-                var complement = NucleotideAlphabet.ComplementTable[symbol.Key];
-                var complementCount = symbolCounts[complement];
-                newSymbolCounts.Add(complement, complementCount);
-            }
-            SymbolCounts = newSymbolCounts;
+            //var newSymbolCounts = new Dictionary<Nucleotide, long>(symbolCounts.Count);
+            //foreach (var symbol in symbolCounts)
+            //{
+            //    var complement = NucleotideAlphabet.ComplementTable[symbol.Key];
+            //    var complementCount = symbolCounts[complement];
+            //    newSymbolCounts.Add(complement, complementCount);
+            //}
+            //SymbolCounts = newSymbolCounts;
         }
 
         public override NucleotideSequence Transcribe()
