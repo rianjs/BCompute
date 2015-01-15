@@ -2,11 +2,29 @@
 {
     public enum AlphabetType
     {
+        /// <summary>
+        /// IUPAC ambiguous DNA alphabet
+        /// </summary>
         AmbiguousDna,
-        UnambiguousDna,
+        /// <summary>
+        /// IUPAC unambiguous DNA alphabet
+        /// </summary>
+        StrictDna,
+        /// <summary>
+        /// IUPAC ambiguous RNA alphabet
+        /// </summary>
         AmbiguousRna,
-        UnambiguousRna,
+        /// <summary>
+        /// IUPAC unambiguous RNA alphabet
+        /// </summary>
+        StrictRna,
+        /// <summary>
+        /// IUPAC standard Protein alphabet
+        /// </summary>
         StandardProtein,
+        /// <summary>
+        /// IUPAC extended Protein alphabet
+        /// </summary>
         ExtendedProtein,
     }
 }

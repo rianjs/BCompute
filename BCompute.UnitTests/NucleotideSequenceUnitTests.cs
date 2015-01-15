@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BCompute.Data.Alphabets;
 using NUnit.Framework;
 
 namespace BCompute.UnitTests
@@ -7,44 +8,106 @@ namespace BCompute.UnitTests
     [TestFixture]
     public class NucleotideSequenceUnitTests
     {
-        private const string _dnaNucleotides = "ACGTAGCTAGCTGAAAACGT";
-        private const string _dnaComplement = "TGCATCGATCGACTTTTGCA";
-        private const string _dnaReverseComplement = "ACGTTTTCAGCTAGCTACGT";
+        #region Strict DNA nucleotide sequences and complements
+        private const string _strictDna = "ACGTAGCTAGCTGAAAACGT";
+        private const string _strictDnaComplement = "TGCATCGATCGACTTTTGCA";
+        private const string _strictDnaReverseComplement = "ACGTTTTCAGCTAGCTACGT";
+        #endregion
 
-        private const string _rnaNucleotides = "ACGUAGCUAGCUGAAAACGU";
-        private const string _rnaComplement = "UGCAUCGAUCGACUUUUGCA";
-        private const string _rnaReverseComplement = "ACGUUUUCAGCUAGCUACGU";
+        #region Ambiguous DNA nucleotide sequences and complements
+        private const string _ambiguousDna = "ABGTAGCTAVCTGAAAACGT";
+        private const string _ambiguousDnaComplement = "TVCATCGATBGACTTTTGCA";
+        private const string _ambiguousDnaReverseComplement = "ACGTTTTCAGBTAGCTACVT";
+        #endregion
 
-        private const string _ambiguousFragment = "GCGCGCGCCCGGGCC";
+        #region Strict RNA nucleotide sequences and complements
+        private const string _strictRna = "ACGUAGCUAGCUGAAAACGU";
+        private const string _strictRnaComplement = "UGCAUCGAUCGACUUUUGCA";
+        private const string _strictRnaReverseComplement = "ACGUUUUCAGCUAGCUACGU";
+        #endregion
+
+        #region Ambiguous RNA nucleotide sequences and complements
+        private const string _ambiguousRna = "ABGUAGCUAVCUGAAAACGU";
+        private const string _ambiguousRnaComplement = "VGCAUCGAUCGACUUUUGCB";
+        private const string _ambiguousRnaReverseComplement = "BCGUUUUCAGCUAGCUACGV";
+        #endregion
+
+        private const string _indeterminateFragment = "AGCGCGCGCCCGGGCCA";
 
         [Test, TestCaseSource("DnaSequence_SanityChecking_TestCases")]
-        public void DnaSequence_SanityChecking(string nucleotides)
+        public void DnaSequence_SanityChecking(string nucleotides, AlphabetType alphabet)
         {
-            var dna = new DnaSequence(nucleotides);
+            var dna = new DnaSequence(nucleotides, alphabet);
             Assert.IsInstanceOf<DnaSequence>(dna);
         }
 
         public IEnumerable<ITestCaseData> DnaSequence_SanityChecking_TestCases()
         {
-            yield return new TestCaseData(_dnaNucleotides).SetName("Normal DNA sequence");
-            yield return new TestCaseData(_rnaNucleotides).SetName("RNA nucleotide sequence fails").Throws(typeof(ArgumentException));
-            yield return new TestCaseData("123456798").SetName("Numbers instead of nucleotide acids").Throws(typeof(ArgumentException));
-            yield return new TestCaseData(String.Empty).SetName("Empty string instead of nucleotide acids").Throws(typeof(ArgumentException));
+            #region Mixing and matching ambiguous and strict DNA and RNA alphabets with ambiguous and strict DNA and RNA sequences
+            yield return new TestCaseData(_strictDna, AlphabetType.StrictDna).SetName("Strict DNA sequence with strict DNA alphabet");
+            yield return new TestCaseData(_strictDna, AlphabetType.AmbiguousDna).SetName("Strict DNA sequence with ambiguous DNA alphabet");
+            yield return new TestCaseData(_ambiguousDna, AlphabetType.StrictDna).SetName("Ambiguous DNA sequence with strict DNA alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_ambiguousDna, AlphabetType.AmbiguousDna).SetName("Ambiguous DNA sequence with ambiguous DNA alphabet");
+            yield return new TestCaseData(_strictRna, AlphabetType.StrictDna).SetName("Strict Rna with Strict Dna alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_ambiguousDna, AlphabetType.StrictDna).SetName("Ambiguous RNA sequence with strict DNA alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_strictRna, AlphabetType.AmbiguousDna).SetName("Strict RNA with Ambiguous Dna alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_ambiguousRna, AlphabetType.AmbiguousDna).SetName("Ambiguous RNA with Ambiguous Dna alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_ambiguousRna, AlphabetType.StrictDna).SetName("Ambiguous RNA with Strict Dna alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_strictRna, AlphabetType.AmbiguousDna).SetName("Strict RNA with Ambiguous Dna alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_strictRna, AlphabetType.StrictRna).SetName("Strict RNA with Strict RNA alphabet").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_ambiguousRna, AlphabetType.AmbiguousRna).SetName("Ambiguous RNA with Ambiguous RNA alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_strictRna, AlphabetType.AmbiguousRna).SetName("Strict RNA with Ambiguous RNA alphabet fails").Throws(typeof(ArgumentException));
+            #endregion
+
+            #region Ambiguous fragment testing
+            yield return new TestCaseData(_indeterminateFragment, AlphabetType.StrictDna).SetName("Ambiguous fragment with Strict DNA alphabet");
+            yield return new TestCaseData(_indeterminateFragment, AlphabetType.AmbiguousDna).SetName("Ambiguous fragment with Ambiguous DNA alphabet");
+            yield return new TestCaseData(_indeterminateFragment, AlphabetType.StrictRna).SetName("Ambiguous fragment with Strict RNA alphabet").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_indeterminateFragment, AlphabetType.AmbiguousRna).SetName("Ambiguous fragment with Ambiguous DNA alphabet").Throws(typeof(ArgumentException));
+            #endregion
+
+            #region Nonspecific tests
+            yield return new TestCaseData("acgtc123456798", AlphabetType.AmbiguousDna).SetName("Numbers instead of nucleotide acids fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(String.Empty, AlphabetType.AmbiguousDna).SetName("Empty string fails").Throws(typeof(ArgumentException));
+            #endregion
         }
 
         [Test, TestCaseSource("RnaSequence_SanityChecking_TestCases")]
-        public void RnaSequence_SanityChecking(string nucleotides)
+        public void RnaSequence_SanityChecking(string nucleotides, AlphabetType alphabet)
         {
-            var rna = new RnaSequence(nucleotides);
+            var rna = new RnaSequence(nucleotides, alphabet);
             Assert.IsInstanceOf<RnaSequence>(rna);
         }
 
         public IEnumerable<ITestCaseData> RnaSequence_SanityChecking_TestCases()
         {
-            yield return new TestCaseData(_rnaNucleotides).SetName("Normal RNA sequence");
-            yield return new TestCaseData(_dnaNucleotides).SetName("DNA nucleotide sequence fails").Throws(typeof(ArgumentException));
-            yield return new TestCaseData("123456798").SetName("Numbers instead of nucleotide acids").Throws(typeof(ArgumentException));
-            yield return new TestCaseData(String.Empty).SetName("Empty string instead of nucleotide acids").Throws(typeof(ArgumentException));
+            #region Mixing and matching ambiguous and strict DNA and RNA alphabets with ambiguous and strict DNA and RNA sequences
+            yield return new TestCaseData(_strictDna, AlphabetType.StrictDna).SetName("Strict DNA sequence with strict DNA alphabet").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_strictDna, AlphabetType.AmbiguousDna).SetName("Strict DNA sequence with ambiguous DNA alphabet").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_ambiguousDna, AlphabetType.StrictDna).SetName("Ambiguous DNA sequence with strict DNA alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_ambiguousDna, AlphabetType.AmbiguousDna).SetName("Ambiguous DNA sequence with ambiguous DNA alphabet").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_strictRna, AlphabetType.StrictDna).SetName("Strict Rna with Strict Dna alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_ambiguousDna, AlphabetType.StrictDna).SetName("Ambiguous RNA sequence with strict DNA alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_strictRna, AlphabetType.AmbiguousDna).SetName("Strict RNA sequence with ambiguous DNA alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_ambiguousRna, AlphabetType.AmbiguousDna).SetName("Ambiguous RNA with Ambiguous Dna alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_ambiguousRna, AlphabetType.StrictDna).SetName("Ambiguous RNA with Strict Dna alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_strictRna, AlphabetType.AmbiguousDna).SetName("Strict RNA with Ambiguous Dna alphabet fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_strictRna, AlphabetType.StrictRna).SetName("Strict RNA with Strict RNA alphabet");
+            yield return new TestCaseData(_ambiguousRna, AlphabetType.AmbiguousRna).SetName("Ambiguous RNA with Ambiguous RNA alphabet fails");
+            yield return new TestCaseData(_strictRna, AlphabetType.AmbiguousRna).SetName("Strict RNA with Ambiguous RNA alphabet fails");
+            #endregion
+
+            #region Ambiguous fragment testing
+            yield return new TestCaseData(_indeterminateFragment, AlphabetType.StrictDna).SetName("Ambiguous fragment with Strict DNA alphabet").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_indeterminateFragment, AlphabetType.AmbiguousDna).SetName("Ambiguous fragment with Ambiguous DNA alphabet").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(_indeterminateFragment, AlphabetType.StrictRna).SetName("Ambiguous fragment with Strict RNA alphabet");
+            yield return new TestCaseData(_indeterminateFragment, AlphabetType.AmbiguousRna).SetName("Ambiguous fragment with Ambiguous DNA alphabet");
+            #endregion
+
+            #region Nonspecific tests
+            yield return new TestCaseData("acgtc123456798", AlphabetType.AmbiguousDna).SetName("Numbers instead of nucleotide acids fails").Throws(typeof(ArgumentException));
+            yield return new TestCaseData(String.Empty, AlphabetType.AmbiguousDna).SetName("Empty string fails").Throws(typeof(ArgumentException));
+            #endregion
         }
 
         [Test, TestCaseSource("Equality_TestCases")]
@@ -53,84 +116,102 @@ namespace BCompute.UnitTests
             return a.Equals(b);
         }
 
+        private static readonly DnaSequence _strictDnaSequence = new DnaSequence(_strictDna, AlphabetType.StrictDna);
+        private static readonly DnaSequence _strictDnaWithAmbiguousAlphabet = new DnaSequence(_strictDna, AlphabetType.AmbiguousDna);
+        private static readonly DnaSequence _ambiguousDnaSequence = new DnaSequence(_ambiguousDna, AlphabetType.AmbiguousDna);
+
+        private static readonly RnaSequence _strictRnaSequence = new RnaSequence(_strictRna, AlphabetType.StrictRna);
+        private static readonly RnaSequence _strictRnaWithAmbiguousAlphabet = new RnaSequence(_strictRna, AlphabetType.AmbiguousRna);
+        private static readonly RnaSequence _ambiguousRnaSequence = new RnaSequence(_ambiguousRna, AlphabetType.AmbiguousRna);
+        private static readonly DnaSequence _indeterminateDnaSequence = new DnaSequence(_indeterminateFragment, AlphabetType.StrictDna);
+        private static readonly RnaSequence _indeterminateRnaSequence = new RnaSequence(_indeterminateFragment, AlphabetType.StrictRna);
         public IEnumerable<ITestCaseData> Equality_TestCases()
         {
-            var dnaA = new DnaSequence(_dnaNucleotides);
-            var dnaB = new DnaSequence(_dnaNucleotides);
-            yield return new TestCaseData(dnaA, dnaB).Returns(true).SetName("Two DNA objects with the same sequence");
-            yield return new TestCaseData(dnaA, new DnaSequence(_dnaComplement)).Returns(false).SetName("Two DNA objects with different sequences");
+            yield return new TestCaseData(_strictDnaSequence, _strictDnaWithAmbiguousAlphabet).Returns(true).SetName("DNA objects with different alphabets, but the same nucleotides are equal");
+            yield return new TestCaseData(_strictDnaSequence, _ambiguousDnaSequence).Returns(false).SetName("Two DNA objects with different sequences");
 
-            var rnaA = new RnaSequence(_rnaNucleotides);
-            var rnaB = new RnaSequence(_rnaNucleotides);
-            yield return new TestCaseData(rnaA, rnaB).Returns(true).SetName("Two RNA objects with the same sequence");
-            yield return new TestCaseData(rnaA, new RnaSequence(_rnaComplement)).Returns(false).SetName("Two RNA objects with different sequences");
+            yield return new TestCaseData(_strictRnaSequence, _strictRnaWithAmbiguousAlphabet).Returns(true).SetName("Two RNA objects with the same sequence but different alphabets");
+            yield return new TestCaseData(_strictRnaSequence, _ambiguousRnaSequence).Returns(false).SetName("Two RNA objects with different sequences");
 
-            yield return new TestCaseData(rnaA, dnaA).Returns(false).SetName("A DNA and an RNA object are not equal");
-            yield return new TestCaseData(new RnaSequence(_ambiguousFragment), new DnaSequence(_ambiguousFragment)).Returns(false).SetName("An RNA object and a DNA object with the same fragment are not equal");
-        }
-
-        [Test, TestCaseSource("GenerateNucleotideSequence_TestCases")]
-        public void GenerateNucleotideSequenceTest(string nucleotides, NucleotideSequence expected)
-        {
-            var actual = NucleotideSequence.GenerateNucleotideSequence(nucleotides);
-            Assert.AreEqual(expected, actual);
-        }
-
-        public IEnumerable<ITestCaseData> GenerateNucleotideSequence_TestCases()
-        {
-            yield return new TestCaseData(_dnaNucleotides, new DnaSequence(_dnaNucleotides)).SetName("DNA nucleotides with DNA type");
-            yield return new TestCaseData(_rnaNucleotides, new RnaSequence(_rnaNucleotides)).SetName("RNA nucleotides with RNA type");
+            yield return new TestCaseData(_strictDnaSequence, _strictRnaSequence).Returns(false).SetName("A DNA and an RNA object are not equal");
+            yield return new TestCaseData(_indeterminateDnaSequence, _indeterminateRnaSequence).Returns(false).SetName("An RNA object and a DNA object with the same fragment are not equal");
         }
 
         [Test, TestCaseSource("ComputeHammingDistance_TestCases")]
         public long ComputeHammingDistanceTest(NucleotideSequence a, NucleotideSequence b)
         {
-            return NucleotideSequence.ComputeHammingDistance(a, b);
+            return NucleotideSequence.CalculateHammingDistance(a, b);
         }
 
         public IEnumerable<ITestCaseData> ComputeHammingDistance_TestCases()
         {
-            var dnaA = new DnaSequence(_dnaNucleotides);
-            var dnaB = new DnaSequence(_dnaNucleotides);
-            var compDnaA = new DnaSequence(_dnaComplement);
+            var compDnaA = new DnaSequence(_strictDnaComplement, AlphabetType.StrictDna);
 
-            yield return new TestCaseData(dnaA, dnaB).Returns(0).SetName("Same DNA sequences return 0");
-            yield return new TestCaseData(dnaA, compDnaA).Returns(20).SetName("DNA sequences off by 20 characters return 20");
+            yield return new TestCaseData(_strictDnaSequence, _strictDnaSequence).Returns(0).SetName("Same DNA sequences return 0");
+            yield return new TestCaseData(_strictDnaSequence, compDnaA).Returns(20).SetName("DNA sequences off by 20 characters return 20");
+            yield return new TestCaseData(_strictDnaSequence, _strictDnaWithAmbiguousAlphabet).SetName("DNA sequences with different alphabets fails").Throws(typeof(ArgumentException));
 
+            var compRnaA = new RnaSequence(_strictRnaComplement, AlphabetType.StrictRna);
 
-            var rnaA = new RnaSequence(_rnaNucleotides);
-            var rnaB = new RnaSequence(_rnaNucleotides);
-            var compRnaA = new RnaSequence(_rnaComplement);
+            yield return new TestCaseData(_strictRnaSequence, _strictRnaSequence).Returns(0).SetName("Same RNA sequences return 0");
+            yield return new TestCaseData(_strictRnaSequence, compRnaA).Returns(20).SetName("RNA sequences off by 20 characters return 20");
+            yield return new TestCaseData(_strictRnaSequence, _strictRnaWithAmbiguousAlphabet).SetName("RNA sequences with different alphabets fails").Throws(typeof(ArgumentException));
 
-            yield return new TestCaseData(rnaA, rnaB).Returns(0).SetName("Same RNA sequences return 0");
-            yield return new TestCaseData(rnaA, compRnaA).Returns(20).SetName("RNA sequences off by 20 characters return 20");
-
-            yield return
-                new TestCaseData(rnaA, dnaA).Throws(typeof (ArgumentException))
-                    .SetName("Computing the Hamming distance between and RNA strand and a DNA strand throws and exception");
+            yield return new TestCaseData(_strictDnaSequence, _strictRnaSequence).SetName("Comparing an RNA sequence to a DNA sequence fails").Throws(typeof(ArgumentException));
         }
 
         [Test, TestCaseSource("ComplementAndReverseComplement_TestCases")]
-        public void ComplementAndReverseComplementTests(NucleotideSequence actual, NucleotideSequence expectedComplement, NucleotideSequence expectedReverseComplement)
+        public void ComplementAndReverseComplementTests(NucleotideSequence incoming, NucleotideSequence expectedComplement, NucleotideSequence expectedReverseComplement)
         {
-            var computedComplement = NucleotideSequence.GenerateNucleotideSequence(actual.Complement);
-            var computedReverseComplement = NucleotideSequence.GenerateNucleotideSequence(actual.ReverseComplement);
+            var computedComplement = incoming.Complement;
+            var computedReverseComplement = incoming.ReverseComplement;
 
-            Assert.AreEqual(expectedComplement, computedComplement);
-            Assert.AreEqual(computedReverseComplement, expectedReverseComplement);
+            Assert.AreEqual(expectedComplement.Sequence, computedComplement.Sequence);
+            CollectionAssert.AreEquivalent(expectedComplement.SymbolCounts, computedComplement.SymbolCounts);
+            Assert.AreEqual(computedReverseComplement.Sequence, expectedReverseComplement.Sequence);
         }
 
         public IEnumerable<ITestCaseData> ComplementAndReverseComplement_TestCases()
         {
-            var dna = new DnaSequence(_dnaNucleotides);
-            var dnaComplement = new DnaSequence(_dnaComplement);
-            var dnaReverseComplement = new DnaSequence(_dnaReverseComplement);
-            yield return new TestCaseData(dna, dnaComplement, dnaReverseComplement).SetName("DNA sequence complement and reverse complement");
+            var strictDnaComplement = new DnaSequence(_strictDnaComplement, AlphabetType.StrictDna);
+            var strictDnaReverseComplement = new DnaSequence(_strictDnaReverseComplement, AlphabetType.StrictDna);
+            yield return new TestCaseData(_strictDnaSequence, strictDnaComplement, strictDnaReverseComplement).SetName("DNA sequence complement and reverse complement");
 
-            var rna = new RnaSequence(_rnaNucleotides);
-            var rnaComplement = new RnaSequence(_rnaComplement);
-            var rnaReverseComplement = new RnaSequence(_rnaReverseComplement);
-            yield return new TestCaseData(rna, rnaComplement, rnaReverseComplement).SetName("RNA sequence complement and reverse complement");
+            var strictRna = new RnaSequence(_strictRna, AlphabetType.StrictRna);
+            var strictRnaComplement = new RnaSequence(_strictRnaComplement, AlphabetType.StrictRna);
+            var strictRnaReverseComplement = new RnaSequence(_strictRnaReverseComplement, AlphabetType.StrictRna);
+            yield return new TestCaseData(strictRna, strictRnaComplement, strictRnaReverseComplement).SetName("RNA sequence complement and reverse complement");
+        }
+
+        [Test, TestCaseSource("Transcribe_TestCaseSource")]
+        public void Transcribe_TestCases(NucleotideSequence incoming, NucleotideSequence expected)
+        {
+            var actual = incoming.Transcribe();
+            Assert.AreEqual(expected.Sequence, actual.Sequence);
+            CollectionAssert.AreEquivalent(expected.SymbolCounts, actual.SymbolCounts);
+            Assert.AreEqual(expected.ActiveAlphabet, actual.ActiveAlphabet);
+            CollectionAssert.AreEquivalent(expected.AllowedSymbols, actual.AllowedSymbols);
+        }
+
+        public IEnumerable<ITestCaseData> Transcribe_TestCaseSource()
+        {
+            yield return new TestCaseData(_strictDnaSequence, _strictRnaSequence).SetName("Strict DNA is converted to Strict RNA");
+            yield return new TestCaseData(_ambiguousDnaSequence, _ambiguousRnaSequence).SetName("Ambiguous DNA is converted to Ambiguous RNA");
+            yield return new TestCaseData(_strictRnaSequence, _strictDnaSequence).SetName("Strict RNA is converted to Strict DNA");
+            yield return new TestCaseData(_ambiguousRnaSequence, _ambiguousDnaSequence).SetName("Ambiguous RNA is converted to Ambiguous DNA");
+
+            //Strict DNA to Ambiguous RNA fails
+            //Ambiguous DNA to Strict RNA fails
+
+            //Strict RNA to Strict DNA
+            //Strict RNA to Ambiguous DNA fails
+            //Ambiguous RNA to Ambiguous DNA
+            //Ambiguous RNA to Strict DNA fails
+
+            //Strict RNA with Strict RNA fails
+            //Ambiguous RNA with Ambiguous RNA fails
+            //Strict RNA with Ambiguous RNA fails
+            //Ambiguous RNA with Strict RNA fails
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace BCompute.Data.GeneticCodes
+﻿namespace BCompute.Data.GeneticCode
 {
     public enum GeneticCode
     {

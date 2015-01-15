@@ -3,7 +3,7 @@
     /// <summary>
     /// ProteinType names and symbols adapted from http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
     /// </summary>
-    public enum ProteinType
+    public enum AminoAcid
     {
         Alanine = 'A',
         AspartateOrAsparagine = 'B',

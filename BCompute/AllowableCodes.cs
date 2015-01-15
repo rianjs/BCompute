@@ -14,6 +14,8 @@
     /// </summary>
     public enum Nucleotide
     {
+        //ambiguous dna is usually: GATCRYWSMKHBVDN (no uracil)
+        //ambiguous rna is usually: GAUCRYWSMKHBVDN (no thymine)
         Adenine = 'A',
         NotAdenine = 'B',
         Cytosine = 'C',
@@ -30,7 +32,7 @@
         NotThymine = 'V',
         Weak = 'W',
         Pyrimidine = 'Y',
-        Gap = '-',
+        Gap = '-',      //Does not appear in some ambiguous DNA/RNA alphabets
     }
 
     public enum StrictRna
