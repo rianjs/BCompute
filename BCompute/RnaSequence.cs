@@ -46,8 +46,8 @@ namespace BCompute
 
         public override NucleotideSequence Transcribe()
         {
-            var alphabet = ActiveAlphabet == AlphabetType.StrictDna ? AlphabetType.StrictRna : AlphabetType.AmbiguousRna;
-            var newSymbolCounts = SymbolCounts;
+            var alphabet = ActiveAlphabet == AlphabetType.StrictRna ? AlphabetType.StrictDna : AlphabetType.AmbiguousDna;
+            var newSymbolCounts = new Dictionary<Nucleotide, long>(SymbolCounts);
             var count = SymbolCounts[Nucleotide.Uracil];
             newSymbolCounts.Remove(Nucleotide.Uracil);
             newSymbolCounts.Add(Nucleotide.Thymine, count);

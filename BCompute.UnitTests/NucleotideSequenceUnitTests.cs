@@ -27,7 +27,7 @@ namespace BCompute.UnitTests
         #endregion
 
         #region Ambiguous RNA nucleotide sequences and complements
-        private const string _ambiguousRna = "BCGUAGCUAGCUGAAAACGV";
+        private const string _ambiguousRna = "ABGUAGCUAVCUGAAAACGU";
         private const string _ambiguousRnaComplement = "VGCAUCGAUCGACUUUUGCB";
         private const string _ambiguousRnaReverseComplement = "BCGUUUUCAGCUAGCUACGV";
         #endregion
@@ -161,10 +161,10 @@ namespace BCompute.UnitTests
         }
 
         [Test, TestCaseSource("ComplementAndReverseComplement_TestCases")]
-        public void ComplementAndReverseComplementTests(NucleotideSequence actual, NucleotideSequence expectedComplement, NucleotideSequence expectedReverseComplement)
+        public void ComplementAndReverseComplementTests(NucleotideSequence incoming, NucleotideSequence expectedComplement, NucleotideSequence expectedReverseComplement)
         {
-            var computedComplement = actual.Complement;
-            var computedReverseComplement = actual.ReverseComplement;
+            var computedComplement = incoming.Complement;
+            var computedReverseComplement = incoming.ReverseComplement;
 
             Assert.AreEqual(expectedComplement.Sequence, computedComplement.Sequence);
             CollectionAssert.AreEquivalent(expectedComplement.SymbolCounts, computedComplement.SymbolCounts);
@@ -177,10 +177,10 @@ namespace BCompute.UnitTests
             var strictDnaReverseComplement = new DnaSequence(_strictDnaReverseComplement, AlphabetType.StrictDna);
             yield return new TestCaseData(_strictDnaSequence, strictDnaComplement, strictDnaReverseComplement).SetName("DNA sequence complement and reverse complement");
 
-            var rna = new RnaSequence(_strictRna, AlphabetType.StrictRna);
-            var rnaComplement = new RnaSequence(_strictRnaComplement, AlphabetType.StrictRna);
-            var rnaReverseComplement = new RnaSequence(_strictRnaReverseComplement, AlphabetType.StrictRna);
-            yield return new TestCaseData(rna, rnaComplement, rnaReverseComplement).SetName("RNA sequence complement and reverse complement");
+            var strictRna = new RnaSequence(_strictRna, AlphabetType.StrictRna);
+            var strictRnaComplement = new RnaSequence(_strictRnaComplement, AlphabetType.StrictRna);
+            var strictRnaReverseComplement = new RnaSequence(_strictRnaReverseComplement, AlphabetType.StrictRna);
+            yield return new TestCaseData(strictRna, strictRnaComplement, strictRnaReverseComplement).SetName("RNA sequence complement and reverse complement");
         }
 
         [Test, TestCaseSource("Transcribe_TestCaseSource")]
@@ -196,11 +196,9 @@ namespace BCompute.UnitTests
         public IEnumerable<ITestCaseData> Transcribe_TestCaseSource()
         {
             yield return new TestCaseData(_strictDnaSequence, _strictRnaSequence).SetName("Strict DNA is converted to Strict RNA");
-            //yield return new TestCaseData(_ambiguousDnaSequence, _ambiguousRnaSequence).SetName("Ambiguous DNA is converted to Ambiguous RNA");
+            yield return new TestCaseData(_ambiguousDnaSequence, _ambiguousRnaSequence).SetName("Ambiguous DNA is converted to Ambiguous RNA");
             yield return new TestCaseData(_strictRnaSequence, _strictDnaSequence).SetName("Strict RNA is converted to Strict DNA");
-            //yield return new TestCaseData(_ambiguousRnaSequence, _ambiguousDnaSequence).SetName("Ambiguous RNA is converted to Ambiguous DNA");
-
-
+            yield return new TestCaseData(_ambiguousRnaSequence, _ambiguousDnaSequence).SetName("Ambiguous RNA is converted to Ambiguous DNA");
 
             //Strict DNA to Ambiguous RNA fails
             //Ambiguous DNA to Strict RNA fails

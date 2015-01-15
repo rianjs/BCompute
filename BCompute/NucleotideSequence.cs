@@ -94,7 +94,7 @@ namespace BCompute
         }
 
         //Test: 3 tests: nucleotide not part of the allowed symbols, nucleotide allowed, but not present, normal case
-        public Dictionary<Nucleotide, long> SymbolCounts { get; protected set; }
+        public Dictionary<Nucleotide, long> SymbolCounts { get; private set; }
         public virtual long NucleotideCount(Nucleotide nucleotide)
         {
             if (!_allowedSymbols.Contains(nucleotide))

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using BCompute.Data.GeneticCode;
 
@@ -11,72 +12,51 @@ namespace BCompute.Data.Alphabets
         private const string _invalidGeneticCode = "{0} is not a valid genetic code";
 
         #region Nucleotide sets
-        private static HashSet<Nucleotide> _allNucleotides;
+        private static readonly Nucleotide[] _allNucleotides = (Nucleotide[]) Enum.GetValues(typeof(Nucleotide));
         public static ISet<Nucleotide> AllNucleotides
         {
             get
             {
-                if (_allNucleotides == null)
-                {
-                    _allNucleotides = new HashSet<Nucleotide>((Nucleotide[])Enum.GetValues(typeof(Nucleotide)));
-                }
-                return _allNucleotides;
+                return new HashSet<Nucleotide>(_allNucleotides);
             }
         }
 
-        private static HashSet<Nucleotide> _unambiguousDna;
+        private static readonly Nucleotide[] _strictDnaEnum = (Nucleotide[]) Enum.GetValues(typeof (StrictDna));
         public static ISet<Nucleotide> StrictDna
         {
             get
             {
-                if (_unambiguousDna == null)
-                {
-                    _unambiguousDna = new HashSet<Nucleotide>((Nucleotide[])Enum.GetValues(typeof(StrictDna)));
-                }
-                return _unambiguousDna;
+                return new HashSet<Nucleotide>(_strictDnaEnum);
             }
         }
 
         public static ISet<Nucleotide> NotInAnyDnaAlphabet = new HashSet<Nucleotide> { Nucleotide.Uracil };
 
-        private static HashSet<Nucleotide> _ambiguousDna;
         public static ISet<Nucleotide> AmbiguousDna
         {
             get
             {
-                if (_ambiguousDna == null)
-                {
-                    _ambiguousDna = new HashSet<Nucleotide>(AllNucleotides.Except(NotInAnyDnaAlphabet));
-                }
-                return _ambiguousDna;
+                return new HashSet<Nucleotide>(AllNucleotides.Except(NotInAnyDnaAlphabet));
             }
         }
 
-        private static HashSet<Nucleotide> _unambiguousRna;
+        private static readonly Nucleotide[] _strictRnaEnum = (Nucleotide[]) Enum.GetValues(typeof (StrictRna));
         public static ISet<Nucleotide> StrictRna
         {
             get
             {
-                if (_unambiguousRna == null)
-                {
-                    _unambiguousRna = new HashSet<Nucleotide>((Nucleotide[])Enum.GetValues(typeof(StrictRna)));
-                }
-                return _unambiguousRna;
+                return new HashSet<Nucleotide>(_strictRnaEnum);
             }
         }
 
         public static ISet<Nucleotide> NotInAnyRnaAlphabet = new HashSet<Nucleotide> { Nucleotide.Thymine };
 
-        private static HashSet<Nucleotide> _ambiguousRna;
+        private static readonly IEnumerable<Nucleotide> _notInRnaAlphabet = AllNucleotides.Except(NotInAnyRnaAlphabet);
         public static ISet<Nucleotide> AmbiguousRna
         {
             get
             {
-                if (_ambiguousRna == null)
-                {
-                    _ambiguousRna = new HashSet<Nucleotide>(AllNucleotides.Except(NotInAnyRnaAlphabet));
-                }
-                return _ambiguousRna;
+                return new HashSet<Nucleotide>(_notInRnaAlphabet);
             }
         }
         #endregion
@@ -103,7 +83,6 @@ namespace BCompute.Data.Alphabets
             }
         }
 
-        private static Dictionary<Nucleotide, Nucleotide> _ambiguousDnaComplements;
         /// <summary>
         /// Complement table for the ambiguous DNA alphabet
         /// </summary>
@@ -111,31 +90,26 @@ namespace BCompute.Data.Alphabets
         {
             get
             {
-                if (_ambiguousDnaComplements == null)
+                return new Dictionary<Nucleotide, Nucleotide>
                 {
-                    _ambiguousDnaComplements = new Dictionary<Nucleotide, Nucleotide>
-                    {
-                        {Nucleotide.Adenine, Nucleotide.Thymine}, //A <=> T
-                        {Nucleotide.Thymine, Nucleotide.Adenine},
-                        {Nucleotide.NotAdenine, Nucleotide.NotThymine}, //B <=> V
-                        {Nucleotide.NotThymine, Nucleotide.NotAdenine},
-                        {Nucleotide.Cytosine, Nucleotide.Guanine}, //C <=> G
-                        {Nucleotide.Guanine, Nucleotide.Cytosine},
-                        {Nucleotide.NotGuanine, Nucleotide.NotCytosine}, //D <=> H
-                        {Nucleotide.NotCytosine, Nucleotide.NotGuanine},
-                        {Nucleotide.Keto, Nucleotide.Amino}, //K <=> M
-                        {Nucleotide.Amino, Nucleotide.Keto},
-                        {Nucleotide.Strong, Nucleotide.Strong}, //S <=> S
-                        {Nucleotide.Weak, Nucleotide.Weak}, //W <=> W
-                        {Nucleotide.Unknown, Nucleotide.Unknown}, //N <=> N
-                        {Nucleotide.Gap, Nucleotide.Gap}, //- <=> -
-                    };
-                }
-                return _ambiguousDnaComplements;
+                    {Nucleotide.Adenine, Nucleotide.Thymine}, //A <=> T
+                    {Nucleotide.Thymine, Nucleotide.Adenine},
+                    {Nucleotide.NotAdenine, Nucleotide.NotThymine}, //B <=> V
+                    {Nucleotide.NotThymine, Nucleotide.NotAdenine},
+                    {Nucleotide.Cytosine, Nucleotide.Guanine}, //C <=> G
+                    {Nucleotide.Guanine, Nucleotide.Cytosine},
+                    {Nucleotide.NotGuanine, Nucleotide.NotCytosine}, //D <=> H
+                    {Nucleotide.NotCytosine, Nucleotide.NotGuanine},
+                    {Nucleotide.Keto, Nucleotide.Amino}, //K <=> M
+                    {Nucleotide.Amino, Nucleotide.Keto},
+                    {Nucleotide.Strong, Nucleotide.Strong}, //S <=> S
+                    {Nucleotide.Weak, Nucleotide.Weak}, //W <=> W
+                    {Nucleotide.Unknown, Nucleotide.Unknown}, //N <=> N
+                    {Nucleotide.Gap, Nucleotide.Gap}, //- <=> -
+                };
             }
         }
 
-        private static Dictionary<Nucleotide, Nucleotide> _unambiguousDnaComplements;
         /// <summary>
         /// Complement table for the strict DNA alphabet
         /// </summary>
@@ -143,21 +117,16 @@ namespace BCompute.Data.Alphabets
         {
             get
             {
-                if (_unambiguousDnaComplements == null)
+                return new Dictionary<Nucleotide, Nucleotide>
                 {
-                    _unambiguousDnaComplements = new Dictionary<Nucleotide, Nucleotide>
-                    {
-                        {Nucleotide.Adenine, Nucleotide.Thymine},
-                        {Nucleotide.Guanine, Nucleotide.Cytosine},
-                        {Nucleotide.Thymine, Nucleotide.Adenine},
-                        {Nucleotide.Cytosine, Nucleotide.Guanine}
-                    };
-                }
-                return _unambiguousDnaComplements;
+                    {Nucleotide.Adenine, Nucleotide.Thymine},
+                    {Nucleotide.Guanine, Nucleotide.Cytosine},
+                    {Nucleotide.Thymine, Nucleotide.Adenine},
+                    {Nucleotide.Cytosine, Nucleotide.Guanine}
+                };
             }
         }
 
-        private static Dictionary<Nucleotide, Nucleotide> _ambiguousRnaComplements;
         /// <summary>
         /// Complement table for the ambiguous RNA alphabet
         /// </summary>
@@ -165,31 +134,26 @@ namespace BCompute.Data.Alphabets
         {
             get
             {
-                if (_ambiguousRnaComplements == null)
+                return new Dictionary<Nucleotide, Nucleotide>
                 {
-                    _ambiguousRnaComplements = new Dictionary<Nucleotide, Nucleotide>
-                    {
-                        {Nucleotide.Adenine, Nucleotide.Uracil}, //A <=> U
-                        {Nucleotide.Uracil, Nucleotide.Adenine},
-                        {Nucleotide.NotAdenine, Nucleotide.NotThymine}, //B <=> V
-                        {Nucleotide.NotThymine, Nucleotide.NotAdenine},
-                        {Nucleotide.Cytosine, Nucleotide.Guanine}, //C <=> G
-                        {Nucleotide.Guanine, Nucleotide.Cytosine},
-                        {Nucleotide.NotGuanine, Nucleotide.NotCytosine}, //D <=> H
-                        {Nucleotide.NotCytosine, Nucleotide.NotGuanine},
-                        {Nucleotide.Keto, Nucleotide.Amino}, //K <=> M
-                        {Nucleotide.Amino, Nucleotide.Keto},
-                        {Nucleotide.Strong, Nucleotide.Strong}, //S <=> S
-                        {Nucleotide.Weak, Nucleotide.Weak}, //W <=> W
-                        {Nucleotide.Unknown, Nucleotide.Unknown}, //N <=> N
-                        {Nucleotide.Gap, Nucleotide.Gap}, //- <=> -
-                    };
-                }
-                return _ambiguousRnaComplements;
+                    {Nucleotide.Adenine, Nucleotide.Uracil}, //A <=> U
+                    {Nucleotide.Uracil, Nucleotide.Adenine},
+                    {Nucleotide.NotAdenine, Nucleotide.NotThymine}, //B <=> V
+                    {Nucleotide.NotThymine, Nucleotide.NotAdenine},
+                    {Nucleotide.Cytosine, Nucleotide.Guanine}, //C <=> G
+                    {Nucleotide.Guanine, Nucleotide.Cytosine},
+                    {Nucleotide.NotGuanine, Nucleotide.NotCytosine}, //D <=> H
+                    {Nucleotide.NotCytosine, Nucleotide.NotGuanine},
+                    {Nucleotide.Keto, Nucleotide.Amino}, //K <=> M
+                    {Nucleotide.Amino, Nucleotide.Keto},
+                    {Nucleotide.Strong, Nucleotide.Strong}, //S <=> S
+                    {Nucleotide.Weak, Nucleotide.Weak}, //W <=> W
+                    {Nucleotide.Unknown, Nucleotide.Unknown}, //N <=> N
+                    {Nucleotide.Gap, Nucleotide.Gap}, //- <=> -
+                };
             }
         }
 
-        private static Dictionary<Nucleotide, Nucleotide> _unambiguousRnaComplements;
         /// <summary>
         /// Complement table for the strict RNA alphabet
         /// </summary>
@@ -197,17 +161,13 @@ namespace BCompute.Data.Alphabets
         {
             get
             {
-                if (_unambiguousRnaComplements == null)
+                return new Dictionary<Nucleotide, Nucleotide>
                 {
-                    _unambiguousRnaComplements = new Dictionary<Nucleotide, Nucleotide>
-                    {
-                        {Nucleotide.Adenine, Nucleotide.Uracil},
-                        {Nucleotide.Guanine, Nucleotide.Cytosine},
-                        {Nucleotide.Uracil, Nucleotide.Adenine},
-                        {Nucleotide.Cytosine, Nucleotide.Guanine}
-                    };
-                }
-                return _unambiguousRnaComplements;
+                    {Nucleotide.Adenine, Nucleotide.Uracil},
+                    {Nucleotide.Guanine, Nucleotide.Cytosine},
+                    {Nucleotide.Uracil, Nucleotide.Adenine},
+                    {Nucleotide.Cytosine, Nucleotide.Guanine}
+                };
             }
         }
 
@@ -233,7 +193,6 @@ namespace BCompute.Data.Alphabets
             }
         }
 
-        private static Dictionary<Nucleotide, Nucleotide> _unambiguousRnaTranslationTable;
         /// <summary>
         /// Transcription table from the strict RNA alphabet to the strict DNA alphabet
         /// </summary>
@@ -241,21 +200,16 @@ namespace BCompute.Data.Alphabets
         {
             get
             {
-                if (_unambiguousRnaTranslationTable == null)
+                return new Dictionary<Nucleotide, Nucleotide>
                 {
-                    _unambiguousRnaTranslationTable = new Dictionary<Nucleotide, Nucleotide>
-                    {
-                        {Nucleotide.Adenine, Nucleotide.Adenine},
-                        {Nucleotide.Thymine, Nucleotide.Uracil},
-                        {Nucleotide.Guanine, Nucleotide.Cytosine},
-                        {Nucleotide.Cytosine, Nucleotide.Guanine},
-                    };
-                }
-                return _unambiguousRnaTranslationTable;
+                    {Nucleotide.Adenine, Nucleotide.Adenine},
+                    {Nucleotide.Thymine, Nucleotide.Uracil},
+                    {Nucleotide.Guanine, Nucleotide.Cytosine},
+                    {Nucleotide.Cytosine, Nucleotide.Guanine},
+                };
             }
         }
 
-        private static Dictionary<Nucleotide, Nucleotide> _ambiguousRnaTranslationTable;
         /// <summary>
         /// Transcription table from the ambiguous RNA alphabet to the ambiguous DNA alphabet
         /// </summary>
@@ -263,17 +217,13 @@ namespace BCompute.Data.Alphabets
         {
             get
             {
-                if (_ambiguousRnaTranslationTable == null)
-                {
-                    _ambiguousRnaTranslationTable = new Dictionary<Nucleotide, Nucleotide>(AmbiguousDnaComplements);
-                    _ambiguousRnaTranslationTable.Remove(Nucleotide.Thymine);
-                    _ambiguousRnaTranslationTable.Add(Nucleotide.Uracil, Nucleotide.Thymine);
-                }
-                return _ambiguousRnaTranslationTable;
+                var computedTranslation = new Dictionary<Nucleotide, Nucleotide>(AmbiguousDnaComplements);
+                computedTranslation.Remove(Nucleotide.Thymine);
+                computedTranslation.Add(Nucleotide.Uracil, Nucleotide.Thymine);
+                return computedTranslation;
             }
         }
 
-        private static Dictionary<Nucleotide, Nucleotide> _ambiguousDnaTranscriptionTable;
         /// <summary>
         /// Transcription table from the ambiguous DNA alphabet to the ambiguous RNA alphabet
         /// </summary>
@@ -281,17 +231,13 @@ namespace BCompute.Data.Alphabets
         {
             get
             {
-                if (_ambiguousDnaTranscriptionTable == null)
-                {
-                    _ambiguousDnaTranscriptionTable = new Dictionary<Nucleotide, Nucleotide>(AmbiguousRnaTranslationTable);
-                    _ambiguousRnaTranslationTable.Remove(Nucleotide.Uracil);
-                    _ambiguousRnaTranslationTable.Add(Nucleotide.Thymine, Nucleotide.Uracil);
-                }
-                return _ambiguousDnaTranscriptionTable;
+                var computedTranscriptionTable = new Dictionary<Nucleotide, Nucleotide>(AmbiguousRnaTranslationTable);
+                computedTranscriptionTable.Remove(Nucleotide.Uracil);
+                computedTranscriptionTable.Add(Nucleotide.Thymine, Nucleotide.Uracil);
+                return computedTranscriptionTable;
             }
         }
 
-        private static Dictionary<Nucleotide, Nucleotide> _unambiguousDnaTranscriptionTable;
         /// <summary>
         /// Transcription table from the strict DNA alphabet to the strict RNA alphabet
         /// </summary>
@@ -299,13 +245,10 @@ namespace BCompute.Data.Alphabets
         {
             get
             {
-                if (_unambiguousDnaTranscriptionTable == null)
-                {
-                    _unambiguousDnaTranscriptionTable = new Dictionary<Nucleotide, Nucleotide>(UnambiguousRnaTranslationTable);
-                    _unambiguousDnaTranscriptionTable.Remove(Nucleotide.Thymine);
-                    _unambiguousDnaTranscriptionTable.Add(Nucleotide.Uracil, Nucleotide.Thymine);
-                }
-                return _unambiguousDnaTranscriptionTable;
+                var computedTranscriptionTable = new Dictionary<Nucleotide, Nucleotide>(UnambiguousRnaTranslationTable);
+                computedTranscriptionTable.Remove(Nucleotide.Thymine);
+                computedTranscriptionTable.Add(Nucleotide.Uracil, Nucleotide.Thymine);
+                return computedTranscriptionTable;
             }
         }
 
@@ -427,7 +370,6 @@ namespace BCompute.Data.Alphabets
             return dnaTable;
         }
 
-        private static HashSet<Nucleotide> _ambiguousGcSymbols;
         /// <summary>
         /// Contains the symbols that correspond to GC content in ambiguous DNA and RNA alphabets
         /// </summary>
@@ -435,15 +377,10 @@ namespace BCompute.Data.Alphabets
         {
             get
             {
-                if (_ambiguousGcSymbols == null)
-                {
-                    _ambiguousGcSymbols = new HashSet<Nucleotide> { Nucleotide.Guanine, Nucleotide.Cytosine, Nucleotide.Strong };
-                }
-                return _ambiguousGcSymbols;
+                return new HashSet<Nucleotide> { Nucleotide.Guanine, Nucleotide.Cytosine, Nucleotide.Strong };
             }
         }
 
-        private static HashSet<Nucleotide> _unambiguousGcSymbols;
         /// <summary>
         /// Contains the symbols that correspond to GC content in strict DNA and RNA alphabets
         /// </summary>
@@ -451,11 +388,7 @@ namespace BCompute.Data.Alphabets
         {
             get
             {
-                if (_unambiguousGcSymbols == null)
-                {
-                    _unambiguousGcSymbols = new HashSet<Nucleotide>{Nucleotide.Guanine, Nucleotide.Cytosine};
-                }
-                return _unambiguousGcSymbols;
+                return new HashSet<Nucleotide>{Nucleotide.Guanine, Nucleotide.Cytosine};
             }
         } 
 
