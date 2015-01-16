@@ -66,17 +66,17 @@ namespace BCompute
         /// <summary>
         /// Returns a set of the alphabet symbols that were used to compute the GC content
         /// </summary>
-        ISet<Nucleotide> GcContentSymbols { get; } 
+        ISet<Nucleotide> GcContentSymbols { get; }
 
         /// <summary>
         /// Provides the complementary DnaSequence or RnaSequence object
         /// </summary>
-        NucleotideSequence Complement { get; }
-        
+        NucleotideSequence Complement();
+
         /// <summary>
         /// Provides the reversed complementary DnaSequence or RnaSequence object
         /// </summary>
-        NucleotideSequence ReverseComplement { get; }
+        NucleotideSequence ReverseComplement();
 
         /// <summary>
         /// Returns the Hamming Distance between this nucleotide sequence, and another nucleotide sequence of the same type
