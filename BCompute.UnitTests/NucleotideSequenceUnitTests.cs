@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BCompute.Data.Alphabets;
 using NUnit.Framework;
 
 namespace BCompute.UnitTests
