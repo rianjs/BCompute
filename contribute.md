@@ -33,7 +33,11 @@ If you're not a unit test expert, send me a PR anyway, and I'll help you write s
 At the very least, write good summaries for your public methods so that users get the Intellisense description.
 
 ## Coding conventions
-For the most part, conventions follow Microsoft's Framework Design Guidelines, . They are encapsulated in the `DotSettings` file in the /contribute top-level directory, so if you're using Visual Studio, they'll guide to you do the right thing without too much thinking.
+For the most part, conventions follow Microsoft's Framework Design Guidelines. There are two files in the top-level `/contribute` directory:
+* `CodingStyle.vssettings` contains the C# style guidelines for things like brace style, and so forth.
+* `CodingStyle.DotSettings` contains the variable and method naming conventions settings that can be used with ReSharper. Visual Studio doesn't have built-in support for this kind of style granularity. Alas!
+
+Used together, they'll guide to you do the right thing without too much thinking.
 
 Here's a short list that covers the bread-and-button conventions:
 * Braces on new-lines, Allman style http://en.wikipedia.org/wiki/Indent_style#Allman_style
