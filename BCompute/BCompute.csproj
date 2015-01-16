@@ -61,51 +61,53 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllowableCodes.cs" />
-    <Compile Include="Data\Alphabets\AlphabetType.cs" />
-    <Compile Include="Data\Alphabets\NucleotideAlphabet.cs" />
-    <Compile Include="Data\Alphabets\NucleotideAlphabetDataProvider.cs" />
-    <Compile Include="Data\Alphabets\ProteinAlphabetType.cs" />
-    <Compile Include="Data\Alphabets\AminoAcid.cs" />
-    <Compile Include="Data\Constants.cs" />
-    <Compile Include="Data\GeneticCodes\AlternativeFlatwormMitochondrial.cs" />
-    <Compile Include="Data\GeneticCodes\AlternativeYeastNuclear.cs" />
-    <Compile Include="Data\GeneticCodes\AscidianMitochondrial.cs" />
-    <Compile Include="Data\GeneticCodes\BacterialArchaealPlantPlastid.cs" />
-    <Compile Include="Data\GeneticCodes\CandidateDivisionSr1AndGracilibacteria.cs" />
-    <Compile Include="Data\GeneticCodes\ChlorophyceanMitochondrial.cs" />
-    <Compile Include="Data\GeneticCodes\CiliateDasycladaceanHexamita.cs" />
-    <Compile Include="Data\GeneticCodes\EchinodermFlatwormMitochondrial.cs" />
-    <Compile Include="Data\GeneticCodes\EuplotidNuclear.cs" />
-    <Compile Include="Data\GeneticCodes\GeneticCode.cs" />
-    <Compile Include="Data\GeneticCodes\InvertebrateMitochondria.cs" />
-    <Compile Include="Data\GeneticCodes\MoldProtozoanCoelenterateMitochondrialAndMycoplasmaSpiroplasma.cs" />
-    <Compile Include="Data\GeneticCodes\PterobranchiaMitochondrial.cs" />
-    <Compile Include="Data\GeneticCodes\ScenedesmusObliquusMitochondrial.cs" />
-    <Compile Include="Data\GeneticCodes\StandardGeneticCode.cs" />
-    <Compile Include="Data\GeneticCodes\ThraustochytriumMitochondrial.cs" />
-    <Compile Include="Data\GeneticCodes\TrematodeMitochondrial.cs" />
-    <Compile Include="Data\GeneticCodes\VertebrateMitochondrialCode.cs" />
-    <Compile Include="Data\GeneticCodes\YeastMitochondrialCode.cs" />
+    <Compile Include="Sequences\Alphabets\AllowableCodes.cs" />
+    <Compile Include="Sequences\Alphabets\AlphabetType.cs" />
+    <Compile Include="Sequences\Alphabets\NucleotideAlphabet.cs" />
+    <Compile Include="Sequences\Alphabets\NucleotideAlphabetDataProvider.cs" />
+    <Compile Include="Sequences\Alphabets\ProteinAlphabetType.cs" />
+    <Compile Include="Sequences\Alphabets\AminoAcid.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Sequences\GeneticCodes\AlternativeFlatwormMitochondrial.cs" />
+    <Compile Include="Sequences\GeneticCodes\AlternativeYeastNuclear.cs" />
+    <Compile Include="Sequences\GeneticCodes\AscidianMitochondrial.cs" />
+    <Compile Include="Sequences\GeneticCodes\BacterialArchaealPlantPlastid.cs" />
+    <Compile Include="Sequences\GeneticCodes\CandidateDivisionSr1AndGracilibacteria.cs" />
+    <Compile Include="Sequences\GeneticCodes\ChlorophyceanMitochondrial.cs" />
+    <Compile Include="Sequences\GeneticCodes\CiliateDasycladaceanHexamita.cs" />
+    <Compile Include="Sequences\GeneticCodes\EchinodermFlatwormMitochondrial.cs" />
+    <Compile Include="Sequences\GeneticCodes\EuplotidNuclear.cs" />
+    <Compile Include="Sequences\GeneticCodes\GeneticCode.cs" />
+    <Compile Include="Sequences\GeneticCodes\InvertebrateMitochondria.cs" />
+    <Compile Include="Sequences\GeneticCodes\MoldProtozoanCoelenterateMitochondrialAndMycoplasmaSpiroplasma.cs" />
+    <Compile Include="Sequences\GeneticCodes\PterobranchiaMitochondrial.cs" />
+    <Compile Include="Sequences\GeneticCodes\ScenedesmusObliquusMitochondrial.cs" />
+    <Compile Include="Sequences\GeneticCodes\StandardGeneticCode.cs" />
+    <Compile Include="Sequences\GeneticCodes\ThraustochytriumMitochondrial.cs" />
+    <Compile Include="Sequences\GeneticCodes\TrematodeMitochondrial.cs" />
+    <Compile Include="Sequences\GeneticCodes\VertebrateMitochondrialCode.cs" />
+    <Compile Include="Sequences\GeneticCodes\YeastMitochondrialCode.cs" />
     <Compile Include="Genotype.cs" />
-    <Compile Include="Interfaces\INucleotideAlphabet.cs" />
-    <Compile Include="Interfaces\INucleotideSequence.cs" />
-    <Compile Include="Interfaces\IProteinSequence.cs" />
-    <Compile Include="Interfaces\ISequence.cs" />
+    <Compile Include="Sequences\Alphabets\INucleotideAlphabet.cs" />
+    <Compile Include="Sequences\INucleotideSequence.cs" />
+    <Compile Include="Sequences\IProteinSequence.cs" />
+    <Compile Include="Sequences\ISequence.cs" />
     <Compile Include="Population.cs" />
-    <Compile Include="NucleotideSequence.cs" />
-    <Compile Include="DnaSequence.cs" />
+    <Compile Include="Sequences\NucleotideSequence.cs" />
+    <Compile Include="Sequences\DnaSequence.cs" />
     <Compile Include="FastaSequence.cs" />
     <Compile Include="Maps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProteinSequence.cs" />
+    <Compile Include="Sequences\ProteinSequence.cs" />
     <Compile Include="Recurrence.cs" />
-    <Compile Include="RnaSequence.cs" />
+    <Compile Include="Sequences\RnaSequence.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
