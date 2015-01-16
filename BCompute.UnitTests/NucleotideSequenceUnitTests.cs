@@ -217,8 +217,7 @@ namespace BCompute.UnitTests
         [Test, TestCaseSource("NucleotideCount_TestCases")]
         public long NucleotideCount_Tests(NucleotideSequence haystack, Nucleotide needle)
         {
-            var foo = haystack.NucleotideCount(needle);
-            return foo;
+            return haystack.NucleotideCount(needle);
         }
 
         public IEnumerable<ITestCaseData> NucleotideCount_TestCases()

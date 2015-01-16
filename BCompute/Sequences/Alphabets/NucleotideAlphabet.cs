@@ -16,15 +16,15 @@ namespace BCompute
         {
             if (nucleotideAlphabet == AlphabetType.ExtendedProtein || nucleotideAlphabet == AlphabetType.StandardProtein)
             {
-                throw new ArgumentException(String.Format(NucleotideAlphabetDataProvider.InvalidNucleotideAlphabet, nucleotideAlphabet));
+                throw new ArgumentException(String.Format(AlphabetDataProvider.InvalidNucleotideAlphabet, nucleotideAlphabet));
             }
 
             GeneticCode = geneticCode;
-            AllowedSymbols = NucleotideAlphabetDataProvider.GetAllowedSymbols(nucleotideAlphabet);
-            ComplementTable = NucleotideAlphabetDataProvider.GetComplementTable(nucleotideAlphabet);
-            TranscriptionTable = NucleotideAlphabetDataProvider.GetTranscriptionTable(nucleotideAlphabet);
-            TranslationTable = NucleotideAlphabetDataProvider.GetTranslationTable(geneticCode, nucleotideAlphabet);
-            GcContentSymbols = NucleotideAlphabetDataProvider.GcContentSymbols(nucleotideAlphabet);
+            AllowedSymbols = AlphabetDataProvider.GetAllowedNucleotideSymbols(nucleotideAlphabet);
+            ComplementTable = AlphabetDataProvider.GetComplementTable(nucleotideAlphabet);
+            TranscriptionTable = AlphabetDataProvider.GetTranscriptionTable(nucleotideAlphabet);
+            TranslationTable = AlphabetDataProvider.GetTranslationTable(geneticCode, nucleotideAlphabet);
+            GcContentSymbols = AlphabetDataProvider.GcContentSymbols(nucleotideAlphabet);
         }
     }
 }
