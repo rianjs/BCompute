@@ -34,7 +34,7 @@ namespace BCompute
         /// </summary>
         /// <param name="aminoAcid"></param>
         /// <returns></returns>
-        long AminoAcidCount(AminoAcid aminoAcid);
+        long AminoCount(AminoAcid aminoAcid);
 
         /// <summary>
         /// Returns true if this contents of the nucleotide sequence is the same as a comparison nucleotide sequence value. Alphabets, and genetic codes are NOT ignored

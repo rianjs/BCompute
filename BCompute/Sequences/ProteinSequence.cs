@@ -31,14 +31,14 @@ namespace BCompute
 
 
 
-        public long AminoAcidCount(AminoAcid aminoAcid)
+        public long AminoCount(AminoAcid aminoAcid)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool Equals(ProteinSequence aminoSequence, bool matchCase)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
