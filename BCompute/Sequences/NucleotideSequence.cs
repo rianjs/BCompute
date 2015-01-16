@@ -61,16 +61,11 @@ namespace BCompute
             SymbolCounts = symbolCounts;
         }
 
-        private HashSet<Nucleotide> _allowedSymbols;
         public virtual ISet<Nucleotide> AllowedSymbols
         {
             get
             {
-                if (_allowedSymbols == null)
-                {
-                    _allowedSymbols = new HashSet<Nucleotide>(NucleotideAlphabet.AllowedSymbols);
-                }
-                return _allowedSymbols;
+                return new HashSet<Nucleotide>(NucleotideAlphabet.AllowedSymbols);
             }
         }
 
@@ -91,7 +86,7 @@ namespace BCompute
         public Dictionary<Nucleotide, long> SymbolCounts { get; private set; }
         public virtual long NucleotideCount(Nucleotide nucleotide)
         {
-            if (!_allowedSymbols.Contains(nucleotide))
+            if (!AllowedSymbols.Contains(nucleotide))
             {
                 throw new ArgumentException(String.Format(InvalidNucleotideForAlphabetType, nucleotide, ActiveAlphabet));
             }

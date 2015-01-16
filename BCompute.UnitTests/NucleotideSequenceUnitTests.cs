@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
 
 namespace BCompute.UnitTests
@@ -162,8 +163,8 @@ namespace BCompute.UnitTests
         [Test, TestCaseSource("ComplementAndReverseComplement_TestCases")]
         public void ComplementAndReverseComplementTests(NucleotideSequence incoming, NucleotideSequence expectedComplement, NucleotideSequence expectedReverseComplement)
         {
-            var computedComplement = incoming.Complement;
-            var computedReverseComplement = incoming.ReverseComplement;
+            var computedComplement = incoming.Complement();
+            var computedReverseComplement = incoming.ReverseComplement();
 
             Assert.AreEqual(expectedComplement.Sequence, computedComplement.Sequence);
             CollectionAssert.AreEquivalent(expectedComplement.SymbolCounts, computedComplement.SymbolCounts);
@@ -211,6 +212,46 @@ namespace BCompute.UnitTests
             //Ambiguous RNA with Ambiguous RNA fails
             //Strict RNA with Ambiguous RNA fails
             //Ambiguous RNA with Strict RNA fails
+        }
+
+        [Test, TestCaseSource("NucleotideCount_TestCases")]
+        public long NucleotideCount_Tests(NucleotideSequence haystack, Nucleotide needle)
+        {
+            var foo = haystack.NucleotideCount(needle);
+            return foo;
+        }
+
+        public IEnumerable<ITestCaseData> NucleotideCount_TestCases()
+        {
+            const string returnString = "{0} {1} in {2}";
+            const string strictDna = "ACCTTTGGGG";
+            var strictDnaSeq = new DnaSequence(strictDna, AlphabetType.StrictDna);
+            yield return new TestCaseData(strictDnaSeq, Nucleotide.Adenine).Returns(1).SetName(String.Format(returnString, 1, Nucleotide.Adenine, strictDna));
+            yield return new TestCaseData(strictDnaSeq, Nucleotide.Cytosine).Returns(2).SetName(String.Format(returnString, 2, Nucleotide.Cytosine, strictDna));
+            yield return new TestCaseData(strictDnaSeq, Nucleotide.Thymine).Returns(3).SetName(String.Format(returnString, 3, Nucleotide.Thymine, strictDna));
+            yield return new TestCaseData(strictDnaSeq, Nucleotide.Guanine).Returns(4).SetName(String.Format(returnString, 4, Nucleotide.Guanine, strictDna));
+
+            var strictDnaSeqComplement = strictDnaSeq.Complement();
+            yield return new TestCaseData(strictDnaSeqComplement, Nucleotide.Thymine).Returns(1).SetName(String.Format(returnString, 1, Nucleotide.Thymine, strictDnaSeqComplement.Sequence));
+            yield return new TestCaseData(strictDnaSeqComplement, Nucleotide.Guanine).Returns(2).SetName(String.Format(returnString, 2, Nucleotide.Guanine, strictDnaSeqComplement.Sequence));
+            yield return new TestCaseData(strictDnaSeqComplement, Nucleotide.Adenine).Returns(3).SetName(String.Format(returnString, 3, Nucleotide.Adenine, strictDnaSeqComplement.Sequence));
+            yield return new TestCaseData(strictDnaSeqComplement, Nucleotide.Cytosine).Returns(4).SetName(String.Format(returnString, 4, Nucleotide.Cytosine, strictDnaSeqComplement.Sequence));
+
+            const string ambiguousDna = "GATCRYYWWWSSSSMMMMMKHBVDN";
+            var ambiguousDnaSeq = new DnaSequence(ambiguousDna, AlphabetType.AmbiguousDna);
+            yield return new TestCaseData(ambiguousDnaSeq, Nucleotide.NotAdenine).Returns(1).SetName(String.Format(returnString, 1, Nucleotide.NotAdenine, ambiguousDna));
+            yield return new TestCaseData(ambiguousDnaSeq, Nucleotide.Purine).Returns(1).SetName(String.Format(returnString, 1, Nucleotide.Purine, ambiguousDna));
+            yield return new TestCaseData(ambiguousDnaSeq, Nucleotide.Weak).Returns(3).SetName(String.Format(returnString, 3, Nucleotide.Weak, ambiguousDna));
+            yield return new TestCaseData(ambiguousDnaSeq, Nucleotide.Strong).Returns(4).SetName(String.Format(returnString, 4, Nucleotide.Strong, ambiguousDna));
+            yield return new TestCaseData(ambiguousDnaSeq, Nucleotide.Amino).Returns(5).SetName(String.Format(returnString, 5, Nucleotide.Amino, ambiguousDna));
+            yield return new TestCaseData(ambiguousDnaSeq, Nucleotide.Keto).Returns(1).SetName(String.Format(returnString, 1, Nucleotide.Keto, ambiguousDna));
+
+            const string strictRna = "ACCUUUGGGG";
+            var strictRnaSeq = new RnaSequence(strictRna, AlphabetType.StrictRna);
+            yield return new TestCaseData(strictRnaSeq, Nucleotide.Adenine).Returns(1).SetName(String.Format(returnString, 1, Nucleotide.Adenine, strictRna));
+            yield return new TestCaseData(strictRnaSeq, Nucleotide.Cytosine).Returns(2).SetName(String.Format(returnString, 2, Nucleotide.Cytosine, strictRna));
+            yield return new TestCaseData(strictRnaSeq, Nucleotide.Uracil).Returns(3).SetName(String.Format(returnString, 3, Nucleotide.Uracil, strictRna));
+            yield return new TestCaseData(strictRnaSeq, Nucleotide.Guanine).Returns(4).SetName(String.Format(returnString, 4, Nucleotide.Guanine, strictRna));
         }
     }
 }
