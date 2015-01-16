@@ -2,45 +2,45 @@
 
 namespace BCompute
 {
-    internal interface IProteinSequence
+    public interface IProteinSequence
     {
-        /// <summary>
-        /// Provides the set of allowed symbols
-        /// </summary>
-        ISet<AminoAcid> AllowedSymbols { get; }
-
         /// <summary>
         /// The NCBI genetic code triplet mappings, which governs which transcription table is used for transcribing and back transcribing RNA and DNA
         /// </summary>
         GeneticCode GeneticCode { get; }
 
         /// <summary>
-        /// Mapping of proteins to all possible triplets as specified by the GeneticCode
+        /// The alphabet type governing the sequence's behavior
         /// </summary>
-        IDictionary<AminoAcid, IEnumerable<string>> ReverseTranscriptionTable { get; }
+        AlphabetType ActiveAlphabet { get; }
 
         /// <summary>
-        /// Returns a protein sequence from the specified 
+        /// The set of symbols that are allowed in the sequence's alphabet
         /// </summary>
-        /// <param name="dna"></param>
-        /// <returns></returns>
-        ProteinSequence FromDna(DnaSequence dna);
-
-
-        ProteinSequence FromRna(RnaSequence rna);
+        ISet<AminoAcid> AllowedSymbols { get; }
 
         /// <summary>
-        /// If this protein sequence is ambiguous, the DnaSequence will contain the possible triplets associated with this sequence's GeneticCode, otherwise it
-        /// will return an unambiguous DnaSequence
+        /// Mapping of codon triplets to proteins. (Works for DNA, too.)
         /// </summary>
-        /// <returns></returns>
-        DnaSequence ToDna();
+        IDictionary<string, AminoAcid> TranslationTable { get; }
 
         /// <summary>
-        /// If this protein sequence is ambiguous, the RnaSequence will contain the possible triplets associated with this sequence's GeneticCode, otherwise it
-        /// will return an unambiguous RnaSequence
+        /// Returns the protein string
         /// </summary>
+        string Sequence { get; }
+
+        /// <summary>
+        /// Returns the number of times the specified nucleotide appears in the sequence data
+        /// </summary>
+        /// <param name="aminoAcid"></param>
         /// <returns></returns>
-        RnaSequence ToRna();
+        long AminoCount(AminoAcid aminoAcid);
+
+        /// <summary>
+        /// Returns true if this contents of the nucleotide sequence is the same as a comparison nucleotide sequence value. Alphabets, and genetic codes are NOT ignored
+        /// </summary>
+        /// <param name="aminoSequence"></param>
+        /// <returns></returns>
+        bool Equals(ProteinSequence aminoSequence, bool matchCase);
     }
 }

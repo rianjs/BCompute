@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BCompute
 {
-    internal static class NucleotideAlphabetDataProvider
+    internal static class AlphabetDataProvider
     {
         public const string InvalidNucleotideAlphabet = "{0} is not a nucleotide alphabet";
         private const string _invalidGeneticCode = "{0} is not a valid genetic code";
@@ -64,7 +64,7 @@ namespace BCompute
         /// </summary>
         /// <param name="alphabet"></param>
         /// <returns></returns>
-        public static ISet<Nucleotide> GetAllowedSymbols(AlphabetType alphabet)
+        public static ISet<Nucleotide> GetAllowedNucleotideSymbols(AlphabetType alphabet)
         {
             switch (alphabet)
             {
@@ -211,7 +211,7 @@ namespace BCompute
         /// <summary>
         /// Transcription table from the ambiguous RNA alphabet to the ambiguous DNA alphabet
         /// </summary>
-        public static IDictionary<Nucleotide, Nucleotide> AmbiguousRnaTranslationTable
+        public static IDictionary<Nucleotide, Nucleotide> AmbiguousRnaTranscriptionTable
         {
             get
             {
@@ -229,7 +229,7 @@ namespace BCompute
         {
             get
             {
-                var computedTranscriptionTable = new Dictionary<Nucleotide, Nucleotide>(AmbiguousRnaTranslationTable);
+                var computedTranscriptionTable = new Dictionary<Nucleotide, Nucleotide>(AmbiguousRnaTranscriptionTable);
                 computedTranscriptionTable.Remove(Nucleotide.Uracil);
                 computedTranscriptionTable.Add(Nucleotide.Thymine, Nucleotide.Uracil);
                 return computedTranscriptionTable;
@@ -265,7 +265,7 @@ namespace BCompute
                 case AlphabetType.StrictDna:
                     return UnambiguousDnaTranscriptionTable;
                 case AlphabetType.AmbiguousRna:
-                    return AmbiguousRnaTranslationTable;
+                    return AmbiguousRnaTranscriptionTable;
                 case AlphabetType.StrictRna:
                     return UnambiguousRnaTranslationTable;
                 default:
@@ -411,5 +411,36 @@ namespace BCompute
                     throw new ArgumentException(String.Format(InvalidNucleotideAlphabet, alphabetType));
             }
         }
+
+        public static ISet<AminoAcid> GetAllowedProteinSymbols(AlphabetType alphabet)
+        {
+            switch (alphabet)
+            {
+                case AlphabetType.ExtendedProtein:
+                    return ExtendedProtein;
+                case AlphabetType.StandardProtein:
+                    return StandardProtein;
+                default:
+                    throw new ArgumentException(String.Format(ProteinAlphabet.InvalidProteinAlphabet, alphabet));
+            }
+        }
+
+        private static readonly AminoAcid[] _standardProteins = (AminoAcid[]) Enum.GetValues(typeof(StandardProtein));
+        public static ISet<AminoAcid> StandardProtein
+        {
+            get
+            {
+                return new HashSet<AminoAcid>(_standardProteins);
+            }
+        }
+
+        private static readonly AminoAcid[] _extendedProteins = (AminoAcid[]) Enum.GetValues(typeof (ExtendedProtein));
+        public static ISet<AminoAcid> ExtendedProtein
+        {
+            get
+            {
+                return new HashSet<AminoAcid>(_extendedProteins);
+            }
+        } 
     }
 }

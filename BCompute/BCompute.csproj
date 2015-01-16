@@ -63,8 +63,10 @@
   <ItemGroup>
     <Compile Include="Sequences\Alphabets\AllowableCodes.cs" />
     <Compile Include="Sequences\Alphabets\AlphabetType.cs" />
+    <Compile Include="Sequences\Alphabets\IProteinAlphabet.cs" />
     <Compile Include="Sequences\Alphabets\NucleotideAlphabet.cs" />
-    <Compile Include="Sequences\Alphabets\NucleotideAlphabetDataProvider.cs" />
+    <Compile Include="Sequences\Alphabets\AlphabetDataProvider.cs" />
+    <Compile Include="Sequences\Alphabets\ProteinAlphabet.cs" />
     <Compile Include="Sequences\Alphabets\ProteinAlphabetType.cs" />
     <Compile Include="Sequences\Alphabets\AminoAcid.cs" />
     <Compile Include="Constants.cs" />
@@ -91,7 +93,6 @@
     <Compile Include="Sequences\Alphabets\INucleotideAlphabet.cs" />
     <Compile Include="Sequences\INucleotideSequence.cs" />
     <Compile Include="Sequences\IProteinSequence.cs" />
-    <Compile Include="Sequences\ISequence.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="Sequences\NucleotideSequence.cs" />
     <Compile Include="Sequences\DnaSequence.cs" />
