@@ -99,6 +99,7 @@
     <Compile Include="FastaSequence.cs" />
     <Compile Include="Maps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sequences\ProteinBlob.cs" />
     <Compile Include="Sequences\ProteinSequence.cs" />
     <Compile Include="Recurrence.cs" />
     <Compile Include="Sequences\RnaSequence.cs" />

@@ -362,7 +362,7 @@ namespace BCompute
             var dnaTable = new Dictionary<string, AminoAcid>(rnaTable.Count);
             foreach (var pair in rnaTable)
             {
-                var dnaCodon = pair.Key.Replace("U", "T").Replace("u", "t");
+                var dnaCodon = pair.Key.Replace("U", "T");
                 dnaTable.Add(dnaCodon, pair.Value);
             }
             return dnaTable;
