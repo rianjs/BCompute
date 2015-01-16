@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
 
 namespace BCompute.UnitTests
