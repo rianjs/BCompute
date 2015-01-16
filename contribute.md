@@ -33,7 +33,7 @@ If you're not a unit test expert, send me a PR anyway, and I'll help you write s
 At the very least, write good summaries for your public methods so that users get the Intellisense description.
 
 ## Coding conventions
-For the most part, conventions follow Microsoft's Framework Design Guidelines, . They are encapsulated in the `DotSettings` file in the /helpers top-level directory, so if you're using Visual Studio, they'll guide to you do the right thing without too much thinking.
+For the most part, conventions follow Microsoft's Framework Design Guidelines, . They are encapsulated in the `DotSettings` file in the /contribute top-level directory, so if you're using Visual Studio, they'll guide to you do the right thing without too much thinking.
 
 Here's a short list that covers the bread-and-button conventions:
 * Braces on new-lines, Allman style http://en.wikipedia.org/wiki/Indent_style#Allman_style

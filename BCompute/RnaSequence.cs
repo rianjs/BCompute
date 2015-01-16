@@ -27,22 +27,7 @@ namespace BCompute
         }
 
         internal RnaSequence(string safeSequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts)
-            : base(safeSequence, alphabet, geneticCode, symbolCounts)
-        {
-            //Convert the symbol counts...
-            //Get the complementary symbol (T -> A)
-            //Get the count of its complement
-            //Fill in the new dictionary(complement, complementCount)
-
-            //var newSymbolCounts = new Dictionary<Nucleotide, long>(symbolCounts.Count);
-            //foreach (var symbol in symbolCounts)
-            //{
-            //    var complement = NucleotideAlphabet.ComplementTable[symbol.Key];
-            //    var complementCount = symbolCounts[complement];
-            //    newSymbolCounts.Add(complement, complementCount);
-            //}
-            //SymbolCounts = newSymbolCounts;
-        }
+            : base(safeSequence, alphabet, geneticCode, symbolCounts) { }
 
         public override NucleotideSequence Transcribe()
         {
