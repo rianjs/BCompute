@@ -114,7 +114,6 @@ namespace BCompute
             }
         }
 
-        //Test: Adapt existing GC content tests
         private double _gcPercentage = _defaultDoubleValue;
         public virtual double GcContentPercentage
         {
@@ -133,7 +132,6 @@ namespace BCompute
             get { return NucleotideAlphabet.GcContentSymbols; }
         }
 
-        //Test: Adapt existing HammingDistance tests
         public virtual long CalculateHammingDistance(NucleotideSequence comparisonSequence)
         {
             return CalculateHammingDistance(this, comparisonSequence);
@@ -162,37 +160,34 @@ namespace BCompute
         //Test: Adapt existing complement tests
         //Test: Create tests for symbol counts
         protected string _rawComplement = String.Empty;
-        public NucleotideSequence Complement
+        public NucleotideSequence Complement()
         {
-            get
+            if (String.IsNullOrEmpty(_rawComplement))
             {
-                if (String.IsNullOrEmpty(_rawComplement))
-                {
-                    _rawComplement = GetComplementString();
-                }
-
-                //Transform the symbol counts table T count becomes A count, etc.
-                var _newSymbolCounts = new Dictionary<Nucleotide, long>(SymbolCounts.Count);
-                foreach (var symbol in SymbolCounts)
-                {
-                    if (_newSymbolCounts.ContainsKey(symbol.Key))
-                    {
-                        continue;
-                    }
-                    var nucleotide = symbol.Key;
-                    var countToBeSwapped = SymbolCounts[nucleotide];
-                    var complement = ComplementTable[nucleotide];
-                    var newCount = SymbolCounts[complement];
-                    _newSymbolCounts.Add(nucleotide, newCount);
-                    _newSymbolCounts.Add(complement, countToBeSwapped);
-                }
-
-                if (GetType() == typeof (DnaSequence))
-                {
-                    return DnaSequence.FastDnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, _newSymbolCounts);
-                }
-                return RnaSequence.FastRnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, _newSymbolCounts);
+                _rawComplement = GetComplementString();
             }
+
+            //Transform the symbol counts table T count becomes A count, etc.
+            var _newSymbolCounts = new Dictionary<Nucleotide, long>(SymbolCounts.Count);
+            foreach (var symbol in SymbolCounts)
+            {
+                if (_newSymbolCounts.ContainsKey(symbol.Key))
+                {
+                    continue;
+                }
+                var nucleotide = symbol.Key;
+                var countToBeSwapped = SymbolCounts[nucleotide];
+                var complement = ComplementTable[nucleotide];
+                var newCount = SymbolCounts[complement];
+                _newSymbolCounts.Add(nucleotide, newCount);
+                _newSymbolCounts.Add(complement, countToBeSwapped);
+            }
+
+            if (GetType() == typeof (DnaSequence))
+            {
+                return DnaSequence.FastDnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, _newSymbolCounts);
+            }
+            return RnaSequence.FastRnaSequence(_rawComplement, ActiveAlphabet, GeneticCode, _newSymbolCounts);
         }
 
         private string GetComplementString()
@@ -215,28 +210,24 @@ namespace BCompute
             return newSequence.ToString();
         }
 
-        //Test: Adapt existing reverse complement tests
-        public NucleotideSequence ReverseComplement
+        public NucleotideSequence ReverseComplement()
         {
-            get
+            if (String.IsNullOrEmpty(_rawComplement))
             {
-                if (String.IsNullOrEmpty(_rawComplement))
-                {
-                    _rawComplement = GetComplementString();
-                }
+                _rawComplement = GetComplementString();
+            }
 
-                var complementArray = _rawComplement.ToCharArray();
-                Array.Reverse(complementArray);
-                var reversed = new string(complementArray);
+            var complementArray = _rawComplement.ToCharArray();
+            Array.Reverse(complementArray);
+            var reversed = new string(complementArray);
 
-                if (GetType() == typeof(DnaSequence))
-                {
-                    return DnaSequence.FastDnaSequence(reversed, ActiveAlphabet, GeneticCode, SymbolCounts);
-                }
-                else
-                {
-                    return RnaSequence.FastRnaSequence(reversed, ActiveAlphabet, GeneticCode, SymbolCounts);
-                }
+            if (GetType() == typeof(DnaSequence))
+            {
+                return DnaSequence.FastDnaSequence(reversed, ActiveAlphabet, GeneticCode, SymbolCounts);
+            }
+            else
+            {
+                return RnaSequence.FastRnaSequence(reversed, ActiveAlphabet, GeneticCode, SymbolCounts);
             }
         }
 
