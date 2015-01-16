@@ -34,6 +34,7 @@ At the very least, write good summaries for your public methods so that users ge
 
 ## Coding conventions
 For the most part, conventions follow Microsoft's Framework Design Guidelines. There are two files in the top-level `/contribute` directory:
+* `gitignore.txt` will keep you from accidentally committing files that you shouldn't. It's taken from GitHub's [VisualStudio.gitignore](https://github.com/github/gitignore/blob/master/VisualStudio.gitignore) file. Alternatively, copy theirs, because it's maintained by a group of people.
 * `CodingStyle.vssettings` contains the C# style guidelines for things like brace style, and so forth.
 * `CodingStyle.DotSettings` contains the variable and method naming conventions settings that can be used with ReSharper. Visual Studio doesn't have built-in support for this kind of style granularity. Alas!
 
