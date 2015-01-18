@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using BCompute;
 
 namespace Tester
 {
@@ -7,16 +8,15 @@ namespace Tester
     {
         static void Main()
         {
-            const string rna = "AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA";
-            Console.WriteLine(rna.Length);
+            const string sequence = "GATATATGCATATACTT";
+            const string motif = "ATAT";
 
-            var pointer = 0;
-            const int increment = 9;
-            while (pointer < rna.Length)
+            var dna = new DnaSequence(sequence, AlphabetType.StrictDna);
+            var indices = dna.FindMotif(motif);
+
+            foreach (var index in indices)
             {
-                var subset = rna.Skip(pointer).Take(increment).ToArray();
-                pointer += increment;
-                Console.WriteLine(new string(subset));
+                Console.Write("{0} ", index + 1);
             }
 
             Console.ReadLine();

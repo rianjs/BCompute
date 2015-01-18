@@ -42,5 +42,12 @@ namespace BCompute
         /// <param name="aminoSequence"></param>
         /// <returns></returns>
         bool Equals(ProteinSequence aminoSequence, bool matchCase);
+
+        /// <summary>
+        /// Returns all of the indices of the sequence where the motif may be found
+        /// </summary>
+        /// <param name="motif"></param>
+        /// <returns></returns>
+        IEnumerable<int> FindMotif(string motif);
     }
 }

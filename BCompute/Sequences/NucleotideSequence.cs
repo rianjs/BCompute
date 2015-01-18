@@ -264,6 +264,11 @@ namespace BCompute
             return String.Equals(Sequence, sequence.Sequence, matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
         }
 
+        public IEnumerable<int> FindMotif(string motif)
+        {
+            return Utilities.FindMotif(motif, Sequence);
+        }
+
         public ISet<string> Tags { get; private set; }
     }
 }

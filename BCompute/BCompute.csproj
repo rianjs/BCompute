@@ -103,6 +103,7 @@
     <Compile Include="Sequences\ProteinSequence.cs" />
     <Compile Include="Recurrence.cs" />
     <Compile Include="Sequences\RnaSequence.cs" />
+    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
