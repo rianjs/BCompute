@@ -60,6 +60,7 @@
     <Compile Include="ProteinSequenceUnitTests.cs" />
     <Compile Include="RecurrenceUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilitiesUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
