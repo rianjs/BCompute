@@ -41,7 +41,9 @@ namespace BCompute
                 _aminoCounts.Add(symbol, 0);
             }
 
-            foreach (var aminoCharacter in rawSequence)
+            var trimmedRaw = rawSequence.Trim();
+
+            foreach (var aminoCharacter in trimmedRaw)
             {
                 var typedAmino = (AminoAcid) Char.ToUpperInvariant(aminoCharacter);
                 if (!AllowedSymbols.Contains(typedAmino))
@@ -50,7 +52,7 @@ namespace BCompute
                 }
                 _aminoCounts[typedAmino]++;
             }
-            Sequence = rawSequence;
+            Sequence = trimmedRaw;
         }
 
         public long AminoCount(AminoAcid aminoAcid)
@@ -78,6 +80,11 @@ namespace BCompute
             }
 
             return String.Equals(Sequence, aminoSequence.Sequence, matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
+        }
+
+        public IEnumerable<int> FindMotif(string motif)
+        {
+            return Utilities.FindMotif(motif, Sequence);
         }
 
         public ProteinSequence Translate(DnaSequence dna, AlphabetType desiredProteinAlphabet)

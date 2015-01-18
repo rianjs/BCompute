@@ -22,8 +22,9 @@ namespace BCompute
             NucleotideAlphabet = new NucleotideAlphabet(alphabet, geneticCode);
             ActiveAlphabet = alphabet;
             GeneticCode = geneticCode;
-            VerifyAndInitializeNucleotides(sequence);
-            Sequence = sequence;
+            var trimmedSequence = sequence.Trim();
+            VerifyAndInitializeNucleotides(trimmedSequence);
+            Sequence = trimmedSequence;
         }
 
         protected void VerifyAndInitializeNucleotides(string rawNucleotides)
@@ -262,6 +263,11 @@ namespace BCompute
             }
 
             return String.Equals(Sequence, sequence.Sequence, matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
+        }
+
+        public IEnumerable<int> FindMotif(string motif)
+        {
+            return Utilities.FindMotif(motif, Sequence);
         }
 
         public ISet<string> Tags { get; private set; }

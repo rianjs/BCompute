@@ -91,5 +91,12 @@ namespace BCompute
         /// <param name="nucleotideSequence"></param>
         /// <returns></returns>
         bool Equals(NucleotideSequence nucleotideSequence, bool matchCase);
+
+        /// <summary>
+        /// Returns all of the indices of the sequence where the motif may be found
+        /// </summary>
+        /// <param name="motif"></param>
+        /// <returns></returns>
+        IEnumerable<int> FindMotif(string motif);
     }
 }
