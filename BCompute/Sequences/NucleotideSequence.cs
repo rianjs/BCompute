@@ -76,10 +76,9 @@ namespace BCompute
 
         public abstract NucleotideSequence Transcribe();
 
-        //ToDo: implement this
         public ProteinSequence Translate()
         {
-            throw new NotImplementedException();
+            return new ProteinSequence(this);
         }
 
         //Test: 3 tests: nucleotide not part of the allowed symbols, nucleotide allowed, but not present, normal case

@@ -57,6 +57,7 @@
     <Compile Include="PopulationUnitTests.cs" />
     <Compile Include="NucleotideSequenceUnitTests.cs" />
     <Compile Include="FastaSequenceUnitTests.cs" />
+    <Compile Include="ProteinSequenceUnitTests.cs" />
     <Compile Include="RecurrenceUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -6,8 +6,8 @@ namespace BCompute
     public class ProteinAlphabet : IProteinAlphabet
     {
         public const string InvalidProteinAlphabet = "{0} is not a protein alphabet";
-        private AlphabetType _activeAlphabet;
-        private GeneticCode _geneticCode;
+        private readonly AlphabetType _activeAlphabet;
+        private readonly GeneticCode _geneticCode;
 
         public ProteinAlphabet(AlphabetType proteinAlphabet, GeneticCode geneticCode = GeneticCode.Standard)
         {
