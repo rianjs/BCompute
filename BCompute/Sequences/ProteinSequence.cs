@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.XPath;
-using NUnit.Framework;
 
 namespace BCompute
 {
-    public class ProteinSequence : IProteinSequence
+    public class ProteinSequence : ISequence, IProteinSequence
     {
         public GeneticCode GeneticCode { get; private set; }
         public AlphabetType ActiveAlphabet { get; private set; }
@@ -17,8 +15,8 @@ namespace BCompute
 
         private const string _invalidAminoAcidCharacter = "{0} is not a valid amino acid character for the {1} alphabet";
 
-        private ProteinAlphabet _proteinAlphabet;
-        private Dictionary<AminoAcid, long> _aminoCounts;
+        private readonly ProteinAlphabet _proteinAlphabet;
+        private readonly Dictionary<AminoAcid, long> _aminoCounts;
 
         public ProteinSequence(string rawSequence, AlphabetType desiredProteinAlphabet, GeneticCode geneticCode = GeneticCode.Standard)
         {
@@ -64,16 +62,24 @@ namespace BCompute
             return _aminoCounts[aminoAcid];
         }
 
-        public bool Equals(ProteinSequence aminoSequence, bool matchCase)
+        public bool Equals(ISequence aminoSequence, bool matchCase)
         {
             if (Sequence.Length != aminoSequence.Sequence.Length)
             {
                 return false;
             }
 
+            //Make sure incoming matches an amino type
+            if (GetType() != typeof (ProteinSequence))
+            {
+                return false;
+            }
+
+            var typedSequence = (ProteinSequence) aminoSequence;
+
             foreach (var aminoPair in _aminoCounts)
             {
-                if (_aminoCounts[aminoPair.Key] != aminoSequence.AminoCount(aminoPair.Key))
+                if (_aminoCounts[aminoPair.Key] != typedSequence.AminoCount(aminoPair.Key))
                 {
                     return false;
                 }
@@ -86,6 +92,9 @@ namespace BCompute
         {
             return Utilities.FindMotif(motif, Sequence);
         }
+
+        private HashSet<string> _tags = new HashSet<string>(); 
+        public ISet<string> Tags { get; private set; }
 
         public ProteinSequence Translate(DnaSequence dna, AlphabetType desiredProteinAlphabet)
         {
@@ -127,7 +136,6 @@ namespace BCompute
             Sequence = proteinBlob.Sequence;
             _aminoCounts = proteinBlob.AminoCounts;
         }
-
         
         //string rawSequence, Dictionary<string, Amino> theMap
         //returns string

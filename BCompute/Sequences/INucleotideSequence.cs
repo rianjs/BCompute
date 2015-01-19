@@ -10,16 +10,6 @@ namespace BCompute
         ISet<Nucleotide> AllowedSymbols { get; }
 
         /// <summary>
-        /// The NCBI genetic code triplet mappings, which governs which transcription table is used for transcribing and back transcribing RNA and DNA
-        /// </summary>        
-        GeneticCode GeneticCode { get; }
-
-        /// <summary>
-        /// The alphabet type governing the sequence's behavior
-        /// </summary>
-        AlphabetType ActiveAlphabet { get; }
-
-        /// <summary>
         /// Mapping of codon triplets to proteins. (Works for DNA, too.)
         /// </summary>
         IDictionary<string, AminoAcid> TranslationTable { get; }
@@ -54,11 +44,6 @@ namespace BCompute
         long NucleotideCount(Nucleotide nucleotide);
 
         /// <summary>
-        /// Returns DNA or RNA base pair string
-        /// </summary>
-        string Sequence { get; }
-
-        /// <summary>
         /// Returns the GC content of the sequence to 6 decimal places
         /// </summary>
         double GcContentPercentage { get; }
@@ -84,19 +69,5 @@ namespace BCompute
         /// <param name="nucleotideSequence"></param>
         /// <returns></returns>
         long CalculateHammingDistance(NucleotideSequence nucleotideSequence);
-
-        /// <summary>
-        /// Returns true if this contents of the nucleotide sequence is the same as a comparison nucleotide sequence value. Alphabets, and genetic codes are NOT ignored
-        /// </summary>
-        /// <param name="nucleotideSequence"></param>
-        /// <returns></returns>
-        bool Equals(NucleotideSequence nucleotideSequence, bool matchCase);
-
-        /// <summary>
-        /// Returns all of the indices of the sequence where the motif may be found
-        /// </summary>
-        /// <param name="motif"></param>
-        /// <returns></returns>
-        IEnumerable<int> FindMotif(string motif);
     }
 }

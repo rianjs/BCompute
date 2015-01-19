@@ -94,6 +94,7 @@
     <Compile Include="Sequences\INucleotideSequence.cs" />
     <Compile Include="Sequences\IProteinSequence.cs" />
     <Compile Include="Population.cs" />
+    <Compile Include="Sequences\ISequence.cs" />
     <Compile Include="Sequences\NucleotideSequence.cs" />
     <Compile Include="Sequences\DnaSequence.cs" />
     <Compile Include="FastaSequence.cs" />
