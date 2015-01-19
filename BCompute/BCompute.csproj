@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parsers\FastaParser.cs" />
     <Compile Include="Sequences\Alphabets\AllowableCodes.cs" />
     <Compile Include="Sequences\Alphabets\AlphabetType.cs" />
     <Compile Include="Sequences\Alphabets\IProteinAlphabet.cs" />

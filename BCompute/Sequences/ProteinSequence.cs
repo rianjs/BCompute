@@ -54,7 +54,7 @@ namespace BCompute
             Sequence = trimmedRaw;
         }
 
-        public ProteinSequence(string sequence, AlphabetType alphabet, IEnumerable<string> tags, GeneticCode geneticCode = GeneticCode.Standard)
+        public ProteinSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard, IEnumerable<string> tags = null)
             : this(sequence, alphabet, geneticCode)
         {
             _tags = new HashSet<string>(tags);
