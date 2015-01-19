@@ -5,8 +5,8 @@ namespace BCompute
 {
     public class DnaSequence : NucleotideSequence
     {
-        public DnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard)
-            : base(rawBasePairs, alphabet, geneticCode)
+        public DnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard, IEnumerable<string> tags = null)
+            : base(rawBasePairs, alphabet, geneticCode, tags)
         {
             switch (alphabet)
             {
@@ -25,8 +25,8 @@ namespace BCompute
             return new DnaSequence(safeSequence, alphabet, geneticCode, symbolCounts);
         }
 
-        internal DnaSequence(string safeSequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts)
-            : base(safeSequence, alphabet, geneticCode, symbolCounts) { }
+        internal DnaSequence(string safeSequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts, IEnumerable<string> tags = null)
+            : base(safeSequence, alphabet, geneticCode, symbolCounts, tags) { }
 
         public override NucleotideSequence Transcribe()
         {

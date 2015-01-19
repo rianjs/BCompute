@@ -5,8 +5,8 @@ namespace BCompute
 {
     public class RnaSequence : NucleotideSequence
     {
-        public RnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard)
-            : base(rawBasePairs, alphabet, geneticCode)
+        public RnaSequence(string rawBasePairs, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard, IEnumerable<string> tags = null)
+            : base(rawBasePairs, alphabet, geneticCode, tags)
         {
             switch (alphabet)
             {
@@ -19,13 +19,13 @@ namespace BCompute
             }
         }
 
-        internal static RnaSequence FastRnaSequence(string safeSequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts)
+        internal static RnaSequence FastRnaSequence(string safeSequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts, IEnumerable<string> tags = null)
         {
-            return new RnaSequence(safeSequence, alphabet, geneticCode, symbolCounts);
+            return new RnaSequence(safeSequence, alphabet, geneticCode, symbolCounts, tags);
         }
 
-        internal RnaSequence(string safeSequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts)
-            : base(safeSequence, alphabet, geneticCode, symbolCounts) { }
+        internal RnaSequence(string safeSequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts, IEnumerable<string> tags = null)
+            : base(safeSequence, alphabet, geneticCode, symbolCounts, tags) { }
 
         public override NucleotideSequence Transcribe()
         {

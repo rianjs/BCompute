@@ -12,6 +12,7 @@ namespace BCompute
         public ISet<AminoAcid> AllowedSymbols { get; private set; }
         public IDictionary<string, AminoAcid> TranslationTable { get; private set; }
         public string Sequence { get; private set; }
+        private readonly HashSet<string> _tags = new HashSet<string>();
 
         private const string _invalidAminoAcidCharacter = "{0} is not a valid amino acid character for the {1} alphabet";
 
@@ -51,6 +52,12 @@ namespace BCompute
                 _aminoCounts[typedAmino]++;
             }
             Sequence = trimmedRaw;
+        }
+
+        public ProteinSequence(string sequence, AlphabetType alphabet, IEnumerable<string> tags, GeneticCode geneticCode = GeneticCode.Standard)
+            : this(sequence, alphabet, geneticCode)
+        {
+            _tags = new HashSet<string>(tags);
         }
 
         public long AminoCount(AminoAcid aminoAcid)
@@ -93,8 +100,7 @@ namespace BCompute
             return Utilities.FindMotif(motif, Sequence);
         }
 
-        private HashSet<string> _tags = new HashSet<string>(); 
-        public ISet<string> Tags { get; private set; }
+        public ISet<string> Tags { get { return _tags; } }
 
         public ProteinSequence Translate(DnaSequence dna, AlphabetType desiredProteinAlphabet)
         {

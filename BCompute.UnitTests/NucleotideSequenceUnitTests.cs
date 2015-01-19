@@ -251,5 +251,27 @@ namespace BCompute.UnitTests
             yield return new TestCaseData(strictRnaSeq, Nucleotide.Uracil).Returns(3).SetName(String.Format(returnString, 3, Nucleotide.Uracil, strictRna));
             yield return new TestCaseData(strictRnaSeq, Nucleotide.Guanine).Returns(4).SetName(String.Format(returnString, 4, Nucleotide.Guanine, strictRna));
         }
+
+        [Test, TestCaseSource("Tag_TestCases")]
+        public void Tag_Tests(NucleotideSequence incoming, IEnumerable<string> incomingTags)
+        {
+            var expected = new HashSet<string>(incomingTags);
+            CollectionAssert.AreEquivalent(incoming.Tags, expected);
+        }
+
+        public IEnumerable<ITestCaseData> Tag_TestCases()
+        {
+            var tags = new HashSet<string> { "Foo", "Bar", "Baz" };
+            var dna = new DnaSequence("ACTCTTCAGC", AlphabetType.StrictDna, GeneticCode.Standard, tags);
+            yield return new TestCaseData(dna, tags);
+
+            var rna = new RnaSequence("AUCUAGCGCGUA", AlphabetType.StrictRna, GeneticCode.Standard, tags);
+            yield return new TestCaseData(rna, tags);
+
+            var nullRna = new RnaSequence("AUCUAGCGCGUA", AlphabetType.StrictRna);
+            yield return new TestCaseData(nullRna, new List<string>());
+
+
+        } 
     }
 }
