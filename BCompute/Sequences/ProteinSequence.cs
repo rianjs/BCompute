@@ -212,16 +212,5 @@ namespace BCompute
             }
             return new ProteinBlob(aminoString.ToString(), aminoCounts);
         }
-
-        private static bool IsNucleotide(char character)
-        {
-            return Enum.IsDefined(typeof (Nucleotide), character);
-        }
-
-        private enum Gap
-        {
-            Gap,
-            NoGap,
-        }
     }
 }
