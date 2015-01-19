@@ -27,6 +27,16 @@ namespace BCompute
             Sequence = trimmedSequence;
         }
 
+        private readonly HashSet<string> _tags = new HashSet<string>();
+        protected NucleotideSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard, IEnumerable<string> tags = null)
+            : this(sequence, alphabet, geneticCode)
+        {
+            if (tags != null)
+            {
+                _tags = new HashSet<string>(tags);
+            }
+        }
+
         protected void VerifyAndInitializeNucleotides(string rawNucleotides)
         {
             if (String.IsNullOrWhiteSpace(rawNucleotides))
@@ -53,13 +63,17 @@ namespace BCompute
             }
         }
 
-        protected NucleotideSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts)
+        protected NucleotideSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode, Dictionary<Nucleotide, long> symbolCounts, IEnumerable<string> tags)
         {
             NucleotideAlphabet = new NucleotideAlphabet(alphabet, geneticCode);
             ActiveAlphabet = alphabet;
             GeneticCode = geneticCode;
             Sequence = sequence;
             SymbolCounts = symbolCounts;
+            if (tags != null)
+            {
+                _tags = new HashSet<string>(tags);
+            }
         }
 
         public virtual ISet<Nucleotide> AllowedSymbols
@@ -284,6 +298,9 @@ namespace BCompute
             return Utilities.FindMotif(motif, Sequence);
         }
 
-        public ISet<string> Tags { get; private set; }
+        public ISet<string> Tags
+        {
+            get { return _tags; }
+        }
     }
 }
