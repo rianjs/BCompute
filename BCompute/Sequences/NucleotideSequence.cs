@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BCompute
 {
-    public abstract class NucleotideSequence : INucleotideSequence
+    public abstract class NucleotideSequence : ISequence, INucleotideSequence
     {
         public const string InvalidNucleotideForAlphabetType = "{0} is not a valid nucleotide for a sequence with a {1} ActiveAlphabet";
         public const string InvalidAlphabetForSequenceType = "{0} is an invalid alphabet for a {1}";
@@ -238,7 +238,7 @@ namespace BCompute
 
         //Test: Tests: identical sequences of different length, sequences of same type but different length, sequences of same length, but different nucleotide
         //Test: counts, identical sequences of different types, identical sequences but swap some letters around, same but then specify case significance
-        public virtual bool Equals(NucleotideSequence sequence, bool matchCase = false)
+        public virtual bool Equals(ISequence sequence, bool matchCase = false)
         {
             if (Sequence.Length != sequence.Sequence.Length)
             {
@@ -250,12 +250,26 @@ namespace BCompute
                 return false;
             }
 
+            NucleotideSequence typedSequence;
+            switch (ActiveAlphabet)
+            {
+                case AlphabetType.AmbiguousDna:
+                    typedSequence = (DnaSequence) sequence;
+                    break;
+                case AlphabetType.StrictDna:
+                    typedSequence = (DnaSequence) sequence;
+                    break;
+                default:
+                    typedSequence = (RnaSequence) sequence;
+                    break;
+            }
+
             foreach (var nucleotidePair in SymbolCounts)
             {
                 var nucleotide = nucleotidePair.Key;
                 var thisValue = SymbolCounts[nucleotide];
 
-                var thatValue = sequence.SymbolCounts[nucleotide];
+                var thatValue = typedSequence.SymbolCounts[nucleotide];
                 if (thisValue != thatValue)
                 {
                     return false;
