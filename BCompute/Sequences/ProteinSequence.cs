@@ -33,6 +33,7 @@ namespace BCompute
 
             _proteinAlphabet = new ProteinAlphabet(desiredProteinAlphabet, geneticCode);
             ActiveAlphabet = desiredProteinAlphabet;
+            AllowedSymbols = AlphabetDataProvider.GetAllowedProteinSymbols(ActiveAlphabet);
 
             _aminoCounts = new Dictionary<AminoAcid, long>(AllowedSymbols.Count);
             foreach (var symbol in AllowedSymbols)
@@ -57,7 +58,10 @@ namespace BCompute
         public ProteinSequence(string sequence, AlphabetType alphabet, GeneticCode geneticCode = GeneticCode.Standard, IEnumerable<string> tags = null)
             : this(sequence, alphabet, geneticCode)
         {
-            _tags = new HashSet<string>(tags);
+            if (tags != null)
+            {
+                _tags = new HashSet<string>(tags);
+            }
         }
 
         public long AminoCount(AminoAcid aminoAcid)

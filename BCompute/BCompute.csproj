@@ -71,6 +71,7 @@
     <Compile Include="Sequences\Alphabets\ProteinAlphabetType.cs" />
     <Compile Include="Sequences\Alphabets\AminoAcid.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Sequences\ConsensusBuilder.cs" />
     <Compile Include="Sequences\GeneticCodes\AlternativeFlatwormMitochondrial.cs" />
     <Compile Include="Sequences\GeneticCodes\AlternativeYeastNuclear.cs" />
     <Compile Include="Sequences\GeneticCodes\AscidianMitochondrial.cs" />
