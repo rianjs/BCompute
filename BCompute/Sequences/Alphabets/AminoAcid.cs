@@ -65,7 +65,7 @@
 
     public enum ExtendedProtein
     {
-        lanine = 'A',
+        Alanine = 'A',
         AspartateOrAsparagine = 'B',
         Cysteine = 'C',
         Aspartate = 'D',
