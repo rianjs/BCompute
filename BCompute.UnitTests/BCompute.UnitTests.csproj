@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsensusBuilderUnitTests.cs" />
     <Compile Include="PopulationUnitTests.cs" />
     <Compile Include="NucleotideSequenceUnitTests.cs" />
     <Compile Include="FastaParserUnitTests.cs" />
