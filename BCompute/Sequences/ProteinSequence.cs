@@ -114,6 +114,14 @@ namespace BCompute
 
         internal ProteinSequence(NucleotideSequence seq)
         {
+            if (seq.ActiveAlphabet == AlphabetType.StrictDna || seq.ActiveAlphabet == AlphabetType.StrictRna)
+            {
+                if (seq.Sequence.Length % 3 != 0)
+                {
+                    throw new ArgumentException("Sequence length is not evenly divisible by three, which means it cannot be translated because you are using a strict nucleotide alphabet");
+                }
+            }
+
             AlphabetType alphabet;
             var allowedSymbols = new HashSet<AminoAcid>{AminoAcid.Stop, AminoAcid.Gap};
 
