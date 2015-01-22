@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parsers\FastaParser.cs" />
+    <Compile Include="Population\ReprodutiveModeling.cs" />
     <Compile Include="Sequences\Alphabets\AllowableCodes.cs" />
     <Compile Include="Sequences\Alphabets\AlphabetType.cs" />
     <Compile Include="Sequences\Alphabets\IProteinAlphabet.cs" />
@@ -91,11 +92,11 @@
     <Compile Include="Sequences\GeneticCodes\TrematodeMitochondrial.cs" />
     <Compile Include="Sequences\GeneticCodes\VertebrateMitochondrialCode.cs" />
     <Compile Include="Sequences\GeneticCodes\YeastMitochondrialCode.cs" />
-    <Compile Include="Genotype.cs" />
+    <Compile Include="Population\Genotype.cs" />
     <Compile Include="Sequences\Alphabets\INucleotideAlphabet.cs" />
     <Compile Include="Sequences\INucleotideSequence.cs" />
     <Compile Include="Sequences\IProteinSequence.cs" />
-    <Compile Include="Population.cs" />
+    <Compile Include="Population\AlleleModeling.cs" />
     <Compile Include="Sequences\ISequence.cs" />
     <Compile Include="Sequences\NucleotideSequence.cs" />
     <Compile Include="Sequences\DnaSequence.cs" />
@@ -104,7 +105,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sequences\ProteinBlob.cs" />
     <Compile Include="Sequences\ProteinSequence.cs" />
-    <Compile Include="Recurrence.cs" />
     <Compile Include="Sequences\RnaSequence.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>

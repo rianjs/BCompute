@@ -23,6 +23,9 @@ namespace BCompute
             ActiveAlphabet = alphabet;
             GeneticCode = geneticCode;
             var trimmedSequence = sequence.Trim();
+
+            
+
             VerifyAndInitializeNucleotides(trimmedSequence);
             Sequence = trimmedSequence;
         }

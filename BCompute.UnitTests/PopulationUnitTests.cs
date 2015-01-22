@@ -11,7 +11,7 @@ namespace BCompute.UnitTests
         [Test, TestCaseSource("ParentalSetProbability_TestCases")]
         public double ParentalSetProbability(int homoDominantPopulation, int heteroPopulation, int homoRecessivePopulation)
         {
-            var pop = new Population(homoDominantPopulation, heteroPopulation, homoRecessivePopulation);
+            var pop = new AlleleModeling(homoDominantPopulation, heteroPopulation, homoRecessivePopulation);
             var parentalProbabilitySum = pop.ParentalProbabilities.Values.Sum();
             return parentalProbabilitySum;
         }
@@ -28,7 +28,7 @@ namespace BCompute.UnitTests
         [Test, TestCaseSource("ChildAlleleProbability_TestCases")]
         public double ChildAlleleManifestationProbabilityTests(int homoDominantPopulation, int heteroPopulation, int homoRecessivePopulation, IEnumerable<Genotype> genotypes)
         {
-            var sum = genotypes.Sum(genotype => new Population(homoDominantPopulation, heteroPopulation, homoRecessivePopulation).GetChildAlleleProbability(genotype));
+            var sum = genotypes.Sum(genotype => new AlleleModeling(homoDominantPopulation, heteroPopulation, homoRecessivePopulation).GetChildAlleleProbability(genotype));
             //Only for unit testing...
             return Math.Round(sum, 5);
         }

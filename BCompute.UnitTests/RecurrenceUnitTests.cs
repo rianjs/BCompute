@@ -9,7 +9,7 @@ namespace BCompute.UnitTests
         [Test, TestCaseSource("RecurrenceGrowth_TestCases")]
         public static long Growth_Tests(int generations, int growthPerGeneration, int survivalGenerations)
         {
-            var answer = Recurrence.Growth(generations, growthPerGeneration, survivalGenerations);
+            var answer = ReprodutiveModeling.Growth(generations, growthPerGeneration, survivalGenerations);
             return answer;
         }
 

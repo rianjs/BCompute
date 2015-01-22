@@ -4,12 +4,12 @@ using System.Collections.Immutable;
 
 namespace BCompute
 {
-    public class Population
+    public class AlleleModeling
     {
         public int HomozygousCount { get; private set; }
         public int HeterozygousCount { get; private set; }
         public int RecessiveCount { get; private set; }
-        public Population(int homozygousCount, int heterozygousCount, int recessiveCount)
+        public AlleleModeling(int homozygousCount, int heterozygousCount, int recessiveCount)
         {
             HomozygousCount = homozygousCount;
             HeterozygousCount = heterozygousCount;
