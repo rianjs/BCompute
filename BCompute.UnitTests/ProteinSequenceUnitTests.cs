@@ -52,6 +52,65 @@ namespace BCompute.UnitTests
 
             const string rosalindTest = "AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA";
             yield return new TestCaseData(new RnaSequence(rosalindTest, AlphabetType.StrictRna)).Returns("MAMAPRTEINSTRING.").SetName("Rosalind.info prot sample data test");
-        } 
+        }
+
+        private const string _standardProtein = "ACDE";
+        private const string _extendedProtein = "ABJHG";
+
+        [Test, TestCaseSource("ProteinSequenceSanityChecking_TestCases")]
+        public int ProteinSequenceSanityTests(string sequence, AlphabetType alphabet)
+        {
+            var protein = new ProteinSequence(sequence, alphabet, GeneticCode.Standard);
+            return protein.Sequence.Length;
+        }
+
+        public IEnumerable<ITestCaseData> ProteinSequenceSanityChecking_TestCases()
+        {
+            yield return new TestCaseData(_standardProtein, AlphabetType.StandardProtein).Returns(_standardProtein.Length).SetName("Standard protein with standard alphabet");
+            yield return new TestCaseData(_extendedProtein, AlphabetType.StandardProtein).Throws(typeof(ArgumentException)).SetName("Extended protein with standard fails");
+            yield return new TestCaseData(_standardProtein, AlphabetType.ExtendedProtein).Returns(_standardProtein.Length).SetName("Standard protein with extended alphabet");
+            yield return new TestCaseData(_extendedProtein, AlphabetType.ExtendedProtein).Returns(_extendedProtein.Length).SetName("Extended protein with extended alphabet");
+            yield return new TestCaseData("ACUG", AlphabetType.StandardProtein).Throws(typeof(ArgumentException)).SetName("Sequence with RNA characters (U) with standard alphabet fails");
+            yield return new TestCaseData("ACUG", AlphabetType.ExtendedProtein).Returns(4).SetName("Sequence with RNA characters (U) with extended alphabet");
+        }
+
+        [Test, TestCaseSource("Tag_TestCases")]
+        public void Tag_Tests(ProteinSequence incoming, IEnumerable<string> incomingTags)
+        {
+            var expected = new HashSet<string>(incomingTags);
+            CollectionAssert.AreEquivalent(incoming.Tags, expected);
+        }
+
+        public IEnumerable<ITestCaseData> Tag_TestCases()
+        {
+            var tags = new HashSet<string> { "Foo", "Bar", "Baz" };
+            var standardAlphabetWithTags = new ProteinSequence("ACTCTTCAGC", AlphabetType.StandardProtein, GeneticCode.Standard, tags);
+            yield return new TestCaseData(standardAlphabetWithTags, tags).SetName("Standard protein alphabet with tags");
+
+            var extendedAlphabetWithTags = new ProteinSequence("AUCUAGCGCGUA", AlphabetType.ExtendedProtein, GeneticCode.Standard, tags);
+            yield return new TestCaseData(extendedAlphabetWithTags, tags).SetName("Extended protein alphabet with tags");
+        }
+
+        [Test, TestCaseSource("Equality_TestCases")]
+        public bool EqualityTests(ProteinSequence a, ProteinSequence b)
+        {
+            return a.Equals(b);
+        }
+
+        public IEnumerable<ITestCaseData> Equality_TestCases()
+        {
+            const string standard = "ACTGC";
+            const string extended = "ACUGC";
+            var standardStandard = new ProteinSequence(standard, AlphabetType.StandardProtein, GeneticCode.Standard);
+            var standardExtended = new ProteinSequence(standard, AlphabetType.ExtendedProtein, GeneticCode.Standard);
+            var extendedExtended = new ProteinSequence(extended, AlphabetType.ExtendedProtein, GeneticCode.Standard);
+            var standardDiffStandard = new ProteinSequence(standard.Substring(0, standard.Length - 2), AlphabetType.StandardProtein, GeneticCode.Standard);
+            var extendedDiffExtended = new ProteinSequence(extended.Substring(0, extended.Length - 2), AlphabetType.ExtendedProtein, GeneticCode.Standard);
+
+            yield return new TestCaseData(standardStandard, standardStandard).Returns(true).SetName("Standard with standard");
+            yield return new TestCaseData(standardStandard, standardExtended).Returns(false).SetName("Standard with extended protein returns false");
+            yield return new TestCaseData(standardStandard, standardDiffStandard).Returns(false).SetName("Two different standard protein sequences return false");
+            yield return new TestCaseData(extendedExtended, extendedDiffExtended).Returns(false).SetName("Two different extended protein sequences return false");
+        }
     }
 }
