@@ -101,7 +101,7 @@ namespace BCompute
 
         public IEnumerable<int> FindMotif(string motif)
         {
-            return Utilities.FindMotif(motif, Sequence);
+            return SequenceUtilities.FindMotif(motif, Sequence);
         }
 
         public ISet<string> Tags { get { return _tags; } }

@@ -10,7 +10,7 @@ namespace BCompute.UnitTests
         [Test, TestCaseSource("FindMotif_TestCases")]
         public void FindMotif_Tests(string needle, string haystack, IEnumerable<int> expected)
         {
-            var actual = Utilities.FindMotif(needle, haystack).ToList();
+            var actual = SequenceUtilities.FindMotif(needle, haystack).ToList();
             CollectionAssert.AreEquivalent(expected, actual);
         }
 
