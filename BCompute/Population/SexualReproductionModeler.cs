@@ -42,15 +42,14 @@ namespace BCompute
         public SexualReproductionModeler(int initialPopulation, int offspringPairsPerGeneration, int lifespan)
             : this(initialPopulation, offspringPairsPerGeneration, lifespan, lifespan) { }
 
-        private List<PopulationState> _populationPerGeneration;
-        public long GetPopulationCount(int generations)
+        private void ComputePopulationStates(int generations)
         {
             if (generations < 1)
             {
                 throw new ArgumentException("Cannot get the population count of a negative number of generations");
             }
 
-            _populationPerGeneration = new List<PopulationState>(generations) {new PopulationState(0, InitialPopulation, 0)};
+            _populationPerGeneration = new List<PopulationState>(generations) { new PopulationState(0, InitialPopulation, 0) };
             var zeroBasedLifespan = Lifespan - 1;
             var cycleCount = 1;
             while (cycleCount < generations)
@@ -63,8 +62,35 @@ namespace BCompute
                 _populationPerGeneration.Add(nextState);
                 cycleCount++;
             }
+        }
 
-            return _populationPerGeneration.Last().Total;
+        private List<PopulationState> _populationPerGeneration;
+        /// <summary>
+        /// Returns the total population after the specified number of generations
+        /// </summary>
+        /// <param name="generations"></param>
+        /// <returns></returns>
+        public long GetPopulationCount(int generations)
+        {
+            if (_populationPerGeneration == null || _populationPerGeneration.Count < generations)
+            {
+                ComputePopulationStates(generations);    
+            }
+            return _populationPerGeneration[generations - 1].Total;
+        }
+
+        /// <summary>
+        /// Returns the snapshot of the population state after the specified number of generations
+        /// </summary>
+        /// <param name="generations"></param>
+        /// <returns></returns>
+        public PopulationState GetPopulationState(int generations)
+        {
+            if (_populationPerGeneration == null || _populationPerGeneration.Count < generations)
+            {
+                ComputePopulationStates(generations);    
+            }
+            return _populationPerGeneration[generations - 1];
         }
     }
 }
