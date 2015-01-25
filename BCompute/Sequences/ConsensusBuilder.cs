@@ -5,6 +5,9 @@ using System.Text;
 
 namespace BCompute
 {
+    /// <summary>
+    /// Methods for building a consensus matrices and associated consensus strings for any sequence
+    /// </summary>
     public class ConsensusBuilder
     {
         private readonly List<ISequence> _sequences;
@@ -89,6 +92,10 @@ namespace BCompute
         }
 
         private string _consensusString;
+        /// <summary>
+        /// Returns the consensus string associated with a sequence. It does NOT return multiple consensus strings when there are equally probable strings.
+        /// </summary>
+        /// <returns></returns>
         public string GetConsensusString()
         {
             if (!_isComputed)
@@ -124,6 +131,10 @@ namespace BCompute
             return _consensusString;
         }
 
+        /// <summary>
+        /// Returns the matrix of character => position counts for the sequence.
+        /// </summary>
+        /// <returns></returns>
         public IDictionary<char, int[]> GetConsensusMatrix()
         {
             if (!_isComputed)

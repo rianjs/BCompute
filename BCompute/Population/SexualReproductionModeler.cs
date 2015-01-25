@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace BCompute
 {
+    /// <summary>
+    /// Models the population growth or decline over a specified number of generations
+    /// </summary>
     public class SexualReproductionModeler
     {
         public int Lifespan { get; private set; }
