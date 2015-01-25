@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BCompute
 {
-    public class Utilities
+    public class SequenceUtilities
     {
         /// <summary>
         /// Returns the indices in the haystack where the needle may be found

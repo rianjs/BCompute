@@ -107,7 +107,7 @@
     <Compile Include="Sequences\ProteinBlob.cs" />
     <Compile Include="Sequences\ProteinSequence.cs" />
     <Compile Include="Sequences\RnaSequence.cs" />
-    <Compile Include="Utilities.cs" />
+    <Compile Include="Sequences\SequenceUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
