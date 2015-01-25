@@ -21,12 +21,20 @@ namespace BCompute
             get { return HomozygousCount + HeterozygousCount + RecessiveCount; }
         }
 
+        /// <summary>
+        /// Returns the probability of having a child with the specified genotype given the makeup of the source population
+        /// </summary>
+        /// <param name="genotype"></param>
+        /// <returns></returns>
         public double GetChildAlleleProbability(Genotype genotype)
         {
             ComputeChildAlleleProbabilities();
             return _childAlleleProbabilities[genotype];
         }
 
+        /// <summary>
+        /// Returns the probability of parental pairs given the makeup of the source population 
+        /// </summary>
         public ImmutableDictionary<string, double> ParentalProbabilities
         {
             //p(Parent A) = ratio of each Genotype relative to the population
