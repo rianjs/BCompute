@@ -12,27 +12,25 @@ namespace Tester
     {
         static void Main()
         {
-            var initialPopulation = 1;
-            var maturity = 1;
-            var offspringPerCycle = 1;
-            var lifespan = 3;
-            //var population = new SexualReproductionModeler(initialPopulation, maturity, offspringPerCycle, lifespan);
-            //var foo = population.GetPopulationCount(6);     //Should be 4
+            const string parent = @"C:\Users\rianjs\Desktop";
+            const string filename = "overlap-graphs3.txt";
+            var path = Path.Combine(parent, filename);
 
-            //var immortal = new SexualReproductionModeler(1, 1, 3, int.MaxValue);
-            //var immortalAnswer = immortal.GetPopulationCount(5);
-            //Console.WriteLine(foo);
-            //Console.WriteLine(immortalAnswer);  //Should be 19
+            var sequences = new FastaParser(new Uri(path), AlphabetType.StrictDna).Parse();
+            const int overlapCount = 3;
 
-            var bigTest = new SexualReproductionModeler(initialPopulation, offspringPerCycle, int.MaxValue);
-            var immortalTotal = bigTest.GetPopulationCount(35);
-            Console.WriteLine("{0:N0}", immortalTotal);
+            var overlapping = SequenceUtilities.FindOverlappingSequences(sequences, overlapCount);
 
-            lifespan = 18;
-            var actualTest = new SexualReproductionModeler(initialPopulation, maturity, offspringPerCycle, lifespan);
-            var total = actualTest.GetPopulationCount(87);      //Should be 676172117379838466 -- OK
-            Console.WriteLine(total);
-            Console.WriteLine("{0:N0}", total);
+            var theString = String.Empty;
+            foreach (var overlap in overlapping)
+            {
+                var activeTag = overlap.Key.Tags.First();
+                theString = overlap.Value.Aggregate(theString, (current, sequence) => current + String.Format("{0} {1}{2}", activeTag, sequence.Tags.First(), Environment.NewLine));
+            }
+
+            Console.WriteLine(theString);
+            File.WriteAllText(Path.Combine(parent, "answer.txt"), theString);
+            
             Console.ReadLine();
         }
     }

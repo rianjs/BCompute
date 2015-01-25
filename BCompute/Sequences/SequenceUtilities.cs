@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BCompute
 {
@@ -37,6 +38,33 @@ namespace BCompute
                     yield break;
                 }
             } while (index < haystack.Length);
+        }
+
+        /// <summary>
+        /// Returns a collection of overlapping sequences in the form of sequence => overlappingSeq1, overlappingSeq2, ..., overlappingSeqN
+        /// </summary>
+        /// <param name="sequences"></param>
+        /// <returns></returns>
+        public static IDictionary<ISequence, IEnumerable<ISequence>> FindOverlappingSequences(IEnumerable<ISequence> sequences, int overlap)
+        {
+            if (overlap < 2)
+            {
+                throw new ArgumentException("Overlap must be 2 or more characters");
+            }
+
+            var haystack = sequences.ToList();
+            var overlappingElements = new Dictionary<ISequence, IEnumerable<ISequence>>(haystack.Count);
+            foreach (var straw in haystack)
+            {
+                var needle = new string(straw.Sequence.Skip(straw.Sequence.Length - overlap).Take(overlap).ToArray());
+                var list = new List<ISequence>(haystack.Count - 1);
+                list.AddRange(haystack.Where(element => element != straw && element.Sequence.StartsWith(needle)));
+                if (list.Any())
+                {
+                    overlappingElements.Add(straw, list);
+                }
+            }
+            return overlappingElements;
         } 
     }
 }
