@@ -1,6 +1,6 @@
 ﻿namespace BCompute
 {
-    internal class PopulationState
+    public class PopulationState
     {
         public readonly long Mature;
         public readonly long Immature;
