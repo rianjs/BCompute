@@ -35,7 +35,7 @@ namespace BCompute
 
             _childAlleleProbabilities = new Dictionary<Genotype, double>
             {
-                {Genotype.HomozygousDominant,       (_parents[ParentalPair.DominantDominant])
+                {Genotype.Dominant,       (_parents[ParentalPair.DominantDominant])
                                                   + (_parents[ParentalPair.HeteroHetero] * 0.25d)
                                                   + (_parents[ParentalPair.DominantHetero] * 0.5d)},
 
@@ -44,7 +44,7 @@ namespace BCompute
                                                   + (_parents[ParentalPair.HeteroHetero] * 0.5d)
                                                   + (_parents[ParentalPair.HeteroRecessive] * 0.5d)},
 
-                {Genotype.HomozygousRecessive,      (_parents[ParentalPair.RecessiveRecessive])
+                {Genotype.Recessive,      (_parents[ParentalPair.RecessiveRecessive])
                                                   + (_parents[ParentalPair.HeteroHetero] * 0.25d)
                                                   + (_parents[ParentalPair.HeteroRecessive] * 0.5d)}
             };
