@@ -33,14 +33,14 @@ namespace BCompute.UnitTests
 
         private const string _indeterminateFragment = "AGCGCGCGCCCGGGCCA";
 
-        [Test, TestCaseSource("DnaSequence_SanityChecking_TestCases")]
-        public void DnaSequence_SanityChecking(string nucleotides, AlphabetType alphabet)
+        [Test, TestCaseSource("DnaSequenceConstructor_TestCases")]
+        public void DnaSequenceConstructor_Tests(string nucleotides, AlphabetType alphabet)
         {
             var dna = new DnaSequence(nucleotides, alphabet);
             Assert.IsInstanceOf<DnaSequence>(dna);
         }
 
-        public IEnumerable<ITestCaseData> DnaSequence_SanityChecking_TestCases()
+        public IEnumerable<ITestCaseData> DnaSequenceConstructor_TestCases()
         {
             #region Mixing and matching ambiguous and strict DNA and RNA alphabets with ambiguous and strict DNA and RNA sequences
             yield return new TestCaseData(_strictDna, AlphabetType.StrictDna).SetName("Strict DNA sequence with strict DNA alphabet");
@@ -72,7 +72,7 @@ namespace BCompute.UnitTests
         }
 
         [Test, TestCaseSource("RnaSequence_SanityChecking_TestCases")]
-        public void RnaSequence_SanityChecking(string nucleotides, AlphabetType alphabet)
+        public void RnaSequenceConstructor_TestCases(string nucleotides, AlphabetType alphabet)
         {
             var rna = new RnaSequence(nucleotides, alphabet);
             Assert.IsInstanceOf<RnaSequence>(rna);
@@ -270,8 +270,6 @@ namespace BCompute.UnitTests
 
             var nullRna = new RnaSequence("AUCUAGCGCGUA", AlphabetType.StrictRna);
             yield return new TestCaseData(nullRna, new List<string>());
-
-
         } 
     }
 }
