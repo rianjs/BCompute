@@ -17,8 +17,8 @@ namespace Tester
             Console.WriteLine("Probability sum: {0}", pSum);    //OK
 
             var hetero = model.ExpectedOffspring(Genotype.Heterozygous, 2);
-            var dominant = model.ExpectedOffspring(Genotype.HomozygousDominant, 2);
-            var recessive = model.ExpectedOffspring(Genotype.HomozygousRecessive, 2);
+            var dominant = model.ExpectedOffspring(Genotype.Dominant, 2);
+            var recessive = model.ExpectedOffspring(Genotype.Recessive, 2);
 
             var answer = hetero + dominant;
             Console.WriteLine("Direct answer: {0:N}", answer);
