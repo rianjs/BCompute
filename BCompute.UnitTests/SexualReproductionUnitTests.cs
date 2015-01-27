@@ -9,7 +9,7 @@ namespace BCompute.UnitTests
         [Test, TestCaseSource("GetPopulationCount_TestCases")]
         public long GetPopulationCount_Tests(int initialPopulation, int offspring, int lifespan, int generations)
         {
-            var model = new SexualReproductionModeler(initialPopulation, offspring, lifespan);
+            var model = new SexualPopulationGrowthModeler(initialPopulation, offspring, lifespan);
             return model.GetPopulationCount(generations);
         }
 

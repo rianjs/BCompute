@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BCompute
 {
     /// <summary>
     /// Models the population growth or decline over a specified number of generations
     /// </summary>
-    public class SexualReproductionModeler
+    public class SexualPopulationGrowthModeler
     {
         public int Lifespan { get; private set; }
         public int OffspringPairsPerGeneration { get; private set; }
         public int MaxReproductiveAge { get; private set; }
         public int InitialPopulation { get; private set; }
 
-        public SexualReproductionModeler(int initialPopulation, int offspringPairsPerGeneration, int lifespan, int maxReproductiveAge)
+        public SexualPopulationGrowthModeler(int initialPopulation, int offspringPairsPerGeneration, int lifespan, int maxReproductiveAge)
         {
             #region Guard clauses
             if (initialPopulation < 1)
@@ -39,7 +38,7 @@ namespace BCompute
             MaxReproductiveAge = maxReproductiveAge;
         }
 
-        public SexualReproductionModeler(int initialPopulation, int offspringPairsPerGeneration, int lifespan)
+        public SexualPopulationGrowthModeler(int initialPopulation, int offspringPairsPerGeneration, int lifespan)
             : this(initialPopulation, offspringPairsPerGeneration, lifespan, lifespan) { }
 
         private void ComputePopulationStates(int generations)

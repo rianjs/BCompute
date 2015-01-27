@@ -55,7 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsensusBuilderUnitTests.cs" />
-    <Compile Include="PopulationUnitTests.cs" />
+    <Compile Include="ExpectedOffspringTests.cs" />
+    <Compile Include="MendellianModelTests.cs" />
     <Compile Include="NucleotideSequenceUnitTests.cs" />
     <Compile Include="FastaParserUnitTests.cs" />
     <Compile Include="ProteinSequenceUnitTests.cs" />

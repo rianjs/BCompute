@@ -1,8 +1,4 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using BCompute;
 
@@ -14,23 +10,19 @@ namespace Tester
         {
             const string parent = @"C:\Users\rianjs\Desktop";
             const string filename = "overlap-graphs3.txt";
-            var path = Path.Combine(parent, filename);
 
-            var sequences = new FastaParser(new Uri(path), AlphabetType.StrictDna).Parse();
-            const int overlapCount = 3;
+            //var model = new ExpectedOffspringModel(19843, 16233, 18989, 19312, 16213, 17310);  //155311
+            var model = new ExpectedOffspringModel(1, 0, 0, 1, 0, 1); //3.5
+            var pSum = model.Parents.Values.Sum();
+            Console.WriteLine("Probability sum: {0}", pSum);    //OK
 
-            var overlapping = SequenceUtilities.FindOverlappingSequences(sequences, overlapCount);
+            var hetero = model.ExpectedOffspring(Genotype.Heterozygous, 2);
+            var dominant = model.ExpectedOffspring(Genotype.HomozygousDominant, 2);
+            var recessive = model.ExpectedOffspring(Genotype.HomozygousRecessive, 2);
 
-            var theString = String.Empty;
-            foreach (var overlap in overlapping)
-            {
-                var activeTag = overlap.Key.Tags.First();
-                theString = overlap.Value.Aggregate(theString, (current, sequence) => current + String.Format("{0} {1}{2}", activeTag, sequence.Tags.First(), Environment.NewLine));
-            }
+            var answer = hetero + dominant;
+            Console.WriteLine("Direct answer: {0:N}", answer);
 
-            Console.WriteLine(theString);
-            File.WriteAllText(Path.Combine(parent, "answer.txt"), theString);
-            
             Console.ReadLine();
         }
     }
