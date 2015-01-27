@@ -5,8 +5,21 @@ using NUnit.Framework;
 
 namespace BCompute.UnitTests
 {
-    public class ExpectedOffspringTests
+    public class ExpectedOffspringModelTests
     {
+        [Test, TestCaseSource("Constructor_TestCases")]
+        public int Constructor_Tests(int doubleDominant, int dominantHetero, int dominantRecessive, int doubleHetero, int heteroRecessive, int doubleRecessive)
+        {
+            var model = new ExpectedOffspringModel(doubleDominant, dominantHetero, dominantRecessive, doubleHetero, heteroRecessive, doubleRecessive);
+            return 0;
+        }
+
+        public IEnumerable<ITestCaseData> Constructor_TestCases()
+        {
+            yield return new TestCaseData(-1, 0, 1, 2, 3, 4).Throws(typeof(ArgumentException)).SetName("Negative population number throws exception");
+            yield return new TestCaseData(0, 0, 0, 0, 0, 0).Throws(typeof(ArgumentException)).SetName("Zero parental pairs across the board throws exception");
+        }
+
         [Test, TestCaseSource("ParentalProbability_TestCases")]
         public double ParentalSetProbability(int doubleDominant, int dominantHetero, int dominantRecessive, int doubleHetero, int heteroRecessive, int doubleRecessive)
         {
@@ -19,8 +32,6 @@ namespace BCompute.UnitTests
         {
             yield return new TestCaseData(1, 0, 0, 1, 0, 1).Returns(1.0d).SetName("Small sampling of parental pairs returns 1.0");
             yield return new TestCaseData(19843, 16233, 18989, 19312, 16213, 17310).Returns(1.0d).SetName("Large sampling of parental pairs returns 1.0");
-            yield return new TestCaseData(-1, 0, 1, 2, 3, 4).Throws(typeof(ArgumentException)).SetName("Negative population number throws exception");
-            yield return new TestCaseData(0, 0, 0, 0, 0, 0).Throws(typeof(ArgumentException)).SetName("Zero parental pairs across the board throws exception");
         }
 
         [Test, TestCaseSource("ExpectedOffspring_TestCases")]
