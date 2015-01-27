@@ -62,8 +62,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parsers\FastaParser.cs" />
+    <Compile Include="Population\ExpectedOffspringModel.cs" />
+    <Compile Include="Population\MendellianModel.cs" />
+    <Compile Include="Population\ParentalPair.cs" />
     <Compile Include="Population\PopulationState.cs" />
-    <Compile Include="Population\SexualReproductionModeler.cs" />
+    <Compile Include="Population\SexualPopulationGrowthModeler.cs" />
     <Compile Include="Sequences\Alphabets\AllowableCodes.cs" />
     <Compile Include="Sequences\Alphabets\AlphabetType.cs" />
     <Compile Include="Sequences\Alphabets\IProteinAlphabet.cs" />
@@ -97,7 +100,6 @@
     <Compile Include="Sequences\Alphabets\INucleotideAlphabet.cs" />
     <Compile Include="Sequences\INucleotideSequence.cs" />
     <Compile Include="Sequences\IProteinSequence.cs" />
-    <Compile Include="Population\AlleleModeling.cs" />
     <Compile Include="Sequences\ISequence.cs" />
     <Compile Include="Sequences\NucleotideSequence.cs" />
     <Compile Include="Sequences\DnaSequence.cs" />
