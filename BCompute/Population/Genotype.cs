@@ -2,8 +2,8 @@
 {
     public enum Genotype
     {
-        HomozygousDominant,
+        Dominant,
         Heterozygous,
-        HomozygousRecessive
+        Recessive
     }
 }
