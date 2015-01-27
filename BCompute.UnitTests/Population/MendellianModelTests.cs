@@ -34,11 +34,11 @@ namespace BCompute.UnitTests
 
         public IEnumerable<ITestCaseData> ChildAlleleProbability_TestCases()
         {
-            yield return new TestCaseData(2, 2, 2, new List<Genotype> { Genotype.HomozygousDominant, Genotype.Heterozygous })
+            yield return new TestCaseData(2, 2, 2, new List<Genotype> { Genotype.Dominant, Genotype.Heterozygous })
                 .Returns(0.783334).SetName("Small test case: percentage of offspring that will express a dominant allele (homo + hetero)");
-            yield return new TestCaseData(27, 21, 30, new List<Genotype> { Genotype.HomozygousDominant, Genotype.Heterozygous })
+            yield return new TestCaseData(27, 21, 30, new List<Genotype> { Genotype.Dominant, Genotype.Heterozygous })
                 .Returns(0.732767).SetName("Large test case: percentage of offspring that will express a dominant allele (homo + hetero)");
-            yield return new TestCaseData(16, 20, 23, new List<Genotype> { Genotype.HomozygousDominant, Genotype.Heterozygous })
+            yield return new TestCaseData(16, 20, 23, new List<Genotype> { Genotype.Dominant, Genotype.Heterozygous })
                 .Returns(0.689948).SetName("Large test case: percentage of offspring that will express a dominant allele (homo + hetero)");
         }
     }

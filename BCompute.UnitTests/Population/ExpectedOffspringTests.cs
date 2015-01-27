@@ -34,11 +34,11 @@ namespace BCompute.UnitTests
         public IEnumerable<ITestCaseData> ExpectedOffspring_TestCases()
         {
             yield return new TestCaseData(1, 0, 0, 1, 0, 1, Genotype.Heterozygous, 2).Returns(1.0).SetName("Heterozygous portion of Rosalind sample ");
-            yield return new TestCaseData(1, 0, 0, 1, 0, 1, Genotype.HomozygousDominant, 2).Returns(2.5).SetName("Dominant portion of Rosalind sample ");
-            yield return new TestCaseData(1, 0, 0, 1, 0, 1, Genotype.HomozygousRecessive, 2).Returns(2.5).SetName("Recessive portion of Rosalind sample ");
+            yield return new TestCaseData(1, 0, 0, 1, 0, 1, Genotype.Dominant, 2).Returns(2.5).SetName("Dominant portion of Rosalind sample ");
+            yield return new TestCaseData(1, 0, 0, 1, 0, 1, Genotype.Recessive, 2).Returns(2.5).SetName("Recessive portion of Rosalind sample ");
             yield return new TestCaseData(19843, 16233, 18989, 19312, 16213, 17310, Genotype.Heterozygous, 2).Returns(89736.0).SetName("Heterozygous portion of Rosalind test ");
-            yield return new TestCaseData(19843, 16233, 18989, 19312, 16213, 17310, Genotype.HomozygousDominant, 2).Returns(65575.0).SetName("Dominant portion of Rosalind test ");
-            yield return new TestCaseData(19843, 16233, 18989, 19312, 16213, 17310, Genotype.HomozygousRecessive, 2).Returns(60489.0).SetName("Recessive portion of Rosalind test ");
+            yield return new TestCaseData(19843, 16233, 18989, 19312, 16213, 17310, Genotype.Dominant, 2).Returns(65575.0).SetName("Dominant portion of Rosalind test ");
+            yield return new TestCaseData(19843, 16233, 18989, 19312, 16213, 17310, Genotype.Recessive, 2).Returns(60489.0).SetName("Recessive portion of Rosalind test ");
         }
     }
 }
