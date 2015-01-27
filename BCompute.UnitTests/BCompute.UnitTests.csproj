@@ -54,14 +54,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsensusBuilderUnitTests.cs" />
-    <Compile Include="ExpectedOffspringTests.cs" />
-    <Compile Include="MendellianModelTests.cs" />
-    <Compile Include="NucleotideSequenceUnitTests.cs" />
-    <Compile Include="FastaParserUnitTests.cs" />
-    <Compile Include="ProteinSequenceUnitTests.cs" />
+    <Compile Include="Sequences\ConsensusBuilderUnitTests.cs" />
+    <Compile Include="Population\ExpectedOffspringTests.cs" />
+    <Compile Include="Population\MendellianModelTests.cs" />
+    <Compile Include="Sequences\NucleotideSequenceUnitTests.cs" />
+    <Compile Include="Parsers\FastaParserUnitTests.cs" />
+    <Compile Include="Sequences\ProteinSequenceUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SexualReproductionUnitTests.cs" />
+    <Compile Include="Population\SexualReproductionUnitTests.cs" />
     <Compile Include="UtilitiesUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
