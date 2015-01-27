@@ -8,6 +8,18 @@ namespace BCompute.UnitTests
     [TestFixture]
     public class MendellianModelTests
     {
+        [Test, TestCaseSource("Constructor_TestCases")]
+        public int Constructor_Tests(int dominantPopulation, int heteroPopulation, int recessivePopulation)
+        {
+            var model = new MendellianModel(dominantPopulation, heteroPopulation, recessivePopulation);
+            return 0;
+        }
+
+        public IEnumerable<ITestCaseData> Constructor_TestCases()
+        {
+            yield return new TestCaseData(0, 0, 0).Throws(typeof(ArgumentException)).SetName("Zero population throws exception");
+        }
+        
         [Test, TestCaseSource("ParentalSetProbability_TestCases")]
         public double ParentalSetProbability(int homoDominantPopulation, int heteroPopulation, int homoRecessivePopulation)
         {
@@ -22,7 +34,6 @@ namespace BCompute.UnitTests
             yield return new TestCaseData(5, 4, 3).Returns(1.0d).SetName("Unequal numbers of each genotype returns 1.0");
             yield return new TestCaseData(2, 3, 2).Returns(1.0d).SetName("Unequal numbers of each genotype returns 1.0");
             yield return new TestCaseData(0, 1, 2).Returns(1.0d).SetName("0 subtype returns 1.0");
-            yield return new TestCaseData(0, 0, 0).Throws(typeof(ArgumentException)).SetName("Zero population throws exception");
         }
 
         [Test, TestCaseSource("ChildAlleleProbability_TestCases")]

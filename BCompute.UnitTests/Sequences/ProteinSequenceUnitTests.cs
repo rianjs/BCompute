@@ -7,6 +7,26 @@ namespace BCompute.UnitTests
     [TestFixture]
     public class ProteinSequenceUnitTests
     {
+        private const string _standardProtein = "ACDE";
+        private const string _extendedProtein = "ABJHG";
+        
+        [Test, TestCaseSource("Constructor_TestCases")]
+        public int Constructor_Tests(string sequence, AlphabetType alphabet)
+        {
+            var protein = new ProteinSequence(sequence, alphabet, GeneticCode.Standard);
+            return protein.Sequence.Length;
+        }
+
+        public IEnumerable<ITestCaseData> Constructor_TestCases()
+        {
+            yield return new TestCaseData(_standardProtein, AlphabetType.StandardProtein).Returns(_standardProtein.Length).SetName("Standard protein with standard alphabet");
+            yield return new TestCaseData(_extendedProtein, AlphabetType.StandardProtein).Throws(typeof(ArgumentException)).SetName("Extended protein with standard fails");
+            yield return new TestCaseData(_standardProtein, AlphabetType.ExtendedProtein).Returns(_standardProtein.Length).SetName("Standard protein with extended alphabet");
+            yield return new TestCaseData(_extendedProtein, AlphabetType.ExtendedProtein).Returns(_extendedProtein.Length).SetName("Extended protein with extended alphabet");
+            yield return new TestCaseData("ACUG", AlphabetType.StandardProtein).Throws(typeof(ArgumentException)).SetName("Sequence with RNA characters (U) with standard alphabet fails");
+            yield return new TestCaseData("ACUG", AlphabetType.ExtendedProtein).Returns(4).SetName("Sequence with RNA characters (U) with extended alphabet");
+        }
+
         [Test, TestCaseSource("ProteinSequenceTranslation_TestCases")]
         public string ProteinSequence_Tests(NucleotideSequence seq)
         {
@@ -54,25 +74,6 @@ namespace BCompute.UnitTests
             yield return new TestCaseData(new RnaSequence(rosalindTest, AlphabetType.StrictRna)).Returns("MAMAPRTEINSTRING.").SetName("Rosalind.info prot sample data test");
         }
 
-        private const string _standardProtein = "ACDE";
-        private const string _extendedProtein = "ABJHG";
-
-        [Test, TestCaseSource("ProteinSequenceSanityChecking_TestCases")]
-        public int ProteinSequenceSanityTests(string sequence, AlphabetType alphabet)
-        {
-            var protein = new ProteinSequence(sequence, alphabet, GeneticCode.Standard);
-            return protein.Sequence.Length;
-        }
-
-        public IEnumerable<ITestCaseData> ProteinSequenceSanityChecking_TestCases()
-        {
-            yield return new TestCaseData(_standardProtein, AlphabetType.StandardProtein).Returns(_standardProtein.Length).SetName("Standard protein with standard alphabet");
-            yield return new TestCaseData(_extendedProtein, AlphabetType.StandardProtein).Throws(typeof(ArgumentException)).SetName("Extended protein with standard fails");
-            yield return new TestCaseData(_standardProtein, AlphabetType.ExtendedProtein).Returns(_standardProtein.Length).SetName("Standard protein with extended alphabet");
-            yield return new TestCaseData(_extendedProtein, AlphabetType.ExtendedProtein).Returns(_extendedProtein.Length).SetName("Extended protein with extended alphabet");
-            yield return new TestCaseData("ACUG", AlphabetType.StandardProtein).Throws(typeof(ArgumentException)).SetName("Sequence with RNA characters (U) with standard alphabet fails");
-            yield return new TestCaseData("ACUG", AlphabetType.ExtendedProtein).Returns(4).SetName("Sequence with RNA characters (U) with extended alphabet");
-        }
 
         [Test, TestCaseSource("Tag_TestCases")]
         public void Tag_Tests(ProteinSequence incoming, IEnumerable<string> incomingTags)
